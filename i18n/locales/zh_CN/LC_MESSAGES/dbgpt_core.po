@@ -227,6 +227,10 @@ msgstr "响应体"
 msgid "Request Body To Dict Operator"
 msgstr "请求体转字典算子"
 
+#: ../packages/dbgpt-core/src/dbgpt/core/awel/trigger/http_trigger.py:1138
+msgid "Request body to dict operator"
+msgstr "请求体转字典算子"
+
 #: ../packages/dbgpt-core/src/dbgpt/core/awel/trigger/http_trigger.py:1107
 msgid "Prefix Key"
 msgstr "前缀键"
@@ -334,15 +338,27 @@ msgstr "Token"
 
 #: ../packages/dbgpt-core/src/dbgpt/core/awel/trigger/ext_http_trigger.py:135
 msgid "The token to use for the HTTP request"
-msgstr "用于 HTTP 请求的 Token"
+msgstr "用于 HTTP 请求的令牌"
 
 #: ../packages/dbgpt-core/src/dbgpt/core/awel/trigger/ext_http_trigger.py:138
 msgid "Cookies"
-msgstr "Cookies"
+msgstr "Cookie"
 
 #: ../packages/dbgpt-core/src/dbgpt/core/awel/trigger/ext_http_trigger.py:143
 msgid "The cookies to use for the HTTP request"
-msgstr "用于 HTTP 请求的 Cookies"
+msgstr "用于 HTTP 请求的 Cookie"
+
+#: ../packages/dbgpt-core/src/dbgpt/core/awel/trigger/http_trigger.py:336
+msgid "Http Trigger"
+msgstr "HTTP 触发器"
+
+#: ../packages/dbgpt-core/src/dbgpt/core/awel/trigger/http_trigger.py:340
+msgid "Trigger your workflow by http request"
+msgstr "通过 HTTP 请求触发工作流"
+
+#: ../packages/dbgpt-core/src/dbgpt/core/awel/trigger/http_trigger.py:366
+msgid "Http Request Trigger Body"
+msgstr "HTTP 请求触发体"
 
 #: ../packages/dbgpt-core/src/dbgpt/core/operators/flow/composer_operator.py:42  
 msgid "Conversation Composer Operator"  

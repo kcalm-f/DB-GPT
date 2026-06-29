@@ -86,9 +86,9 @@ class CodeMapOperator(MapOperator[dict, dict]):
                 placeholder=_("Please select the language"),
                 description=_("The language of the code."),
                 options=[
-                    OptionValue(label="Python", name="python", value="python"),
+                    OptionValue(label=_("Python"), name="python", value="python"),
                     OptionValue(
-                        label="JavaScript", name="javascript", value="javascript"
+                        label=_("JavaScript"), name="javascript", value="javascript"
                     ),
                 ],
                 ui=ui.UISelect(),
@@ -228,9 +228,9 @@ class CodeDictToModelRequestOperator(MapOperator[dict, ModelRequest]):
                 placeholder=_("Please select the language"),
                 description=_("The language of the code."),
                 options=[
-                    OptionValue(label="Python", name="python", value="python"),
+                    OptionValue(label=_("Python"), name="python", value="python"),
                     OptionValue(
-                        label="JavaScript", name="javascript", value="javascript"
+                        label=_("JavaScript"), name="javascript", value="javascript"
                     ),
                 ],
                 ui=ui.UISelect(),

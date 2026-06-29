@@ -177,7 +177,7 @@ msgstr "字符串转布尔值"
 
 #: ../packages/dbgpt-app/src/dbgpt_app/operators/converter.py:109
 msgid "Converts a string to a boolean, true: 'true', '1', 'y'"
-msgstr "将字符串转换为布尔值，真值：'true'、'1'、'y'"
+msgstr "将字符串转换为布尔值，表示真的取值：'true'、'1'、'y'"
 
 #: ../packages/dbgpt-app/src/dbgpt_app/operators/converter.py:113
 msgid "True Values"
@@ -267,7 +267,7 @@ msgstr "响应格式"
 
 #: ../packages/dbgpt-app/src/dbgpt_app/operators/datasource.py:140
 msgid "The response format, default is a JSON format"
-msgstr "响应格式，默认为 JSON 格式"
+msgstr "响应格式，默认为 JSON"
 
 #: ../packages/dbgpt-app/src/dbgpt_app/operators/datasource.py:156
 msgid "The user question to retrieve table schemas from the datasource"
@@ -444,11 +444,11 @@ msgstr "代码字典到模型请求算子"
 msgid ""
 "Handle input dictionary with code and return output ModelRequest after "
 "execution."
-msgstr "处理包含代码的输入字典，并在执行后返回输出的 ModelRequest。"
+msgstr "处理包含代码的输入字典，并在执行后返回模型请求对象。"
 
 #: ../packages/dbgpt-app/src/dbgpt_app/operators/code.py:261
 msgid "The output ModelRequest."
-msgstr "输出的 ModelRequest。"
+msgstr "输出的模型请求对象。"
 
 #: ../packages/dbgpt-app/src/dbgpt_app/operators/llm.py:53
 msgid "The context key can be used as the key for formatting prompt."
@@ -493,7 +493,7 @@ msgid ""
 "The history merge mode, supports 'none', 'window' and 'token'. 'none': no "
 "history merge, 'window': merge by conversation window, 'token': merge by "
 "token length."
-msgstr "历史合并模式，支持 'none'、'window' 和 'token'。'none'：不合并历史，'window'：按对话窗口合并，'token'：按 Token 长度合并。"
+msgstr "历史合并模式，支持 'none'、'window' 和 'token'。'none'：不合并历史，'window'：按对话窗口合并，'token'：按词元长度合并。"
 
 #: ../packages/dbgpt-app/src/dbgpt_app/operators/llm.py:329
 msgid "User Message Key"
@@ -531,11 +531,11 @@ msgstr "在聊天历史中保留的结束轮次。"
 
 #: ../packages/dbgpt-app/src/dbgpt_app/operators/llm.py:366
 msgid "Max Token Limit"
-msgstr "最大 Token 限制"
+msgstr "最大词元限制"
 
 #: ../packages/dbgpt-app/src/dbgpt_app/operators/llm.py:371
 msgid "The max token limit to keep in the chat history."
-msgstr "在聊天历史中保留的最大 Token 数量。"
+msgstr "聊天历史中保留的最大词元数量。"
 
 #: ../packages/dbgpt-app/src/dbgpt_app/operators/llm.py:375
 msgid "Common LLM Request Body"
@@ -575,7 +575,7 @@ msgstr "大语言模型算子"
 msgid ""
 "High-level LLM operator, supports multi-round conversation (conversation "
 "window, token length and no multi-round)."
-msgstr "高级大语言模型算子，支持多轮对话（对话窗口、Token 长度和无多轮）。"
+msgstr "高级大语言模型算子，支持按对话窗口、按词元长度或不携带历史的多轮对话。"
 
 #: ../packages/dbgpt-app/src/dbgpt_app/operators/llm.py:441
 msgid "Streaming LLM Operator"
@@ -585,7 +585,29 @@ msgstr "流式大语言模型算子"
 msgid ""
 "High-level streaming LLM operator, supports multi-round conversation "
 "(conversation window, token length and no multi-round)."
-msgstr "高级流式大语言模型算子，支持多轮对话（对话窗口、Token 长度和无多轮）。"
+msgstr "高级流式大语言模型算子，支持按对话窗口、按词元长度或不携带历史的多轮对话。"
+
+#: ../packages/dbgpt-app/src/dbgpt_app/operators/llm.py:318
+msgid "No History"
+msgstr "不使用历史"
+
+#: ../packages/dbgpt-app/src/dbgpt_app/operators/llm.py:319
+msgid "Message Window"
+msgstr "消息窗口"
+
+#: ../packages/dbgpt-app/src/dbgpt_app/operators/llm.py:320
+msgid "Token Length"
+msgstr "词元长度"
+
+#: ../packages/dbgpt-app/src/dbgpt_app/operators/code.py:89
+#: ../packages/dbgpt-app/src/dbgpt_app/operators/code.py:231
+msgid "Python"
+msgstr "Python"
+
+#: ../packages/dbgpt-app/src/dbgpt_app/operators/code.py:91
+#: ../packages/dbgpt-app/src/dbgpt_app/operators/code.py:233
+msgid "JavaScript"
+msgstr "JavaScript"
 
 #: ../packages/dbgpt-app/src/dbgpt_app/operators/report.py:79
 #: ../packages/dbgpt-app/src/dbgpt_app/operators/report.py:81

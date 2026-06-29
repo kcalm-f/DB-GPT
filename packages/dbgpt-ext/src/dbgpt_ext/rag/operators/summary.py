@@ -28,7 +28,7 @@ class SummaryAssemblerOperator(AssemblerOperator[Any, Any]):
                 _("Document summary"),
                 "summary",
                 str,
-                description="document summary",
+                description=_("Document summary"),
             )
         ],
         parameters=[

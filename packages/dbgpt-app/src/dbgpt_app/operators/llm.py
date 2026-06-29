@@ -315,9 +315,9 @@ _PARAMETER_HISTORY_MERGE_MODE = Parameter.build_from(
     optional=True,
     default="none",
     options=[
-        OptionValue(label="No History", name="none", value="none"),
-        OptionValue(label="Message Window", name="window", value="window"),
-        OptionValue(label="Token Length", name="token", value="token"),
+        OptionValue(label=_("No History"), name="none", value="none"),
+        OptionValue(label=_("Message Window"), name="window", value="window"),
+        OptionValue(label=_("Token Length"), name="token", value="token"),
     ],
     description=_(
         "The history merge mode, supports 'none', 'window' and 'token'."

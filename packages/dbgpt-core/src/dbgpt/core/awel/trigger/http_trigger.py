@@ -333,76 +333,80 @@ class HttpTrigger(Trigger):
     """
 
     metadata = ViewMetadata(
-        label="Http Trigger",
+        label=_("Http Trigger"),
         name="http_trigger",
         category=OperatorCategory.TRIGGER,
         operator_type=OperatorType.INPUT,
-        description="Trigger your workflow by http request",
+        description=_("Trigger your workflow by http request"),
         inputs=[],
         outputs=[],
         parameters=[
             Parameter.build_from(
-                "API Endpoint", "endpoint", str, description="The API endpoint"
+                _("API Endpoint"), "endpoint", str, description=_("The API endpoint")
             ),
             Parameter.build_from(
-                "Http Methods",
+                _("Http Methods"),
                 "methods",
                 str,
                 optional=True,
                 default="GET",
-                description="The methods of the API endpoint",
+                description=_("The methods of the API endpoint"),
                 options=[
-                    OptionValue(label="HTTP Method GET", name="http_get", value="GET"),
-                    OptionValue(label="HTTP Method PUT", name="http_put", value="PUT"),
                     OptionValue(
-                        label="HTTP Method POST", name="http_post", value="POST"
+                        label=_("HTTP Method GET"), name="http_get", value="GET"
                     ),
                     OptionValue(
-                        label="HTTP Method DELETE", name="http_delete", value="DELETE"
+                        label=_("HTTP Method PUT"), name="http_put", value="PUT"
+                    ),
+                    OptionValue(
+                        label=_("HTTP Method POST"), name="http_post", value="POST"
+                    ),
+                    OptionValue(
+                        label=_("HTTP Method DELETE"), name="http_delete", value="DELETE"
                     ),
                 ],
             ),
             Parameter.build_from(
-                "Http Request Trigger Body",
+                _("Http Request Trigger Body"),
                 "http_trigger_body",
                 BaseHttpBody,
                 optional=True,
                 default=None,
-                description="The request body of the API endpoint",
+                description=_("The request body of the API endpoint"),
                 resource_type=ResourceType.CLASS,
             ),
             Parameter.build_from(
-                "Streaming Response",
+                _("Streaming Response"),
                 "streaming_response",
                 bool,
                 optional=True,
                 default=False,
-                description="Whether the response is streaming",
+                description=_("Whether the response is streaming"),
             ),
             Parameter.build_from(
-                "Http Response Body",
+                _("Http Response Body"),
                 "http_response_body",
                 BaseHttpBody,
                 optional=True,
                 default=None,
-                description="The response body of the API endpoint",
+                description=_("The response body of the API endpoint"),
                 resource_type=ResourceType.CLASS,
             ),
             Parameter.build_from(
-                "Response Media Type",
+                _("Response Media Type"),
                 "response_media_type",
                 str,
                 optional=True,
                 default=None,
-                description="The response media type",
+                description=_("The response media type"),
             ),
             Parameter.build_from(
-                "Http Status Code",
+                _("Http Status Code"),
                 "status_code",
                 int,
                 optional=True,
                 default=200,
-                description="The http status code",
+                description=_("The http status code"),
             ),
         ],
     )
@@ -1131,7 +1135,7 @@ class RequestBodyToDictOperator(MapOperator[CommonLLMHttpRequestBody, Dict[str, 
                 description=_("The response body of the API endpoint"),
             )
         ],
-        description="Request body to dict operator",
+        description=_("Request body to dict operator"),
     )
 
     def __init__(self, prefix_key: Optional[str] = None, **kwargs):

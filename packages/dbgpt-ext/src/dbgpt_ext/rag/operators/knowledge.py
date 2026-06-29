@@ -58,13 +58,15 @@ class KnowledgeOperator(MapOperator[dict, Knowledge]):
                 optional=True,
                 options=[
                     OptionValue(
-                        label="DOCUMENT",
+                        label=_("Document"),
                         name="DOCUMENT",
                         value=KnowledgeType.DOCUMENT.name,
                     ),
-                    OptionValue(label="URL", name="URL", value=KnowledgeType.URL.name),
                     OptionValue(
-                        label="TEXT", name="TEXT", value=KnowledgeType.TEXT.name
+                        label=_("URL"), name="URL", value=KnowledgeType.URL.name
+                    ),
+                    OptionValue(
+                        label=_("Text"), name="TEXT", value=KnowledgeType.TEXT.name
                     ),
                 ],
                 default=KnowledgeType.DOCUMENT.name,

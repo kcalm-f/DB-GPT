@@ -199,6 +199,7 @@ msgid "Knowledge datasource"
 msgstr "知识数据源"
 
 #: ../packages/dbgpt-ext/src/dbgpt_ext/rag/operators/summary.py:28
+#: ../packages/dbgpt-ext/src/dbgpt_ext/rag/operators/summary.py:31
 msgid "Document summary"
 msgstr "文档摘要"
 
@@ -364,6 +365,18 @@ msgstr "知识类型"
 #: ../packages/dbgpt-ext/src/dbgpt_ext/rag/operators/knowledge.py:71
 msgid "Knowledge type."
 msgstr "知识类型。"
+
+#: ../packages/dbgpt-ext/src/dbgpt_ext/rag/operators/knowledge.py:61
+msgid "Document"
+msgstr "文档"
+
+#: ../packages/dbgpt-ext/src/dbgpt_ext/rag/operators/knowledge.py:65
+msgid "URL"
+msgstr "URL"
+
+#: ../packages/dbgpt-ext/src/dbgpt_ext/rag/operators/knowledge.py:67
+msgid "Text"
+msgstr "文本"
 
 #: ../packages/dbgpt-ext/src/dbgpt_ext/rag/operators/knowledge.py:106
 msgid "Chunks To String Operator"
