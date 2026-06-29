@@ -142,19 +142,19 @@ class _CategoryDetail:
 
 
 _OPERATOR_CATEGORY_DETAIL = {
-    "trigger": _CategoryDetail("Trigger", "Trigger your AWEL flow"),
-    "sender": _CategoryDetail("Sender", "Send the data to the target"),
-    "llm": _CategoryDetail("LLM", "Invoke LLM model"),
-    "conversion": _CategoryDetail("Conversion", "Handle the conversion"),
-    "output_parser": _CategoryDetail("Output Parser", "Parse the output of LLM model"),
-    "common": _CategoryDetail("Common", "The common operator"),
-    "agent": _CategoryDetail("Agent", "The agent operator"),
-    "rag": _CategoryDetail("RAG", "The RAG operator"),
-    "experimental": _CategoryDetail("EXPERIMENTAL", "EXPERIMENTAL operator"),
-    "database": _CategoryDetail("Database", "Interact with the database"),
-    "type_converter": _CategoryDetail("Type Converter", "Convert the type"),
-    "example": _CategoryDetail("Example", "Example operator"),
-    "code": _CategoryDetail("Code", "Code operator"),
+    "trigger": _CategoryDetail("触发器", "触发 AWEL 工作流"),
+    "sender": _CategoryDetail("发送器", "将数据发送到目标"),
+    "llm": _CategoryDetail("大模型", "调用大语言模型"),
+    "conversion": _CategoryDetail("数据转换", "处理数据转换"),
+    "output_parser": _CategoryDetail("输出解析", "解析大模型输出"),
+    "common": _CategoryDetail("通用", "通用算子"),
+    "agent": _CategoryDetail("智能体", "智能体算子"),
+    "rag": _CategoryDetail("知识检索", "RAG 检索增强算子"),
+    "experimental": _CategoryDetail("实验性", "实验性算子"),
+    "database": _CategoryDetail("数据库", "与数据库交互"),
+    "type_converter": _CategoryDetail("类型转换", "转换数据类型"),
+    "example": _CategoryDetail("示例", "示例算子"),
+    "code": _CategoryDetail("代码执行", "代码执行算子"),
 }
 
 
@@ -206,21 +206,20 @@ class OperatorType(str, Enum):
 
 
 _RESOURCE_CATEGORY_DETAIL = {
-    "http_body": _CategoryDetail("HTTP Body", "The HTTP body"),
-    "llm_client": _CategoryDetail("LLM Client", "The LLM client"),
-    "storage": _CategoryDetail("Storage", "The storage resource"),
-    "serializer": _CategoryDetail("Serializer", "The serializer resource"),
-    "common": _CategoryDetail("Common", "The common resource"),
-    "prompt": _CategoryDetail("Prompt", "The prompt resource"),
-    "agent": _CategoryDetail("Agent", "The agent resource"),
-    "embeddings": _CategoryDetail("Embeddings", "The embeddings resource"),
-    "rag": _CategoryDetail("RAG", "The  resource"),
-    "vector_store": _CategoryDetail("Vector Store", "The vector store resource"),
-    "knowledge_graph": _CategoryDetail(
-        "Knowledge Graph", "The knowledge graph resource"
-    ),
-    "database": _CategoryDetail("Database", "Interact with the database"),
-    "example": _CategoryDetail("Example", "The example resource"),
+    "http_body": _CategoryDetail("HTTP 请求体", "HTTP 请求体资源"),
+    "llm_client": _CategoryDetail("大模型客户端", "大模型客户端资源"),
+    "storage": _CategoryDetail("存储", "存储资源"),
+    "serializer": _CategoryDetail("序列化器", "序列化器资源"),
+    "common": _CategoryDetail("通用", "通用资源"),
+    "prompt": _CategoryDetail("提示词", "提示词资源"),
+    "agent": _CategoryDetail("智能体", "智能体资源"),
+    "embeddings": _CategoryDetail("嵌入模型", "嵌入模型资源"),
+    "rag": _CategoryDetail("知识检索", "RAG 资源"),
+    "vector_store": _CategoryDetail("向量存储", "向量存储资源"),
+    "knowledge_graph": _CategoryDetail("知识图谱", "知识图谱资源"),
+    "full_text": _CategoryDetail("全文检索", "全文检索资源"),
+    "database": _CategoryDetail("数据库", "与数据库交互"),
+    "example": _CategoryDetail("示例", "示例资源"),
 }
 
 

@@ -1,35 +1,32 @@
-# code_interpreter
+# 代码解释器
 
-## Overview
+## 概述
 
-`code_interpreter` executes arbitrary Python code and returns stdout / stderr plus generated artifacts.
+`code_interpreter` 执行任意 Python 代码并返回 stdout / stderr 以及生成的工件。
 
-It is the main tool for data analysis, calculations, dataframe operations, and chart generation.
+它是数据分析、计算、数据框操作和图表生成的主要工具。
 
-## Parameters
-
+＃＃ 参数
 ```json
 {
   "code": "python code string"
 }
 ```
+## 它的作用
 
-## What it does
+- 在子进程中运行Python代码
+- 提供常用的分析包，如`pandas`和`numpy`
+- 捕获文本输出和生成的图像
+- 保持生成的图像引用可用于以后的 HTML 渲染
 
-- runs Python code in a subprocess
-- provides common analysis packages such as `pandas` and `numpy`
-- captures text output and generated images
-- keeps generated image references available for later HTML rendering
+## 何时使用
 
-## When to use it
+- CSV/Excel/数据帧分析
+- 指标计算
+- 图表生成
+- 基于Python的预处理和转换
 
-- CSV / Excel / dataframe analysis
-- metrics computation
-- chart generation
-- Python-based preprocessing and transformation
-
-## Example
-
+## 示例
 ```python
 import pandas as pd
 
@@ -37,11 +34,10 @@ df = pd.read_csv(FILE_PATH)
 print(df.head())
 print(df.describe())
 ```
+## 注释
 
-## Notes
-
-- each call is independent
-- variables do not persist between calls
-- always load the data you need inside the same call
-- use `print()` if you want the result to appear in the tool output
-- do not use it as the final HTML delivery step
+- 每次调用都是独立的
+- 变量在调用之间不会持续存在
+- 始终在同一调用中加载您需要的数据
+- 如果您希望结果出现在工具输出中，请使用“print()”
+- 不要将其用作最终的 HTML 交付步骤

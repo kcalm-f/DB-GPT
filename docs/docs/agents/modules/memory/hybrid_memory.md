@@ -1,19 +1,18 @@
-# Hybrid Memory
+#混合内存
 
-> This structure explicitly models the human short-term and long-term memories. The 
-> short-term memory temporarily buffers recent perceptions, while long-term memory consolidates 
-> important information over time.
+>这种结构明确地模拟了人类的短期和长期记忆。 
+>短期记忆暂时缓冲近期感知，而长期记忆巩固 
+>随时间推移的重要信息。
 
 
-For example, the short-term memory contains the context information about the agent current situations, 
-while the long-term memory stores the agent past behaviors and thoughts, which can be retrieved according to the current events.
+例如，短期记忆包含代理当前情况的上下文信息，
+而长期记忆存储代理过去的行为和想法，可以根据当前事件检索。
 
-## Creating A Hybrid Memory
+# #创建混合内存
 
-### Method 1: Creating A Hybrid Memory with Default Values
+# # #方法1 ：使用默认值创建混合内存
 
-It will use OpenAI Embedding API and ChromaStore as the default values.
-
+它将使用OpenAI Embedding API和ChromaStore作为默认值。
 ```python
 import shutil
 from dbgpt.agent import HybridMemory, AgentMemory
@@ -26,17 +25,15 @@ hybrid_memory = HybridMemory.from_chroma(
 
 agent_memory: AgentMemory = AgentMemory(memory=hybrid_memory)
 ```
+# # #方法2 ：使用自定义值创建混合内存
 
-### Method 2: Creating A Hybrid Memory With Custom Values
+混合记忆需要感官记忆、短期记忆和长期记忆。
 
-The hybrid memory requires sensory memory, short-term memory, and long-term memory to be created.
+* *准备嵌入模型* *
 
-**Prepare Embedding Model**
+您可以根据[准备嵌入模型] (./short_term_memory # prepare-embedding-model)准备嵌入模型。
 
-You can prepare the embedding model according [Prepare Embedding Model](./short_term_memory#prepare-embedding-model).
-
-Here we use the OpenAI Embedding API as an example:
-
+在这里，我们使用OpenAI嵌入API作为示例：
 ```python
 import os
 from dbgpt.rag.embedding import DefaultEmbeddingFactory
@@ -45,9 +42,9 @@ api_url = os.getenv("OPENAI_API_BASE", "https://api.openai.com/v1") + "/embeddin
 api_key = os.getenv("OPENAI_API_KEY")
 embeddings = DefaultEmbeddingFactory.openai(api_url=api_url, api_key=api_key)
 ```
-**Prepare Vector Store**
+* *准备矢量存储* *
 
-You need to prepare a vector store, here we use the `ChromaStore` as an example:
+您需要准备一个矢量存储，在这里我们使用“ChromaStore”作为示例：
 ```python
 
 import shutil
@@ -63,9 +60,7 @@ vector_store = ChromaStore(
     embedding_fn=embeddings
 )
 ```
-
-**Create Hybrid Memory**
-
+* *创建混合内存* *
 ```python
 from datetime import datetime
 from concurrent.futures import ThreadPoolExecutor
@@ -103,12 +98,10 @@ hybrid_memory = HybridMemory(
 
 agent_memory: AgentMemory = AgentMemory(memory=hybrid_memory)
 ```
+# # #方法3 ：从矢量存储创建混合内存
 
-### Method 3: Creating A Hybrid Memory From Vector Store
-
-You can create a hybrid memory from a vector store, it will use the default values for 
-sensory memory and short-term memory.
-
+您可以从矢量存储创建混合内存，它将使用默认值 
+感觉记忆和短期记忆。
 ```python
 from dbgpt.agent import HybridMemory, AgentMemory
 
@@ -118,26 +111,31 @@ hybrid_memory = HybridMemory.from_vstore(
 
 agent_memory: AgentMemory = AgentMemory(memory=hybrid_memory)
 ```
+## 它是如何工作的
 
-## How It Works
+写入内存片段时：
+1.混合记忆首先将感觉记忆中的记忆片段存储起来，
+如果感觉记忆已满，则丢弃所有感觉记忆片段，并且 
+一些被丢弃的记忆片段将被转移到短期记忆中。
+2.短期记忆会接收一些感觉记忆作为外界观察， 
 
-When writing a memory fragment:
-1. The hybrid memory will store the memory fragments in sensory memory first,
-if the sensory memory is full, it will discard all the sensory memory fragments, and 
-some of discarded memory fragments will be transferred to short-term memory.
-2. Short-term memory will receive some of the sensory memory as outside observations, 
-and memory fragments in short-term memory can be enhanced by other observations. Some of 
-enhanced memory fragments will be transferred to long-term memory, at the same time, this
-enhanced memory will be reflected to higher-level thoughts and insights to the long-term memory.
-3. Long-term memory will store the agent's experiences and knowledge. When it receives the memory
-fragments from short-term memory, it will compute the importance of the memory fragment, then write
-to vector store.
 
-When reading a memory fragment:
-1. First, the hybrid memory will read the memory fragments from long-term memory according 
-to the observation. The long-term memory uses a `TimeWeightedEmbeddingRetriever` to retrieve 
-the memory fragments(latest memory fragments have higher weights).
-2. The retrieved memory fragments will be saved to short-term memory(just for enhancing 
-the memory fragments, not append a new memory fragment to short-term memory). The retrieved
-memory fragments and all short-term memory fragments will be merged, and as the current memory to LLM.
-After the enhancing process, there are some new short-term memory fragments will be transferred to long-term memory.
+短期记忆中的记忆片段可以通过其他观察来增强。一些 
+增强的记忆片段将被转移到长期记忆中，同时，这个
+增强的记忆力会反映到更高层次的思想和见解到长期记忆。
+3. 长期记忆将存储代理的经验和知识。当它接收到内存时
+
+
+短期记忆片段，它会计算记忆片段的重要性，然后写入
+到矢量存储。
+
+读取内存片段时：
+1. 首先，混合存储器会根据长时记忆读取记忆片段 
+到观察。长期记忆使用“TimeWeightedEmbeddingRetriever”来检索 
+内存碎片（最新的内存碎片具有更高的权重）。
+
+
+2. 检索到的记忆片段将被保存到短期记忆中（仅用于增强 
+记忆片段，而不是将新的记忆片段附加到短期记忆中）。检索到的
+记忆碎片和所有短期记忆碎片将被合并，并作为当前记忆进行LLM。
+经过增强过程后，有一些新的短期记忆片段将被转移到长期记忆中。

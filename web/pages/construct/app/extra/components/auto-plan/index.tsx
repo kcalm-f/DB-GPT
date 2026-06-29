@@ -7,7 +7,7 @@ import cls from 'classnames';
 import { concat } from 'lodash';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { agentIcon, resourceTypeIcon } from '../../config';
+import { agentIcon, localizeAgentForDisplay, resourceTypeIcon } from '../../config';
 import DetailsCard from './DetailsCard';
 
 interface AgentSelectProps {
@@ -41,6 +41,7 @@ const AgentSelect: React.FC<AgentSelectProps> = ({
       value={value}
     >
       {agents.map(item => {
+        const displayAgent = localizeAgentForDisplay(item);
         return (
           <div
             className={`flex grow h-8 items-center px-3 border ${
@@ -56,10 +57,10 @@ const AgentSelect: React.FC<AgentSelectProps> = ({
               <div>
                 <span className='ml-2 mr-1'>{agentIcon[item.name || '']}</span>
                 <span className='text-sm text-[rgba(0,10,26,0.68)] dark:text-[rgba(255,255,255,0.85)]'>
-                  {item.label}
+                  {displayAgent.label}
                 </span>
               </div>
-              <Tooltip title={item.desc}>
+              <Tooltip title={displayAgent.desc}>
                 <QuestionCircleOutlined className='text-sm' />
               </Tooltip>
             </div>

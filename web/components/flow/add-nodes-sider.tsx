@@ -2,6 +2,7 @@ import { ChatContext } from '@/app/chat-context';
 import { apiInterceptors, getFlowNodes } from '@/client/api';
 import { IFlowNode } from '@/types/flow';
 import { FLOW_NODES_KEY } from '@/utils';
+import { localizeFlowNodesForDisplay } from '@/utils/flow';
 import { CaretLeftOutlined, CaretRightOutlined } from '@ant-design/icons';
 import type { CollapseProps } from 'antd';
 import { Badge, Collapse, Input, Layout, Space, Switch } from 'antd';
@@ -55,9 +56,10 @@ const AddNodesSider: React.FC = () => {
     const [_, data] = await apiInterceptors(getFlowNodes(tags));
 
     if (data && data.length > 0) {
-      localStorage.setItem(FLOW_NODES_KEY, JSON.stringify(data));
-      const operatorNodes = data.filter(node => node.flow_type === 'operator');
-      const resourceNodes = data.filter(node => node.flow_type === 'resource');
+      const localizedData = localizeFlowNodesForDisplay(data);
+      localStorage.setItem(FLOW_NODES_KEY, JSON.stringify(localizedData));
+      const operatorNodes = localizedData.filter(node => node.flow_type === 'operator');
+      const resourceNodes = localizedData.filter(node => node.flow_type === 'resource');
       setOperators(operatorNodes);
       setResources(resourceNodes);
       setOperatorsGroup(groupNodes(operatorNodes));
@@ -115,7 +117,9 @@ const AddNodesSider: React.FC = () => {
         ),
       }));
     } else {
-      const searchedNodes = operators.filter(node => node.label.toLowerCase().includes(searchValue.toLowerCase()));
+      const searchedNodes = operators.filter(node =>
+        `${node.label} ${node.original_label || ''}`.toLowerCase().includes(searchValue.toLowerCase()),
+      );
       return groupNodes(searchedNodes).map(({ category, categoryLabel, nodes }) => ({
         key: category,
         label: categoryLabel,
@@ -150,7 +154,9 @@ const AddNodesSider: React.FC = () => {
         ),
       }));
     } else {
-      const searchedNodes = resources.filter(node => node.label.toLowerCase().includes(searchValue.toLowerCase()));
+      const searchedNodes = resources.filter(node =>
+        `${node.label} ${node.original_label || ''}`.toLowerCase().includes(searchValue.toLowerCase()),
+      );
       return groupNodes(searchedNodes).map(({ category, categoryLabel, nodes }) => ({
         key: category,
         label: categoryLabel,

@@ -1,51 +1,48 @@
-# Chat Dashboard
+# 聊天仪表板
 
-Report analysis corresponds to the `Chat Dashboard` scenario in DB-GPT, and intelligent report generation and analysis can be performed through natural language. It is one of the basic capabilities of generative BI (GBI). Let's take a look at how to use the report analysis capabilities.
+报表分析对应DB-GPT中的“Chat Dashboard”场景，可以通过自然语言进行智能报表生成和分析。它是生成式BI（GBI）的基本能力之一。我们来看看如何使用报表分析功能。
 
-## Steps
-The following are the steps for using report analysis:
-- 1.Data preparation
-- 2.Add data source
-- 3.Select Chat Dashboard App
-- 4.Start chat
+## 步骤
+以下是使用报告分析的步骤：
+- 1.数据准备
+- 2.添加数据源
+- 3.选择聊天仪表板应用程序
+- 4.开始聊天
 
 
-### Data preparation
+### 数据准备
 
-In order to better experience the report analysis capabilities, we have built some test data into the code. To use this test data, we first need to create a test library.
+为了更好地体验报表分析功能，我们在代码中内置了一些测试数据。要使用此测试数据，我们首先需要创建一个测试库。
 ```SQL
 CREATE DATABASE IF NOT EXISTS dbgpt_test CHARACTER SET utf8;
 ```
-
-After the test library is created, you can initialize the test data with one click through the script.
-
+测试库创建完成后，可以通过脚本一键初始化测试数据。
 ```python
 python docker/examples/dashboard/test_case_mysql_data.py
 ```
+### 添加数据源
 
-### Add data source
-
-The steps to add a data source are the same as [Chat Data](./chat_data.md). Select the corresponding database type in the data source management tab, then create it. Fill in the necessary information to complete the creation.
+添加数据源的步骤与[聊天数据](./chat_data.md)相同。在数据源管理选项卡中选择对应的数据库类型，然后创建。填写必要的信息即可完成创建。
 
 
-### Select Chat Dashboard
+### 选择聊天仪表板
 
-After the data source is added, select `Chat Dashboard` on the home scene page to perform report analysis.
+添加数据源后，在主场景页面选择“Chat Dashboard”即可进行报表分析。
 
-<p align="center">
+<p对齐=“中心”>
   <img src={'/img/app/chat_dashboard_v0.6.jpg'} width="800px" />
 </p>
 
 
-### Start chat
-Enter specific questions in the dialog box on the right to start a data conversation.
+### 开始聊天
+在右侧对话框中输入具体问题即可开始数据对话。
 
 
-:::info note
+:::信息说明
 
-⚠️ Data dialogue has relatively high requirements on model capabilities, and `ChatGPT/GPT-4` has a high success rate. Other open source models you can try `qwen2`
+⚠️数据对话对模型能力要求比较高，`ChatGPT/GPT-4`成功率很高。其他开源模型你可以尝试`qwen2`
 :::
 
-<p align="center">
+<p对齐=“中心”>
   <img src={'/img/app/chat_dashboard_display_v0.6.jpg'} width="800px" />
 </p>

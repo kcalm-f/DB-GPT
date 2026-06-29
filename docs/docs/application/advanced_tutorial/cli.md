@@ -1,18 +1,17 @@
-# Command Line Usage
+# 命令行用法
 
-In addition to interface usage, this project also provides a wealth of command line tools. It can realize model deployment, service deployment and start and stop, knowledge base operations (viewing, deleting, document loading), debugging and problem locating and other capabilities.
+除了界面使用之外，该项目还提供了丰富的命令行工具。可以实现模型部署、服务部署和启停、知识库操作（查看、删除、文档加载）、调试和问题定位等能力。
 
-The following is a systematic introduction to the use of related command line tools.
+下面系统介绍相关命令行工具的使用。
 
-## Preparation
+## 准备工作
 
-Before using the dbgpt command, you first need to complete the installation of the project. For detailed installation tutorial, please refer to: [Source code installation](../../installation/sourcecode.md)
+在使用dbgpt命令之前，首先需要完成项目的安装。详细安装教程请参考：【源码安装】(../../installation/sourcecode.md)
 
 
-## Usage
-The command line provides a variety of capabilities, which we can view through the following commands.
-As shown in the figure, we can see the command list of `dbgpt`, including `install`, `knowledge`, `model`, `start`, `stop` and `trace`
-
+## 用法
+命令行提供了多种能力，我们可以通过以下命令查看。
+如图所示，我们可以看到`dbgpt`的命令列表，包括`install`、`knowledge`、`model`、`start`、`stop`和`trace`
 ```python
 ~ dbgpt --help
 Already connect 'dbgpt'
@@ -31,17 +30,15 @@ Commands:
   stop       Stop specific server.
   trace      Analyze and visualize trace spans.
 ```
+## 安装
+`install`命令提供各种依赖包和插件的安装和使用
 
-## Installation
-`install` command provides installation and use of various dependency packages and plugins
-
-:::info
-The agents is currently under reconstruction, and related functions will be available in the next version
+:::信息
+目前代理正在重构中，相关功能将在下一版本开放
 :::
 
-## Knowledge Command
-The `dbgpt knowledge` command mainly provides operations related to the knowledge base. The current main commands are `delete`, `list`, and `load`
-
+## 知识命令
+`dbgpt Knowledge`命令主要提供与知识库相关的操作。当前主要命令是“delete”、“list”和“load”
 ```python
 ~ dbgpt knowledge --help
 Already connect 'dbgpt'
@@ -60,10 +57,8 @@ Commands:
   list    List knowledge space
   load    Load your local documents to DB-GPT
 ```
-
-#### Load command
-`dbgpt knowledge load` refers to the loading of knowledge base documents. You can load knowledge base documents in batches through the load command.
-
+####加载命令
+`dbgpt Knowledge Load`是指知识库文档的加载。您可以通过load命令批量加载知识库文档。
 ```python
 ~ dbgpt knowledge load --help
 Already connect 'dbgpt'
@@ -91,15 +86,12 @@ Options:
   --chunk_overlap INTEGER   Overlap in characters between chunks.
   --help                    Show this message and exit.
 ```
-
-
-<p align="left">
+<p对齐=“左”>
   <img src={'/img/cli/kbqa.gif'} width="720px"/>
 </p>
 
-#### List command
-`dbgpt knowledge list` command mainly displays information related to the knowledge base. Such as displaying knowledge space, document content, Chunk content, etc.
-
+#### 列表命令
+`dbgpt Knowledge list`命令主要显示与知识库相关的信息。比如展示知识空间、文档内容、Chunk内容等。
 ```python
 ~ dbgpt knowledge list --help
 Already connect 'dbgpt'
@@ -119,9 +111,8 @@ Options:
                                   The output format
   --help                          Show this message and exit.
 ```
-#### Delete command
-The delete command supports the deletion of knowledge base and documents. You can view related command details through `dbgpt knowledge delete --help`
-
+#### 删除命令
+删除命令支持删除知识库和文档。可以通过`dbgptknowledgedelete--help`查看相关命令详细信息
 ```python
 ~ dbgpt knowledge delete --help
 Already connect 'dbgpt'
@@ -136,15 +127,13 @@ Options:
   -y                 Confirm your choice
   --help             Show this message and exit.
 ```
-
-<p align="left">
+<p对齐=“左”>
   <img src={'/img/cli/kd_new.gif'} width="720px"/>
 </p>
 
 
-## Model command
-Model related commands are mainly used when deploying multiple models. For model cluster deployment, you can view the [cluster deployment mode](../../installation/model_service/cluster.md).
-
+## 模型命令
+模型相关命令主要在部署多个模型时使用。对于模型集群部署，可以查看【集群部署模式】(../../installation/model_service/cluster.md)。
 ```python
 ~ dbgpt model --help
 Already connect 'dbgpt'
@@ -166,10 +155,8 @@ Commands:
   start    Start model instances
   stop     Stop model instances
 ```
-
-#### Chat command
-You can use the `dbgpt model chat` command to communicate with the model in the command line terminal
-
+#### 聊天命令
+您可以在命令行终端中使用“dbgpt model chat”命令与模型进行通信
 ```python
 ~ dbgpt model chat --help
 Already connect 'dbgpt'
@@ -182,9 +169,7 @@ Options:
   --system TEXT      System prompt
   --help             Show this message and exit.
 ```
-
-#### List Command
-
+#### 列表命令
 ```python
 ~ dbgpt model list --help
 Already connect 'dbgpt'
@@ -197,10 +182,8 @@ Options:
   --model_type TEXT  The type of model
   --help             Show this message and exit.
 ```
-
-#### Restart command
-The model can be restarted through the `dbgpt model restart` command
-
+#### 重启命令
+可以通过`dbgpt model restart`命令重新启动模型
 ```python
 ~ dbgpt model restart  --help
 Already connect 'dbgpt'
@@ -213,9 +196,8 @@ Options:
   --model_type TEXT  The type of model
   --help             Show this message and exit.
 ```
-
-#### Start command
-The model can be start through the `dbgpt model start` command
+#### 启动命令
+可以通过“dbgpt model start”命令启动模型
 ```python
 ~ dbgpt model start  --help
 Already connect 'dbgpt'
@@ -256,10 +238,8 @@ Options:
   --verbose                   Show verbose output.
   --help                      Show this message and exit.
 ```
-
-#### Stop command
-The `dbgpt model stop` command is mainly responsible for stopping the model.
-
+#### 停止命令
+`dbgpt model stop`命令主要负责停止模型。
 ```python
 ~ dbgpt model stop  --help
 Already connect 'dbgpt'
@@ -274,15 +254,12 @@ Options:
   --port INTEGER     The remote port to stop model  [required]
   --help             Show this message and exit.
 ```
-
-
-<p align="left">
+<p对齐=“左”>
   <img src={'/img/cli/cli_m.gif'} width="720px"/>
 </p>
 
-## Start/Stop Command
-The commands related to `dbgpt start` and `dbgpt stop` are a set of interfaces related to service registration discovery. There are `apiserver`, `controller`, `worker` and `webserver` respectively.
-
+## 启动/停止命令
+与 dbgpt start 和 dbgpt stop 相关的命令是一组与服务注册发现相关的接口。分别有“apiserver”、“controller”、“worker”和“webserver”。
 ```python
 ~ dbgpt start --help
 Already connect 'dbgpt'
@@ -299,10 +276,8 @@ Commands:
   webserver   Start webserver(dbgpt_server.py)
   worker      Start model worker
 ```
-
-#### Apiserver
-You can start the model's API service through `dbgpt start apiserver`. The default startup port is 8100.
-
+#### API 服务器
+您可以通过`dbgpt start apiserver`启动模型的API服务。默认启动端口为8100。
 ```python
 ~ dbgpt start apiserver --help
 Already connect 'dbgpt'
@@ -326,7 +301,7 @@ Options:
   --help                     Show this message and exit.
 
 ```
-`start apiserver`
+`启动 apiserver`
 ```python
 ~ dbgpt start apiserver
 
@@ -345,11 +320,8 @@ Options:
     INFO:     Application shutdown complete.
     INFO:     Finished server process [95201]
 ```
-
-
-####  Controller command
-The management and control service can be started through `dbgpt start controller`. The default startup port is 8000
-
+#### 控制器命令
+可以通过`dbgpt start controller`启动管控服务。默认启动端口为8000
 ```python
 ~ dbgpt start --help
 Already connect 'dbgpt'
@@ -372,10 +344,8 @@ INFO:     Waiting for application startup.
 INFO:     Application startup complete.
 INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
 ```
-
-#### Webserver command
-The front-end service can be started through `dbgpt start webserver`, the default port is 5670, and can be accessed through  `http://127.0.0.1:5670`
-
+#### 网络服务器命令
+前端服务可以通过`dbgpt start webserver`启动，默认端口为5670，可以通过`http://127.0.0.1:5670`访问
 ```python
 ~ dbgpt start webserver --help
 Already connect 'dbgpt'
@@ -410,17 +380,15 @@ Options:
                              upgrade database metadata
   --help                     Show this message and exit.
 ```
-
-
-<p align="left">
+<p对齐=“左”>
   <img src={'/img/cli/start_cli_new.gif'} width="720px"/>
 </p>
 
-#### worker command
+#### 工人命令
 
-`dbgpt start worker` is mainly used to start the working model. For detailed usage, [cluster deployment](../../installation/model_service/cluster.md)
+`dbgpt start worker`主要用于启动工作模型。详细使用方法参见【集群部署】(../../installation/model_service/cluster.md)
 
 
-## Debugging
+## 调试
 
-The dbgpt project provides a wealth of debug commands. For detailed usage, [debugging](./debugging.md)
+dbgpt 项目提供了丰富的调试命令。详细使用方法，[调试](./debugging.md)

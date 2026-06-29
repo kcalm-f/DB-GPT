@@ -1,33 +1,29 @@
-# Fine-Tuning use dbgpt_hub 
+# 使用 dbgpt_hub 进行微调 
 
-The DB-GPT-Hub project has released a pip package to lower the threshold for Text2SQL training. In addition to fine-tuning through the scripts provided in the warehouse, you can alse use the Python package we provide 
-for fine-tuning.
+DB-GPT-Hub项目发布了pip包，降低Text2SQL训练的门槛。除了通过仓库提供的脚本进行微调之外，还可以使用我们提供的Python包 
+用于微调。
 
-## Install
+＃＃ 安装
 ```
 pip install dbgpt_hub
 ```
-
-## Show Baseline
+## 显示基线
 ```python
 from dbgpt_hub.baseline import show_scores
 show_scores()
 ```
-<p align="left">
+<p对齐=“左”>
   <img src={'/img/ft/baseline.png'} width="720px" />
 </p>
 
-## Fine-tuning
-
+## 微调
 ```python
 from dbgpt_hub.data_process import preprocess_sft_data
 from dbgpt_hub.train import train_sft
 from dbgpt_hub.predict import start_predict
 from dbgpt_hub.eval import start_evaluate
 ```
-
-
-Preprocessing data into fine-tuned data format.
+将数据预处理为微调的数据格式。
 ```
 data_folder = "dbgpt_hub/data"
 data_info = [
@@ -48,8 +44,7 @@ preprocess_sft_data(
       data_info = data_info
 )
 ```
-
-Fine-tune the basic model and generate model weights
+微调基础模型并生成模型权重
 ```
 train_args = {
             "model_name_or_path": "codellama/CodeLlama-13b-Instruct-hf",
@@ -79,8 +74,7 @@ train_args = {
 start_sft(train_args)
 
 ```
-
-Predictive model output results
+预测模型输出结果
 ```
 predict_args = {
             "model_name_or_path": "codellama/CodeLlama-13b-Instruct-hf",
@@ -94,9 +88,7 @@ predict_args = {
 start_predict(predict_args)
 
 ```
-
-Evaluate the accuracy of the output results on the test datasets
-
+评估测试数据集上输出结果的准确性
 ```
 evaluate_args =  {
             "input": "./dbgpt_hub/output/pred/pred_sql_dev_skeleton.sql",

@@ -2,32 +2,28 @@
 sidebar_position: 2
 title: dbgpts Ecosystem
 ---
+# dbgpts 生态系统
 
-# dbgpts Ecosystem
+**[dbgpts](https://github.com/eosphoros-ai/dbgpts)** 是 DB-GPT 可重用组件的官方社区存储库 — 包括应用程序、AWEL 运算符、工作流模板和代理。
 
-**[dbgpts](https://github.com/eosphoros-ai/dbgpts)** is the official community repository of reusable components for DB-GPT — including apps, AWEL operators, workflow templates, and agents.
+## dbgpts 中有什么？
 
-## What's in dbgpts?
-
-| Component Type | Description | Example |
+|组件类型 |描述 |示例|
 |---|---|---|
-| **Apps** | Complete applications ready to install | Data analysis app, report generator |
-| **Operators** | AWEL operators for use in workflows | Text splitter, HTTP request, LLM call |
-| **Workflow Templates** | Pre-built AWEL workflow DAGs | RAG pipeline, multi-agent chat |
-| **Agents** | Pre-configured agent definitions | SQL analyst, code reviewer |
+| **应用程序** |准备安装的完整应用程序 |数据分析应用程序、报告生成器 |
+| **运营商** |在工作流程中使用的 AWEL 运算符 |文本分割器、HTTP 请求、LLM 调用 |
+| **工作流程模板** |预构建的 AWEL 工作流程 DAG | RAG管道，多代理聊天|
+| **代理** |预配置代理定义 | SQL 分析师、代码审查员 |
 
-## Installation
+## 安装
 
-The `dbgpts` CLI is included when you install DB-GPT with the `dbgpts` extra:
-
+当您使用“dbgpts”额外安装 DB-GPT 时，会包含“dbgpts”CLI：
 ```bash
 uv sync --all-packages --extra "dbgpts" ...
 ```
+## CLI 命令
 
-## CLI commands
-
-### Browse available packages
-
+### 浏览可用的包
 ```bash
 # List all remote packages
 dbgpts list-remote
@@ -35,38 +31,30 @@ dbgpts list-remote
 # List installed packages
 dbgpts list
 ```
-
-### Install a package
-
+### 安装一个包
 ```bash
 dbgpts install <package-name>
 ```
-
-### Update a package
-
+### 更新包
 ```bash
 dbgpts update <package-name>
 ```
-
-### Uninstall a package
-
+### 卸载包
 ```bash
 dbgpts uninstall <package-name>
 ```
+## 在 Web UI 中使用
 
-## Using in the Web UI
+安装后，dbgpts 组件将自动在 Web UI 中可用：
 
-Once installed, dbgpts components are automatically available in the Web UI:
+- **应用程序**出现在App Store中
+- **操作员**出现在 AWEL Flow 编辑器的操作员选项板中
+- **工作流程模板**可以导入到流程编辑器中
+- 创建多代理应用程序时可以选择**代理**
 
-- **Apps** appear in the App Store
-- **Operators** appear in the AWEL Flow editor's operator palette
-- **Workflow templates** can be imported into the Flow editor
-- **Agents** can be selected when creating multi-agent apps
+## 存储库结构
 
-## Repository structure
-
-The dbgpts repository is organized by component type:
-
+dbgpts 存储库按组件类型组织：
 ```
 dbgpts/
 ├── apps/           # Complete applications
@@ -74,23 +62,22 @@ dbgpts/
 ├── workflow/       # Workflow templates
 └── agents/         # Agent definitions
 ```
+## 创建您自己的 dbgpts 包
 
-## Creating your own dbgpts package
+您可以向生态系统贡献自己的组件：
 
-You can contribute your own components to the ecosystem:
+1.遵循[dbgpts存储库](https://github.com/eosphoros-ai/dbgpts)中的包结构
+2. 包含带有元数据的“manifest.json”
+3. 提交拉取请求
 
-1. Follow the package structure in the [dbgpts repository](https://github.com/eosphoros-ai/dbgpts)
-2. Include a `manifest.json` with metadata
-3. Submit a pull request
-
-:::info
-For detailed development instructions, see the [dbgpts Introduction](/docs/dbgpts/introduction).
+:::信息
+详细的开发说明请参见[dbgpts简介](/docs/dbgpts/introduction)。
 :::
 
-## Next steps
+## 后续步骤
 
-| Topic | Link |
+|主题 |链接 |
 |---|---|
-| Build AWEL workflows | [AWEL Flow](/docs/getting-started/tools/awel-flow) |
-| MCP tools integration | [MCP Protocol](/docs/getting-started/tools/mcp) |
-| dbgpts development | [dbgpts Introduction](/docs/dbgpts/introduction) |
+|构建 AWEL 工作流程 | [AWEL Flow](/docs/getting-started/tools/awel-flow) |
+| MCP 工具集成 | [MCP 协议](/docs/getting-started/tools/mcp) |
+| dbgpts 开发 | [dbgpts 简介](/docs/dbgpts/introduction) |

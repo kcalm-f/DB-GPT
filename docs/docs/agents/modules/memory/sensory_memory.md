@@ -1,18 +1,17 @@
-# Sensory Memory
+# 感觉记忆
 
-Like human sensory memory, the sensory memory is registers perceptual inputs, and it 
-will receive the observations from the environment, some of sensory memory will be 
-transferred to short-term memory.
+就像人类的感觉记忆一样，感觉记忆是记录感知输入的，它 
+会接收来自环境的观察结果，一些感觉记忆会被 
+转移到短期记忆。
 
-:::tip NOTE
-You should not use the `SensoryMemory` directly in most cases, it is designed to receive
-the observations from the environment, only a part of sensory memory will be transferred to short-term memory.
+:::提示注意
+在大多数情况下，您不应该直接使用“SensoryMemory”，它旨在接收
+来自环境的观察，只有一部分感觉记忆会转移到短期记忆。
 :::
 
-## Simple Example of Sensory Memory
+## 感觉记忆的简单例子
 
-First, you need to create an instance of `SensoryMemory` and then you can use it to store the observations.
-
+首先，您需要创建一个“SensoryMemory”实例，然后可以使用它来存储观察结果。
 ```python
 from dbgpt.agent import AgentMemory, SensoryMemory
 
@@ -20,9 +19,7 @@ from dbgpt.agent import AgentMemory, SensoryMemory
 memory = SensoryMemory(buffer_size=2)
 agent_memory: AgentMemory = AgentMemory(memory=memory)
 ```
-
-Then, let's create some user messages for testing.
-
+然后，让我们创建一些用户消息进行测试。
 ```python
 import os
 from dbgpt.agent import AgentContext
@@ -48,9 +45,7 @@ messages = [
     "When I was 18 years old, I went to college for the first time, please tell me a joke",
 ]
 ```
-
-### Verifying Remember
-
+### 验证记住
 ```python
 import asyncio
 from dbgpt.agent import (
@@ -88,9 +83,7 @@ if __name__ == "__main__":
     asyncio.run(verify_remember())
 
 ```
-
-The output will like this:
-
+输出将是这样的：
 ```
 --------------------------------------------------------------------------------
 User (to Joy)-[]:
@@ -166,13 +159,11 @@ Pass(None)
 execution succeeded,
 Based on your previous statements, you went to primary school for the first time when you were 4 years old.
 ```
+在上面的例子中，代理记住了之前的对话并可以回答 
+根据之前的对话提出的问题，是因为`buffer_size=2`中 
+“SensoryMemory”和代理可以记住前两次对话。
 
-In the above example, the agent remembers the previous conversation and can answer the 
-question based on the previous conversation, it is because the `buffer_size=2` in the 
-`SensoryMemory` and the agent can remember the previous two conversations.
-
-### Verifying Forget
-
+### 验证忘记
 ```python
 async def verify_forget():
     joy = (
@@ -200,9 +191,7 @@ async def verify_forget():
 if __name__ == "__main__":
     asyncio.run(verify_forget())
 ```
-
-The output will like this:
-
+输出将是这样的：
 ```
 --------------------------------------------------------------------------------
 User (to Joy)-[]:
@@ -342,10 +331,8 @@ Why did the math book look so sad on its first day of primary school?
 
 Because it had too many problems! 📚😄
 ```
-
-In the above example, the agent forgets the previous conversation and can't answer the 
-question based on the previous conversation, it is because the `buffer_size=2` in this memory,
-**it will discard all the existing memories when the buffer is full**, this is a special 
-feature of the `SensoryMemory` that not like the common buffered memory(FIFO, keep the 
-latest buffer_size memories).
-
+在上面的例子中，代理忘记了之前的对话并且无法回答 
+根据之前对话的问题，是因为这个内存中的`buffer_size=2`，
+**当缓冲区满时它会丢弃所有现有的内存**，这是一个特殊的 
+“SensoryMemory”的特点是不像普通的缓冲存储器（先进先出，保留 
+最新的 buffer_size 内存）。

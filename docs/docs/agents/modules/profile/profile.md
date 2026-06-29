@@ -1,21 +1,20 @@
-# Profiling Module
+# 分析模块
 
-> Agents typically perform tasks by assuming specific roles, such as coders, teachers and domain experts.
-The profiling module aims to indicate the profiles of the agent roles, which are usually 
-written into the prompt to influence the LLM behaviors. Agent profiles typically encompass 
-basic information such as age, gender, and career, as well as psychology information, 
-reflecting the personalities of the agent, and social information, detailing the relationships between agents.
+> 代理通常通过承担特定角色来执行任务，例如编码员、教师和领域专家。
+概要分析模块旨在指示代理角色的概要信息，通常是 
+写入提示以影响LLM的行为。代理资料通常包括 
+年龄、性别、职业等基本信息，以及心理信息， 
+反映代理人的个性和社会信息，详细说明代理人之间的关系。
 >
-> The choice of information to profile the agent is largely determined by the specific application scenarios. 
-For instance, if the application aims to study human cognitive process, then the psychology information becomes pivotal.
+> 用于描述代理的信息的选择很大程度上取决于具体的应用场景。 
+例如，如果应用程序旨在研究人类认知过程，那么心理学信息就变得至关重要。
 
 
-## Profiles In DB-GPT Agents
+## DB-GPT 代理中的配置文件
 
-Profiles are essential for agents in DB-GPT, as they are used to influence the agent's behaviors.
+配置文件对于 DB-GPT 中的代理至关重要，因为它们用于影响代理的行为。
 
-You have already seen a basic example of a profile in the [Write Your Custom Agent](../../introduction/custom_agents.md) section.
-
+您已经在[编写您的自定义代理](../../introduction/custom_agents.md) 部分中看到了配置文件的基本示例。
 ```python
 from dbgpt.agent import ConversableAgent, ProfileConfig
 
@@ -40,13 +39,11 @@ class MySummarizerAgent(ConversableAgent):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 ```
+在上面的示例中，“ProfileConfig”类用于定义代理的配置文件。
+这是定义代理配置文件的简单方法，您只需提供代理的名称、角色、目标和描述。
 
-In the above example, the `ProfileConfig` class is used to define the profile of the agent.
-It is a simple way to define the agent's profile, you just need to provide the name, role, goal, and description of the agent.
-
-Let's see the final prompt generated from a profile.
-First, let's create a profile configuration separately.
-
+让我们看看从配置文件生成的最终提示。
+首先，我们单独创建一个配置文件配置。
 ```python
 from dbgpt.agent import ProfileConfig
 
@@ -77,8 +74,7 @@ print(f"System Prompt: \n{system_prompt}")
 print("#" * 50)
 print(f"User Prompt: \n{user_prompt}")
 ```
-Running the above code will generate the following prompts:
-
+运行上面的代码会产生如下提示：
 ```
 System Prompt: 
 You are a Summarizer, named Aristotle, your goal is Summarize answer summaries based on user questions from provided resource information or from historical conversation memories..
@@ -96,13 +92,13 @@ User Prompt:
 
 Question: What can you do?
 ```
-As you can see, the profile is used to generate the system and user prompts, they will 
-be passed to the LLM to generate the response.
+如您所见，配置文件用于生成系统和用户提示，它们将 
+传递给 LLM 以生成响应。
 
-So, you can easily see the real prompt generated from the profile, this is very useful 
-in debugging and understanding the agent's behavior, we don't hide too much details from you.
+因此，您可以轻松地看到从配置文件生成的真实提示，这非常有用 
+在调试和理解代理的行为时，我们不会向您隐藏太多细节。
 
 
-## What Next?
-- How many ways can you create a profile for an agent? [Learn more](./profile_creation.md)
-- How is profile converted to LLM prompt? [Learn more](./profile_to_prompt.md)
+## 接下来做什么？
+- 您可以通过多少种方式为代理创建个人资料？ [了解更多](./profile_creation.md)
+- 个人资料如何转换为LLM提示？ [了解更多](./profile_to_prompt.md)

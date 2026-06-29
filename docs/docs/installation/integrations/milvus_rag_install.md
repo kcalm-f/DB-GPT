@@ -1,13 +1,12 @@
 # Milvus RAG
 
 
-In this example, we will show how to use the Milvus as in DB-GPT RAG Storage. Using a graph database to implement RAG can, to some extent, alleviate the uncertainty and interpretability issues brought about by vector database retrieval.
+在本示例中，我们将展示如何在 DB-GPT RAG 存储中使用 Milvus。使用图数据库实现RAG可以在一定程度上缓解矢量数据库检索带来的不确定性和可解释性问题。
 
 
-### Install Dependencies
+### 安装依赖项
 
-First, you need to install the `dbgpt milvus storage` library.
-
+首先，您需要安装`dbgpt milvus storage`库。
 ```bash
 uv sync --all-packages \
 --extra "base" \
@@ -16,16 +15,14 @@ uv sync --all-packages \
 --extra "storage_milvus" \
 --extra "dbgpts"
 ````
+### 准备 Milvus
 
-### Prepare Milvus
-
-Prepare Milvus database service, reference-[Milvus Installation](https://milvus.io/docs/install_standalone-docker-compose.md) .
+准备 Milvus 数据库服务，参考-[Milvus 安装](https://milvus.io/docs/install_standalone-docker-compose.md) 。
 
 
-### TuGraph Configuration
+### 图图配置
 
-Set rag storage variables below in `configs/dbgpt-proxy-openai.toml` file, let DB-GPT know how to connect to Milvus.
-
+在`configs/dbgpt-proxy-openai.toml`文件中设置下面的rag存储变量，让DB-GPT知道如何连接到Milvus。
 ```
 [rag.storage]
 [rag.storage.vector]
@@ -35,13 +32,11 @@ port = "19530"
 #username="dbgpt"
 #password=19530
 ```
-
-Then run the following command to start the webserver:
+然后运行以下命令来启动网络服务器：
 ```bash
 uv run python packages/dbgpt-app/src/dbgpt_app/dbgpt_server.py --config configs/dbgpt-proxy-openai.toml
 ```
-
-Optionally, you can also use the following command to start the webserver:
+或者，您还可以使用以下命令来启动网络服务器：
 ```bash
 uv run python packages/dbgpt-app/src/dbgpt_app/dbgpt_server.py --config configs/dbgpt-proxy-openai.toml
 ```

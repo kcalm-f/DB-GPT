@@ -330,6 +330,38 @@ msgstr "从数据源执行上下文。"
 msgid "Datasource Dashboard Operator"
 msgstr "数据源仪表板算子"
 
+#: ../packages/dbgpt-app/src/dbgpt_app/operators/report.py:191
+msgid "String Join Operator"
+msgstr "字符串合并算子"
+
+#: ../packages/dbgpt-app/src/dbgpt_app/operators/report.py:193
+msgid "Merge multiple inputs into a single string."
+msgstr "将多个输入合并为一个字符串。"
+
+#: ../packages/dbgpt-app/src/dbgpt_app/operators/report.py:196
+msgid "Separator"
+msgstr "分隔符"
+
+#: ../packages/dbgpt-app/src/dbgpt_app/operators/report.py:201
+msgid "The separator to join the strings."
+msgstr "用于合并字符串的分隔符。"
+
+#: ../packages/dbgpt-app/src/dbgpt_app/operators/report.py:206
+msgid "Input Strings"
+msgstr "输入字符串"
+
+#: ../packages/dbgpt-app/src/dbgpt_app/operators/report.py:209
+msgid "The input strings to join."
+msgstr "要合并的输入字符串。"
+
+#: ../packages/dbgpt-app/src/dbgpt_app/operators/report.py:215
+msgid "Joined String"
+msgstr "合并后的字符串"
+
+#: ../packages/dbgpt-app/src/dbgpt_app/operators/report.py:218
+msgid "The joined string."
+msgstr "合并后的字符串。"
+
 #: ../packages/dbgpt-app/src/dbgpt_app/operators/code.py:60
 msgid "Code Map Operator"
 msgstr "代码映射算子"
@@ -554,3 +586,24 @@ msgid ""
 "High-level streaming LLM operator, supports multi-round conversation "
 "(conversation window, token length and no multi-round)."
 msgstr "高级流式大语言模型算子，支持多轮对话（对话窗口、Token 长度和无多轮）。"
+
+#: ../packages/dbgpt-app/src/dbgpt_app/operators/report.py:79
+#: ../packages/dbgpt-app/src/dbgpt_app/operators/report.py:81
+msgid "Report Analyst"
+msgstr "报告分析算子"
+
+#: ../packages/dbgpt-app/src/dbgpt_app/operators/report.py:130
+msgid "Report Analyst Result"
+msgstr "报告分析结果"
+
+#: ../packages/dbgpt-app/src/dbgpt_app/operators/report.py:134
+msgid "The report analyst result."
+msgstr "报告分析结果。"
+
+#: ../packages/dbgpt-app/src/dbgpt_app/operators/datasource.py:406
+msgid "Datasource Structed Operator"
+msgstr "数据源结构化算子"
+
+#: ../packages/dbgpt-app/src/dbgpt_app/operators/datasource.py:409
+msgid "Execute the context from the datasource and output structed data."
+msgstr "执行数据源上下文并输出结构化数据。"

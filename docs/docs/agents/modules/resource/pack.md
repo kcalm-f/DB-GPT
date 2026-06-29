@@ -1,7 +1,7 @@
-# Resource Pack
+# 资源包
 
-The resource pack is a collection of resources that can be used by agents. It usually 
-contains some tools, databases, knowledge bases, etc.
+资源包是代理可以使用的资源的集合。通常它 
+包含一些工具、数据库、知识库等。
 
-In previous sections [Tools Overview](../../introduction/tools),
-we have introduced how to wrap optional tools into `ToolPack`, so you can refer to it for more details.
+在前面的章节[工具概述](../../introduction/tools)中，
+我们已经介绍了如何将可选工具包装到`ToolPack`中，因此您可以参考它以了解更多详细信息。

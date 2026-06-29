@@ -1,16 +1,15 @@
-# API Interface Usage
+# API接口使用
 
-The DB-GPT project currently also provides various APIs for use. Currently APIs are mainly divided into two categories. 1. Model API 2. Application service layer AP
+DB-GPT项目目前也提供了各种API可供使用。目前API主要分为两类。 1.模型API 2.应用服务层AP
 
-Model API mainly means that DB-GPT adapts to various models and is uniformly packaged into models compatible with OpenAI SDK output. The service layer API refers to the API exposed by the DB-GPT service layer. The following is a brief introduction to the use of both.
+模型API主要是指DB-GPT适配各种模型，统一封装成兼容OpenAI SDK输出的模型。服务层API是指DB-GPT服务层暴露的API。下面简单介绍一下两者的使用。
 
-## Model API
+## 模型 API
 
-In the DB-GPT project, we defined a service-oriented multi-model management framework (SMMF). Through the capabilities of SMMF, we can deploy multiple models, and these models provide external services through services. In order to allow clients to achieve seamless switching, we uniformly support the OpenAI SDK standards.
-- Detail usage tutorial: [OpenAI SDK calls local multi-model ](../../installation/advanced_usage/OpenAI_SDK_call.md)
+在DB-GPT项目中，我们定义了一个面向服务的多模型管理框架（SMMF）。通过SMMF的能力，我们可以部署多个模型，这些模型通过服务对外提供服务。为了让客户实现无缝切换，我们统一支持OpenAI SDK标准。
+- 详细使用教程：【OpenAI SDK调用本地多模型】(../../installation/advanced_usage/OpenAI_SDK_call.md)
 
-**Example:** The following is an example of calling through openai sdk
-
+**示例：** 下面是通过openai sdk调用的示例
 ```python
 import openai
 model = "Qwen/QwQ-32B"
@@ -26,47 +25,42 @@ completion = client.chat.completions.create(
 # print the completion
 print(completion.choices[0].message.content)
 ```
+## 应用服务层API
+服务层API是指启动webserver后暴露在5670端口的API，主要针对应用层。按类别可以分为以下几个部分
 
-
-## Application service layer API
-The service layer API refers to the API exposed on port 5670 after starting the webserver, which is mainly focused on the application layer. It can be divided into the following parts according to categories
-
-- Chat API
-- Editor API
-- LLM Manage API
-- Agent API
+- 聊天API
+- 编辑器API
+- LLM管理API
+- 代理API
 - AWEL API
-- Model API
+- 模型API
 
-:::info
-Note: After starting the webserver, open http://127.0.0.1:5670/docs to view details
+:::信息
+注意：启动Web服务器后，打开http://127.0.0.1:5670/docs查看详细信息
 
-Regarding the service layer API, in terms of strategy in the early days, we maintained the principle of minimum availability and openness. APIs that are stably exposed to the outside world will carry version information, such as
+关于服务层API，在早期的策略上，我们保持了最低可用性和开放性的原则。稳定对外暴露的API都会携带版本信息，例如
 - /api/v1/
 - /api/v2/
 
-Due to the rapid development of the entire field, different versions of the API will not be considered fully compatible in terms of compatibility. In subsequent new versions of the API, we will provide instructions in the documentation for incompatible APIs.
+由于整个领域的快速发展，不同版本的API在兼容性方面不会被认为完全兼容。在后续新版本的API中，我们将在文档中针对不兼容的API提供说明。
 :::
 
-## API Description 
-
+## API说明
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 <Tabs
-  defaultValue="chatapi"
-  values={[
-    {label: 'Chat API', value: 'chatapi'},
-    {label: 'Editor API', value: 'editorapi'},
-    {label: 'Model API', value: 'modelapi'},
-    {label: 'LLM Manage API', value: 'llmanageapi'},
-    {label: 'Agent API', value: 'agentapi'},
-    {label: 'AWEL API', value: 'awelapi'},
+默认值=“chatapi”
+  值={[
+    {标签：'聊天API'，值：'chatapi'}，
+    {标签：'编辑器API'，值：'editorapi'}，
+    {标签：'模型API'，值：'modelapi'}，
+    {标签：'LLM管理API'，值：'llmanageapi'}，
+    {标签：'代理API'，值：'agentapi'}，
+    {标签：'AWEL API'，值：'awelapi'}，
   ]}>
   <TabItem value="chatapi">    
-
-  Chat API Lists
-
+聊天 API 列表
   ```python
     api/v1/chat/db/list
     api/v1/chat/db/add
@@ -87,9 +81,7 @@ import TabItem from '@theme/TabItem';
   ```
   </TabItem>
   <TabItem value="editorapi">   
-
-  Editor API Lists
-  
+编辑器 API 列表
   ```python
     api/v1/editor/db/tables
     api/v1/editor/sql/rounds
@@ -103,18 +95,14 @@ import TabItem from '@theme/TabItem';
   ```
   </TabItem>
   <TabItem value="modelapi">   
-    
-  Model API Lists
-
+模型 API 列表
   ```python
     api/v1/model/types
     api/v1/model/supports
   ```
   </TabItem>
   <TabItem value="llmanageapi">   
-    
-  LLM Manage API Lists
-
+LLM 管理 API 列表
   ```python
     api/v1/worker/model/params
     api/v1/worker/model/list
@@ -133,9 +121,7 @@ import TabItem from '@theme/TabItem';
   ```
   </TabItem>
   <TabItem value="agentapi">   
-    
-  Agent API Lists
-
+代理 API 列表
   ```python
     api/v1/agent/hub/update
     api/v1/agent/query
@@ -146,9 +132,7 @@ import TabItem from '@theme/TabItem';
   ```
   </TabItem>
   <TabItem value="awelapi">   
-    
-  AWEL API Lists
-
+AWEL API 列表
   ```python
     api/v1/awel/trigger/examples/simple_rag
     api/v1/awel/trigger/examples/simple_chat
@@ -157,14 +141,12 @@ import TabItem from '@theme/TabItem';
 
   </TabItem>
 </Tabs>
+:::信息说明
 
-:::info note
+⚠️知识与提示API
 
-⚠️  Knowledge and Prompt API
-
-Currently, due to frequent changes in Knowledge and Prompt, the relevant APIs are still in the testing stage and will be gradually opened later
+目前，由于知识和提示变更频繁，相关API尚处于测试阶段，后续将逐步开放
 
 :::
 
-More detailed interface parameters can be viewed at `http://127.0.0.1:5670/docs`
-
+更详细的接口参数可以查看`http://127.0.0.1:5670/docs`

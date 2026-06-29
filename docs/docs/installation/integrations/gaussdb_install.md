@@ -1,12 +1,11 @@
-# GaussDB
+# 高斯数据库
 
-GaussDB is an enterprise-grade relational database supported by DB-GPT through the
-native connector in `dbgpt_ext.datasource.rdbms.conn_gaussdb`.
+GaussDB是DB-GPT通过以下方式支持的企业级关系数据库
+`dbgpt_ext.datasource.rdbms.conn_gaussdb` 中的本机连接器。
 
-### Install Dependencies
+### 安装依赖项
 
-GaussDB uses the PostgreSQL-compatible driver path.
-
+GaussDB使用PostgreSQL兼容的驱动路径。
 ```bash
 uv sync --all-packages \
 --extra "base" \
@@ -15,27 +14,24 @@ uv sync --all-packages \
 --extra "storage_chromadb" \
 --extra "dbgpts"
 ```
+### 准备GaussDB
 
-### Prepare GaussDB
-
-Prepare a GaussDB instance and start the DB-GPT webserver:
-
+准备一个 GaussDB 实例并启动 DB-GPT Web 服务器：
 ```bash
 uv run dbgpt start webserver --config configs/dbgpt-proxy-openai.toml
 ```
+### GaussDB配置
 
-### GaussDB Configuration
+使用数据源 UI 或配置字段：
 
-Use the datasource UI or configuration fields for:
+- 主机
+- 端口
+- 用户
+- 密码
+- 数据库
+- 模式
+- 驱动程序（`postgresql+psycopg2`）
 
-- host
-- port
-- user
-- password
-- database
-- schema
-- driver (`postgresql+psycopg2`)
-
-The GaussDB connector is implemented in:
+GaussDB 连接器的实现方式为：
 
 - `packages/dbgpt-ext/src/dbgpt_ext/datasource/rdbms/conn_gaussdb.py`

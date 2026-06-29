@@ -1,13 +1,12 @@
 # OceanBase
 
-OceanBase is a distributed SQL database supported by DB-GPT through the native
-connector in `dbgpt_ext.datasource.rdbms.conn_oceanbase`.
+OceanBase是一个通过原生DB-GPT支持的分布式SQL数据库
+`dbgpt_ext.datasource.rdbms.conn_oceanbase` 中的连接器。
 
-### Install Dependencies
+### 安装依赖项
 
-OceanBase support is built on the OceanBase-compatible MySQL driver path already
-used by the connector.
-
+OceanBase 支持已经建立在兼容 OceanBase 的 MySQL 驱动程序路径上
+由连接器使用。
 ```bash
 uv sync --all-packages \
 --extra "base" \
@@ -15,26 +14,23 @@ uv sync --all-packages \
 --extra "storage_chromadb" \
 --extra "dbgpts"
 ```
+### 准备OceanBase
 
-### Prepare OceanBase
-
-Prepare an OceanBase instance and start the DB-GPT webserver:
-
+准备一个OceanBase实例并启动DB-GPT Web服务器：
 ```bash
 uv run dbgpt start webserver --config configs/dbgpt-proxy-openai.toml
 ```
+### OceanBase配置
 
-### OceanBase Configuration
+使用数据源 UI 或配置字段：
 
-Use the datasource UI or configuration fields for:
+- 主机
+- 端口
+- 用户
+- 密码
+- 数据库
+- 驱动程序（`mysql+ob`）
 
-- host
-- port
-- user
-- password
-- database
-- driver (`mysql+ob`)
-
-The OceanBase connector is implemented in:
+OceanBase连接器的实现是：
 
 - `packages/dbgpt-ext/src/dbgpt_ext/datasource/rdbms/conn_oceanbase.py`

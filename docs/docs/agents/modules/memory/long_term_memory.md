@@ -1,25 +1,25 @@
-# Long-term Memory
+# 长期记忆
 
-> The short-term memory contains the context information about the agent current situations, 
-> while the long-term memory stores the agent past behaviors and thoughts, which can be 
-> retrieved according to the current events.
+> 短期记忆包含有关代理当前情况的上下文信息， 
+> 而长期记忆则存储了智能体过去的行为和想法，这可以 
+> 根据当前事件检索。
 
-> Long-term memory resembles the external vector storage that agents can rapidly query and retrieve from as needed.
+> 长期记忆类似于外部向量存储，代理可以根据需要快速查询和检索。
 
-In DB-GPT, the long-term memory stored in the vector storage by default.
+在DB-GPT中，长期记忆默认存储在向量存储中。
 
 
-## Using Long-term Memory
 
-To use long-term memory, you need to provide a vector store.
+## 使用长期记忆
 
-### Prepare Embedding Model
+要使用长期记忆，您需要提供向量存储。
 
-First, you need to prepare an embedding model, which is used to convert the text into vectors.
-You can prepare the embedding model according [Prepare Embedding Model](./short_term_memory#prepare-embedding-model).
+### 准备嵌入模型
 
-Here we use the OpenAI Embedding API as an example:
+首先，您需要准备一个嵌入模型，用于将文本转换为向量。
+您可以根据[准备嵌入模型](./short_term_memory#prepare-embedding-model)准备嵌入模型。
 
+这里我们以 OpenAI Embedding API 为例：
 ```python
 import os
 from dbgpt.rag.embedding import DefaultEmbeddingFactory
@@ -28,13 +28,11 @@ api_url = os.getenv("OPENAI_API_BASE", "https://api.openai.com/v1") + "/embeddin
 api_key = os.getenv("OPENAI_API_KEY")
 embeddings = DefaultEmbeddingFactory.openai(api_url=api_url, api_key=api_key)
 ```
+### 准备向量存储
 
-### Prepare Vector Store
+然后你需要准备一个向量存储，这里我们以 `ChromaStore` 为例，
 
-Then you need to prepare a vector store, here we use the `ChromaStore` as an example,
-
-Install the `chroma` package with the following command:
-
+使用以下命令安装“chroma”包：
 ```bash
 pip install chromadb
 ```
@@ -54,9 +52,7 @@ vector_store = ChromaStore(
     embedding_fn=embeddings,
 )
 ```
-
-### Using Long-term Memory
-
+### 使用长期记忆
 ```python
 from concurrent.futures import ThreadPoolExecutor
 from dbgpt.agent import AgentMemory, LongTermMemory
@@ -67,6 +63,5 @@ memory = LongTermMemory(
 )
 agent_memory: AgentMemory = AgentMemory(memory=memory)
 ```
-
-In above code, `_default_importance` means the default importance of one memory fragment,
-because we use `LongTermMemory` directly, so we need to set the default importance.
+在上面的代码中，`_default_importance`表示一个内存片段的默认重要性，
+因为我们直接使用`LongTermMemory`，所以我们需要设置默认重要性。

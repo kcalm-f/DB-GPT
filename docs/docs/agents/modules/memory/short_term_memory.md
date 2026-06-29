@@ -1,15 +1,14 @@
-# Short-term Memory
+# 短期记忆
 
-Short-term memory temporarily buffers recent perceptions, it will receive  some of the 
-sensory memory, and it can be **enhanced** by other observations or retrieved memories to 
-enter the long-term memory.
+短期记忆暂时缓冲最近的感知，它会接收一些 
+感觉记忆，并且可以通过其他观察或检索记忆来**增强** 
+进入长期记忆。
 
-In most cases, short-term memory is analogous to the input information within the context
-window constrained by the LLM.
-So you can think of short-term memory will be written into the prompt of the LLM in most cases.
+在大多数情况下，短期记忆类似于上下文中的输入信息
+受LLM限制的窗口。
+所以你可以认为短期记忆在大多数情况下都会被写入LLM的提示中。
 
-## Using Short-term Memory
-
+## 使用短期记忆
 ```python
 from dbgpt.agent import AgentMemory, ShortTermMemory
 
@@ -17,37 +16,34 @@ from dbgpt.agent import AgentMemory, ShortTermMemory
 memory = ShortTermMemory(buffer_size=2)
 agent_memory: AgentMemory = AgentMemory(memory=memory)
 ```
+与感觉记忆一样，短期记忆也有缓冲区大小，当缓冲区满时，
+它将保留最新的 buffer_size 内存，并且一些丢弃的内存将 
+被转移到长期记忆中。
 
-Like sensory memory, short-term memory is also has a buffer size, when the buffer is full,
-it will keep the latest buffer_size memories, and some of the discarded memories will 
-be transferred to long-term memory.
+默认的短期内存是`FIFO`缓冲内存，这里我们不做太多介绍。
 
-The default short-term memory is a `FIFO` buffered memory, we won't introduce too much here.
+## 增强短期记忆
 
-## Enhanced Short-term Memory
+与人类短期记忆一样，DB-GPT 制剂的短期记忆可以通过外部观察来增强。
+这里我们介绍一种增强型短期记忆，称为“EnhancedShortTermMemory”， 
+它通过比较新观察和现有记忆之间的相似性来增强记忆。
 
-Like human short-term memory, the short-term memory in DB-GPT agents can be enhanced by outside observations.
-Here we introduce a kind of enhanced short-term memory, which is called `EnhancedShortTermMemory`, 
-it enhances memories by comparing the similarity between the new observation and the existing memories.
+要使用“EnhancedShortTermMemory”，您需要提供一个嵌入模型。
 
-To use `EnhancedShortTermMemory`, you need to provide a embeddings model.
+### 准备嵌入模型
 
-### Prepare Embedding Model
-
-DB-GPT supports 
-a lot of embedding models, here are some of them:
-
+DB-GPT 支持 
+有很多嵌入模型，以下是其中一些：
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 <Tabs
-  defaultValue="openai"
-  values={[
-    {label: 'Open AI(API)', value: 'openai'},
-    {label: 'text2vec(local)', value: 'text2vec'},
-    {label: 'Embedding API Server(cluster)', value: 'remote_embedding'},
+默认值=“openai”
+  值={[
+    {label: '开放AI(API)', value: 'openai'},
+    {标签：'text2vec（本地）'，值：'text2vec'}，
+    {label: 'Embedding API Server(集群)', value: 'remote_embedding'},
   ]}>
-
   <TabItem value="openai">
 
 ```python
@@ -70,11 +66,9 @@ embeddings = DefaultEmbeddingFactory.default("/data/models/text2vec-large-chines
 </TabItem>
 
 <TabItem value="remote_embedding">
-
-If you have deployed [DB-GPT cluster](../../../installation/model_service/cluster) and 
-[API server](../../../installation/advanced_usage/OpenAI_SDK_call)
-, you can connect to the API server to get the embeddings.
-
+如果您已部署[DB-GPT集群](../../../installation/model_service/cluster)并且 
+[API服务器](../../../installation/advanced_usage/OpenAI_SDK_call)
+，您可以连接到 API 服务器来获取嵌入。
 ```python
 from dbgpt.rag.embedding import DefaultEmbeddingFactory
 
@@ -87,9 +81,7 @@ embeddings = DefaultEmbeddingFactory.remote(
 
 </TabItem>
 </Tabs>
-
-### Using Enhanced Short-term Memory
-
+### 使用增强型短期记忆
 ```python
 from concurrent.futures import ThreadPoolExecutor
 from dbgpt.agent import AgentMemory, EnhancedShortTermMemory
@@ -104,14 +96,13 @@ memory = EnhancedShortTermMemory(
 )
 agent_memory: AgentMemory = AgentMemory(memory=memory)
 ```
-In DB-GPT, the core interface is asynchronous and non-blocking, so we use `ThreadPoolExecutor` to 
-run the similarity calculation in a separate thread for better performance.
+在DB-GPT中，核心接口是异步非阻塞的，因此我们使用ThreadPoolExecutor来 
+在单独的线程中运行相似度计算以获得更好的性能。
 
-In the above code, we set the `enhance_similarity_threshold` to `0.5`, which means if the 
-similarity bigger than `0.7`, the new observation has the probability of being enhanced to the
-short-term memory(there are a random factor in the enhancement process).
-And we set the `enhance_threshold` to `3`, which means if the memory is enhanced bigger or equal to `3` times, 
-it will be transferred to long-term memory.
+在上面的代码中，我们将“enhance_similarity_threshold”设置为“0.5”，这意味着如果 
+相似度大于‘0.7’，新观测值有概率增强为
+短期记忆（增强过程中存在随机因素）。
+我们将“enhance_threshold”设置为“3”，这意味着如果内存增强大于或等于“3”倍， 
+它将被转移到长期记忆中。
 
-Then you can use the enhanced short-term memory in your agent.
-
+然后您可以在代理中使用增强的短期记忆。

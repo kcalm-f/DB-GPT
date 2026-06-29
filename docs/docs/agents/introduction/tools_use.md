@@ -1,20 +1,20 @@
-# Tool Use
+# 工具使用
 
-While LLMs can complete a wide range of tasks, they may not work well for the domains 
-which need comprehensive expert knowledge. In addition, LLMs may also encounter 
-hallucination problems, which are hard to be resolved by themselves.
+虽然法学硕士可以完成广泛的任务，但它们可能不适用于这些领域 
+需要全面的专业知识。此外，LLM还可能遇到 
+幻觉问题，很难自行解决。
 
-So, we need to use some tools to help LLMs to complete the tasks.
+所以，我们需要使用一些工具来帮助LLM完成任务。
 
-:::note
-In DB-GPT agents, most LLMs support tool calls as long as their own capabilities are not too weak.
-(Such as `glm-4-9b-chat`, `Yi-1.5-34B-Chat`, `Qwen2-72B-Instruct`, etc.)
+:::注意
+在DB-GPT代理中，大多数LLM都支持工具调用，只要自身能力不是太弱。
+（如`glm-4-9b-chat`、`Yi-1.5-34B-Chat`、`Qwen2-72B-Instruct`等）
 :::
 
-## Writing Tools
+## 书写工具
 
-Sometimes, LLMs may not be able to complete the calculation tasks directly, so we can 
-write a simple calculator tool to help them.
+有时，LLM可能无法直接完成计算任务，所以我们可以 
+编写一个简单的计算器工具来帮助他们。
 ```python
 from dbgpt.agent.resource import tool
 
@@ -36,9 +36,7 @@ def simple_calculator(first_number: int, second_number: int, operator: str) -> f
     else:
         raise ValueError(f"Invalid operator: {operator}")
 ```
-
-To test multiple tools,  let's write another tool to help LLMs to count the number of files in a directory.
-
+为了测试多个工具，让我们编写另一个工具来帮助 LLM 计算目录中的文件数量。
 ```python
 import os
 from typing_extensions import Annotated, Doc
@@ -50,20 +48,17 @@ def count_directory_files(path: Annotated[str, Doc("The directory path")]) -> in
         raise ValueError(f"Invalid directory path: {path}")
     return len(os.listdir(path))
 ```
-## Wrap Your Tools To `ToolPack`
+## 将您的工具包装到“ToolPack”中
 
-Most of the time, you may have multiple tools, so you can wrap them to a `ToolPack`.
-`ToolPack` is a collection of tools, you can use it to manage your tools, and the agent 
-can select the appropriate tool from the `ToolPack` according to the task requirements.
-
+大多数时候，您可能有多个工具，因此您可以将它们包装到“ToolPack”中。
+`ToolPack`是一个工具集合，你可以用它来管理你的工具，以及代理 
+可以根据任务需求从`ToolPack`中选择合适的工具。
 ```python
 from dbgpt.agent.resource import ToolPack
 
 tools = ToolPack([simple_calculator, count_directory_files])
 ```
-
-## Use Tools In Your Agent
-
+## 使用代理中的工具
 ```python
 import asyncio
 import os
@@ -114,7 +109,7 @@ if __name__ == "__main__":
     asyncio.run(main())
 
 ```
-The output will be like this:
+输出将是这样的：
 ``````bash
 --------------------------------------------------------------------------------
 User (to LuBan)-[]:
@@ -170,13 +165,11 @@ execution succeeded,
 
 --------------------------------------------------------------------------------
 ``````
+在上面的代码中，我们使用“ToolAssistantAgent”来选择并调用适当的工具。
 
+## 更多细节？
 
-In the above code, we use the `ToolAssistantAgent` to select and call the appropriate tool.
+在上面的代码中，我们使用`tool`装饰器来定义工具函数。它将函数包装到 
+`FunctionTool` 对象。而 `FunctionTool` 是 `BaseTool` 的子类，而 `BaseTool` 是所有工具的基类。
 
-## More Details?
-
-In the above code, we use the `tool` decorator to define the tool function. It will wrap the function to a 
-`FunctionTool` object. And `FunctionTool` is a subclass of `BaseTool`, which is a base class of all tools.
-
-Actually, **tool** is a special **resource** in the `DB-GPT` agent. You will see more details in the [Resource](../modules/resource/resource.md) section.
+实际上，**工具**是`DB-GPT`代理中的一个特殊的**资源**。您将在 [资源](../modules/resource/resource.md) 部分中看到更多详细信息。

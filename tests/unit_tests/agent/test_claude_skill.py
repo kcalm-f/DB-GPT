@@ -103,3 +103,27 @@ Compute the product of two numbers when asked.
         # If PyYAML is available, config should include precision
         if cfg:
             assert cfg.get("precision") == 2
+
+
+def test_skillloader_directory_ignores_regular_markdown(tmp_path):
+    """SkillLoader directory scans should only treat SKILL.md as markdown skills."""
+    skill_md = """
+---
+name: math-assistant
+description: Simple math assistant
+---
+
+Compute the product of two numbers when asked.
+"""
+
+    _write_skill_md(tmp_path / "math_assistant" / "SKILL.md", skill_md)
+    _write_skill_md(tmp_path / "README.md", "# Not a skill")
+    _write_skill_md(tmp_path / "math_assistant" / "references" / "notes.md", "# Notes")
+
+    from dbgpt.agent.skill.loader import SkillLoader
+
+    loader = SkillLoader()
+    skills = loader.load_skills_from_directory(str(tmp_path))
+
+    assert len(skills) == 1
+    assert skills[0].metadata.name == "math-assistant"

@@ -1,48 +1,44 @@
-# shell_interpreter
+# shell_解释器
 
-## Overview
+## 概述
 
-`shell_interpreter` executes shell / bash commands in a sandboxed environment.
+`shell_interpreter` 在沙盒环境中执行 shell / bash 命令。
 
-It is intended for command-line workflows rather than data analysis logic.
+它适用于命令行工作流程而不是数据分析逻辑。
 
-## Parameters
-
+＃＃ 参数
 ```json
 {
   "code": "shell command(s)"
 }
 ```
+## 它的作用
 
-## What it does
+- 运行 bash/shell 命令
+- 强制沙箱隔离
+- 对危险模式进行安全检查
+- 限制内存和执行时间
 
-- runs bash / shell commands
-- enforces sandbox isolation
-- applies security checks for dangerous patterns
-- limits memory and execution time
+## 运行时特征
 
-## Runtime characteristics
+- 内存限制：**256MB**
+- 超时：**30s**
+- 调用之间没有持久的 shell 状态
 
-- memory limit: **256MB**
-- timeout: **30s**
-- no persistent shell state between calls
+## 何时使用
 
-## When to use it
+- 检查文件和目录
+- 运行 CLI 实用程序，例如 `ls`、`grep`、`curl`、`git`、`pip`
+- 执行 shell 级环境任务
 
-- inspect files and directories
-- run CLI utilities such as `ls`, `grep`, `curl`, `git`, `pip`
-- perform shell-level environment tasks
-
-## Example
-
+## 示例
 ```json
 {
   "code": "ls -la"
 }
 ```
+## 注释
 
-## Notes
-
-- use `code_interpreter` for Python analysis instead
-- use `html_interpreter` for final rendered output
-- if a skill explicitly requires another execution path, follow the skill instructions
+- 使用“code_interpreter”进行Python分析
+- 使用“html_interpreter”进行最终渲染输出
+- 如果一项技能明确需要另一个执行路径，请按照技能说明进行操作

@@ -1,23 +1,22 @@
-# Profile Creation
+# 创建个人资料
 
-In this section, you will learn more about creating a profile for your agent.
+在本节中，您将了解有关为代理创建个人资料的更多信息。
 
-## Method 1: Using the ProfileConfig Class
+## 方法一：使用ProfileConfig类
 
-As mentioned in the [Profile](profile.md) section, the `ProfileConfig` class is used to 
-define the profile of the agent. It is a simple way to define the agent's profile. 
+正如 [Profile](profile.md) 部分中提到的，`ProfileConfig` 类用于 
+定义代理的配置文件。这是定义代理配置文件的简单方法。 
 
-Formally, the `ProfileConfig` class supports the following parameters:
-- `name`: The name of the agent.
-- `role`: What is the role of the agent.
-- `goal`: The core functional goals of the agent tell LLM what it can do with it.
-- `desc`: Introduction and description of the agent, used for task assignment and display. If it is empty, the goal content will be used.
-- `constraints`: It can contain multiple constraints and reasoning restriction logic
-- `expand_prompt`: A expand content to add to the prompt, you can pass some custom text to be added to the prompt.
-- `examples`: Some examples in your prompt
+正式来说，“ProfileConfig”类支持以下参数：
+- `name`：代理的名称。
+- `角色`：代理的角色是什么。
+- `goal`：代理的核心功能目标告诉 LLM 它可以用它做什么。
+- `desc`：代理的介绍和描述，用于任务分配和显示。如果为空，则使用目标内容。
+- `constraints`：可以包含多个约束和推理限制逻辑
+- `expand_prompt`：要添加到提示中的展开内容，您可以传递一些要添加到提示中的自定义文本。
+- `examples`：提示中的一些示例
 
-This is a full example of creating a profile using the `ProfileConfig` class:
-
+这是使用“ProfileConfig”类创建配置文件的完整示例：
 ```python
 from dbgpt.agent import ProfileConfig
 
@@ -58,10 +57,9 @@ profile: ProfileConfig = ProfileConfig(
     examples=""
 )
 ```
-In the above example, we can see 'constraints' and 'expand_prompt' added to the profile.
+在上面的示例中，我们可以看到“constraints”和“expand_prompt”添加到配置文件中。
 
-Let's see the final prompt generated from a profile.
-
+让我们看看从配置文件生成的最终提示。
 ```python
 real_profile = profile.create_profile()
 system_prompt = real_profile.format_system_prompt(question="What can you do?")
@@ -70,9 +68,7 @@ print(f"System Prompt: \n{system_prompt}")
 print("#" * 50)
 print(f"User Prompt: \n{user_prompt}")
 ```
-
-Running the above code will generate the following prompts:
-
+运行上面的代码会产生如下提示：
 ```
 System Prompt: 
 You are a Summarizer, named Aristotle, your goal is Summarize answer summaries based on user questions from provided resource information or from historical conversation memories..
@@ -97,14 +93,12 @@ User Prompt:
 
 Question: What can you do?
 ```
+## 方法 2：使用 `ProfileFactory`
 
-## Method 2: Using `ProfileFactory`
-
-It is a more flexible way to create a profile using the `ProfileFactory`.
+这是使用“ProfileFactory”创建配置文件的更灵活的方法。
 
 
-### Create a Profile Factory
-
+### 创建配置文件工厂
 ```python
 from typing import Optional
 from dbgpt.agent import ProfileFactory, Profile, DefaultProfile
@@ -134,12 +128,10 @@ class MyProfileFactory(ProfileFactory):
             examples=""
         )
 ```
+### 使用配置文件工厂
 
-### Use the Profile Factory
-
-For using the profile factory, you need to pass the factory to the `ProfileConfig` class.
-You don't need to provide the name, role, goal, and description of the agent in this case.
-
+要使用配置文件工厂，您需要将工厂传递给 `ProfileConfig` 类。
+在这种情况下，您不需要提供代理的姓名、角色、目标和描述。
 ```python
 from dbgpt.agent import ProfileConfig
 
@@ -147,8 +139,7 @@ profile: ProfileConfig = ProfileConfig(
     factory=MyProfileFactory(),
 )
 ```
-Let's see the final prompt generated from a profile.
-
+让我们看看从配置文件生成的最终提示。
 ```python
 real_profile = profile.create_profile()
 system_prompt = real_profile.format_system_prompt(question="What can you do?")
@@ -157,9 +148,7 @@ print(f"System Prompt: \n{system_prompt}")
 print("#" * 50)
 print(f"User Prompt: \n{user_prompt}")
 ```
-
-Running the above code will generate the following prompts:
-
+运行上面的代码会产生如下提示：
 ```
 System Prompt: 
 You are a Summarizer, named Aristotle, your goal is Summarize answer summaries based on user questions from provided resource information or from historical conversation memories..
@@ -178,10 +167,9 @@ User Prompt:
 
 Question: What can you do?
 ```
+## 总结
 
-## Summary
-
-In this section, you learned how to create a profile for your agent using the 
-`ProfileConfig` class and `ProfileFactory`.
-It is flexible and easy to define the agent's profile using these methods, especially 
-when you need to create thousands of agent scenarios.
+在本节中，您学习了如何使用 
+`ProfileConfig` 类和 `ProfileFactory`。
+使用这些方法可以灵活且轻松地定义代理的配置文件，尤其是 
+当您需要创建数千个代理场景时。

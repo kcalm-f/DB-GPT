@@ -1,15 +1,14 @@
-# Graph RAG
+# 图 RAG
 
 
-In this example, we will show how to use the Graph RAG framework in DB-GPT. Using a graph database to implement RAG can, to some extent, alleviate the uncertainty and interpretability issues brought about by vector database retrieval.
+在本示例中，我们将展示如何在 DB-GPT 中使用 Graph RAG 框架。使用图数据库实现RAG可以在一定程度上缓解矢量数据库检索带来的不确定性和可解释性问题。
 
-You can refer to the python example file `DB-GPT/examples/rag/graph_rag_example.py` in the source code. This example demonstrates how to load knowledge from a document and store it in a graph store. Subsequently, it recalls knowledge relevant to your question by searching for triplets in the graph store.
+您可以参考源代码中的python示例文件“DB-GPT/examples/rag/graph_rag_example.py”。此示例演示如何从文档加载知识并将其存储在图形存储中。随后，它通过在图形存储中搜索三元组来回忆与您的问题相关的知识。
 
 
-### Install Dependencies
+### 安装依赖项
 
-First, you need to install the `dbgpt graph_rag` library.
-
+首先，您需要安装“dbgpt graph_rag”库。
 ```bash
 uv sync --all-packages \
 --extra "base" \
@@ -19,23 +18,20 @@ uv sync --all-packages \
 --extra "dbgpts" \
 --extra "graph_rag"
 ````
+### 准备图数据库
 
-### Prepare Graph Database
+为了以图的形式存储知识，我们需要一个图数据库，[TuGraph](https://github.com/TuGraph-family/tugraph-db)是DB-GPT支持的第一个图数据库。
 
-To store the knowledge in graph, we need an graph database, [TuGraph](https://github.com/TuGraph-family/tugraph-db) is the first graph database supported by DB-GPT.
-
-Visit github repository of TuGraph to view [Quick Start](https://tugraph-db.readthedocs.io/zh-cn/latest/3.quick-start/1.preparation.html#id5) document, follow the instructions to pull the TuGraph database docker image (latest / version >= 4.5.1) and launch it.
-
+访问TuGraph github仓库查看【快速入门】(https://tugraph-db.readthedocs.io/zh-cn/latest/3.quick-start/1.preparation.html#id5)文档，按照说明拉取TuGraph数据库docker镜像(最新/版本>=4.5.1)并启动。
 ```
 docker pull tugraph/tugraph-runtime-centos7:4.5.1
 docker run -d -p 7070:7070  -p 7687:7687 -p 9090:9090 --name tugraph_demo tugraph/tugraph-runtime-centos7:latest lgraph_server -d run --enable_plugin true
 ```
+Bolt 协议的默认端口是“7687”。
 
-The default port for the bolt protocol is `7687`.
-
-> **Download Tips:**
+> **下载提示：**
 > 
-> There is also a corresponding version of the TuGraph Docker image package on OSS. You can also directly download and import it.
+> OSS上也有对应版本的TuGraph Docker镜像包。您也可以直接下载并导入。
 > 
 > ```
 > wget 'https://tugraph-web.oss-cn-beijing.aliyuncs.com/tugraph/tugraph-4.5.1/tugraph-runtime-centos7-4.5.1.tar' -O tugraph-runtime-centos7-4.5.1.tar
@@ -44,10 +40,9 @@ The default port for the bolt protocol is `7687`.
 
 
 
-### TuGraph Configuration
+### 图图配置
 
-Set variables below in `configs/dbgpt-graphrag.toml` file, let DB-GPT know how to connect to TuGraph.
-
+在`configs/dbgpt-graphrag.toml`文件中设置以下变量，让DB-GPT知道如何连接到TuGraph。
 ```
 [rag.storage.graph]
 type = "TuGraph"
@@ -58,14 +53,9 @@ password="73@TuGraph"
 enable_summary="True"
 enable_similarity_search="True"
 ```
-
-Then run the following command to start the webserver:
+然后运行以下命令来启动网络服务器：
 ```bash
 uv run python packages/dbgpt-app/src/dbgpt_app/dbgpt_server.py --config configs/dbgpt-graphrag.toml
 ```
-
-Optionally, you can also use the following command to start the webserver:
-uv run python packages/dbgpt-app/src/dbgpt_app/dbgpt_server.py --config configs/dbgpt-proxy-openai.toml
-
-
-
+或者，您还可以使用以下命令来启动网络服务器：
+uv 运行 python packages/dbgpt-app/src/dbgpt_app/dbgpt_server.py --config configs/dbgpt-proxy-openai.toml

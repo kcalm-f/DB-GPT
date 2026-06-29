@@ -1,19 +1,18 @@
-# Planning Introduction
+# 规划介绍
 
-> When faced with a complex task, humans tend to deconstruct it into simpler subtasks 
-> and solve them individually. The planning module aims to empower the agents with such 
-> human capability, which is expected to make the agent behave more reasonably, powerfully, and reliably.
+> 当面对复杂的任务时，人类倾向于将其解构为更简单的子任务 
+> 并单独解决它们。规划模块旨在赋予代理商这样的能力 
+> 人类能力，期望使智能体的行为更加合理、强大、可靠。
 
-In previous sections [Agents Planning](../../introduction/planning), we have seen the 
-`AutoPlanChatManager` agent, and how it can be used to analyze the database with auto-planning.
+在前面的章节[代理规划](../../introduction/planning)中，我们已经看到了 
+`AutoPlanChatManager` 代理，以及如何使用它通过自动规划来分析数据库。
 
-## Planning With AWEL
+## 与 AWEL 一起规划
 
-Here we will introduce how to use the planning module in DB-GPT with `WrappedAWELLayoutManager`.
-`WrappedAWELLayoutManager` will run the agents in a sequence, and the agents can be added to the manager by `hire` method.
+这里我们将介绍如何通过`WrappedAWELLayoutManager`使用DB-GPT中的规划模块。
+`WrappedAWELLayoutManager` 将按顺序运行代理，并且可以通过 `hire` 方法将代理添加到管理器中。
 
-Here is an example of how to use the `WrappedAWELLayoutManager`:
-
+以下是如何使用“WrappedAWELLayoutManager”的示例：
 ```python
 import asyncio
 import os
@@ -82,9 +81,7 @@ if __name__ == "__main__":
     asyncio.run(main())
 
 ```
-
-Run the above code, and you will see the agents running in sequence. And the output will be like this:
-
+运行上面的代码，您将看到代理按顺序运行。输出将是这样的：
 ``````bash
 --------------------------------------------------------------------------------
 AWELBaseManager (to LuBan)-[]:

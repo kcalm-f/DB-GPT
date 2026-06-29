@@ -7,6 +7,7 @@ export type DBOption = {
   isFileDb?: boolean;
   icon: string;
   desc?: string;
+  description?: string;
   parameters?: ConfigurableParams[];
 };
 

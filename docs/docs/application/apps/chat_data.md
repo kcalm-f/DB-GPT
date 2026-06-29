@@ -1,36 +1,33 @@
-# Chat Data
+# 聊天数据
 
-Chat data capability is to dialogue with data through natural language. Currently, it is mainly dialogue between structured and semi-structured data, which can assist in data analysis and insight.
+聊天数据能力就是通过自然语言与数据进行对话。目前主要是结构化和半结构化数据之间的对话，可以辅助数据分析和洞察。
 
-:::info note
+:::信息说明
 
-Before starting the data conversation, we first need to add the data source
+在开始数据对话之前，我们首先需要添加数据源
 :::
 
-## steps
+## 步骤
 
-To start a data conversation, you need to go through the following steps:
-- 1.Add data source
-- 2.Select ChatData
-- 3.Select the corresponding database
-- 4.Start a conversation
+要开始数据对话，您需要执行以下步骤：
+- 1.添加数据源
+- 2.选择聊天数据
+- 3.选择对应的数据库
+- 4.开始对话
 
-### Add data source
+### 添加数据源
 
-First, select the [data source](../datasources.md) on the left to add and add a database. Currently, DB-GPT supports multiple database types. Just select the corresponding database type to add. Here we choose MySQL as a demonstration. For the test data of the demonstration, see the [test sample](https://github.com/eosphoros-ai/DB-GPT/tree/main/docker/examples/sqls).
+首先选择左侧的【数据源】(../datasources.md)添加并添加数据库。目前，DB-GPT支持多种数据库类型。只需选择对应的数据库类型即可添加。这里我们选择MySQL作为演示。演示的测试数据请参见[测试示例](https://github.com/eosphoros-ai/DB-GPT/tree/main/docker/examples/sqls)。
 
 
-### Choose ChatData App
+### 选择 ChatData 应用程序
 
-<p align="center">
+<p对齐=“中心”>
   <img src={'/img/app/chat_data_v0.6.jpg'} width="800px" />
 </p>
 
-### Start a conversation
+### 开始对话
 
-<p align="center">
+<p对齐=“中心”>
   <img src={'/img/app/chat_data_display_v0.6.jpg'} width="800px" />
 </p>
-
-
-

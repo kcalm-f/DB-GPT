@@ -1,26 +1,23 @@
-# Write Your Custom Agent
+# 编写您的自定义代理
 
-## Introduction
+## 简介
 
-In this example, we will show you how to create a custom agent that can be used as a 
-summarizer.
+在此示例中，我们将向您展示如何创建可用作 
+总结者。
 
-## Installations
+## 安装
 
-Install the required packages by running the following command:
-
+通过运行以下命令安装所需的软件包：
 ```bash
 pip install "dbgpt[agent,simple_framework]>=0.7.0" "dbgpt_ext>=0.7.0" -U
 pip install openai
 ```
+## 创建自定义代理
 
-## Create a Custom Agent
+### 初始化代理
 
-### Initialize The Agent
-
-In most cases, you just need to inherit basic agents and override the corresponding
-methods.
-
+大多数情况下，你只需要继承基本代理并覆盖相应的代理即可
+方法。
 ```python
 from dbgpt.agent import ConversableAgent
 
@@ -28,12 +25,10 @@ class MySummarizerAgent(ConversableAgent):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 ```
+### 定义配置文件
 
-### Define the profile
-
-Before designing each Agent, it is necessary to define its role, identity, and 
-functional role. The specific definitions are as follows:
-
+在设计每个Agent之前，需要定义它的角色、身份以及 
+功能性作用。具体定义如下：
 ```python
 from dbgpt.agent import ConversableAgent, ProfileConfig
 
@@ -58,19 +53,17 @@ class MySummarizerAgent(ConversableAgent):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 ```
+### 补充提示约束
 
-### Supplementary Prompt Constraints
+坐席提示默认使用固定模板组装（外部模板可以 
+如有特殊要求，另行通知）。其中主要包括：
+1.身份定义（自动构造）
+2.资源信息（自动构建）
+3. 约束逻辑
+4. 参考案例（可选）
+5.输出格式模板和约束（自动构建）
 
-Agent's prompt is assembled using a fixed template by default(an external template can 
-be bound if there are some special requirements). which mainly includes:
-1. Identity definition(automatically constructed)
-2. Resource information(automatically constructed)
-3. Constraint logic
-4. Reference case (optional)
-5. Output format templates and constraints (automatically constructed)
-
-So, we can define the constraints of the agent's prompt as follows:
-
+因此，我们可以如下定义代理提示的约束：
 ```python
 from dbgpt.agent import ConversableAgent, ProfileConfig
 
@@ -110,13 +103,11 @@ class MySummarizerAgent(ConversableAgent):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 ```
+### 提示模板格式
 
-### Prompt Template Format
-
-If dynamic parameters are used in the prompt, the actual dialogue process is required 
-to assemble the values, and the following interface (`_init_reply_message`) needs to be 
-overloaded and implemented:
-
+如果提示中使用动态参数，则需要实际的对话过程 
+要组装这些值，需要使用以下接口（`_init_reply_message`） 
+重载并实现：
 ```python
 from dbgpt.agent import AgentMessage, ConversableAgent, ProfileConfig
 
@@ -166,14 +157,12 @@ class MySummarizerAgent(ConversableAgent):
         reply_message.context = {"not_related_message": NOT_RELATED_MESSAGE}
         return reply_message
 ```
+### 资源预加载（可选）
 
-### Resource Preloading (Optional)
-
-If there are some specific resources, the bound resources must be loaded in advance 
-when the agent is initialized. You can refer to the following implementation. 
-It is determined based on the actual situation of the resources. In most cases, it is 
-not necessary.
-
+如果有一些特定的资源，必须提前加载绑定的资源 
+当代理初始化时。可以参考下面的实现。 
+根据资源的实际情况确定。大多数情况下，它是 
+没有必要。
 ```python
 from dbgpt.agent import ConversableAgent, AgentMessage
 
@@ -185,13 +174,11 @@ class MySummarizerAgent(ConversableAgent):
             # Load your resource, please write your own code here
             pass
 ```
+### 结果检查（可选）
 
-### Result Checking (Optional)
-
-If the action execution results need to be strictly verified and verified, there are 
-two modes: code logic verification and LLM verification. Of course, verification is not 
-necessary and the default pass is not implemented. Here is an example using LL verification:
-
+如果动作执行结果需要严格验证和验证，则有 
+两种模式：代码逻辑验证和LLM验证。当然，验证不是 
+必要且未实现默认通行证。这是使用 LL 验证的示例：
 ```python
 
 from typing import Tuple, Optional
@@ -259,16 +246,14 @@ class MySummarizerAgent(ConversableAgent):
                 )
         return success, fail_reason
 ```
+## 创建自定义操作
 
-## Create A Custom Action
+### 初始化操作
 
-### Initialize The Action
-
-All Agent's operations on the external environment and the real world are implemented 
-through `Action`. Action defines the Agent's output content structure and actually 
-performs the corresponding operations. The specific `Action` implementation inherits 
-the `Action` base class, as follows:
-
+实现Agent对外部环境和现实世界的所有操作 
+通过“行动”。 Action定义了Agent的输出内容结构，实际上 
+执行相应的操作。具体`Action`实现继承 
+`Action` 基类，如下：
 ```python
 from typing import Optional
 from pydantic import BaseModel, Field
@@ -346,12 +331,10 @@ class SummaryAction(Action[SummaryActionInput]):
                 content=param.summary,
             )
 ```
+### 将操作绑定到代理
 
-### Binding Action to Agent
-
-After the development and definition of agent and action are completed, 
-bind the action to the corresponding agent.
-
+当Agent和Action的开发和定义完成后， 
+将操作绑定到相应的代理。
 ```python
 from pydantic import BaseModel
 from dbgpt.agent import Action,ConversableAgent
@@ -367,9 +350,7 @@ class MySummarizerAgent(ConversableAgent):
         super().__init__(**kwargs)
         self._init_actions([SummaryAction])
 ```
-
-### Action Extended Parameter Processing
-
+### 动作扩展参数处理
 ```python
 from typing import Optional, Dict, Any, List
 from pydantic import BaseModel
@@ -408,11 +389,9 @@ class MySummarizerAgent(ConversableAgent):
     ) -> Dict[str, Any]:
         return {"action_extra_param_key": "this is extra param"}
 ```
+## 使用您的自定义代理
 
-## Use Your Custom Agent
-
-After the custom agent is created, you can use it in the following way:
-
+自定义代理创建完成后，可以通过以下方式使用：
 ```python
 
 import asyncio
@@ -474,9 +453,7 @@ async def main():
 if __name__ == "__main__":
     asyncio.run(main())
 ```
-
-Full code as follows:
-
+完整代码如下：
 ```python
 import asyncio
 import os

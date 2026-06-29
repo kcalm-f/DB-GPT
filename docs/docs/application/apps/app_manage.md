@@ -1,55 +1,55 @@
-# App Manage
+# 应用程序管理
 
-The application management panel provides many capabilities. Here we mainly introduce the management of the data intelligence application life cycle, including application creation, editing, deletion, and use.
+应用程序管理面板提供了许多功能。这里主要介绍数据智能应用生命周期的管理，包括应用的创建、编辑、删除、使用等。
 
-<p align="center">
+<p对齐=“中心”>
   <img src={'/img/app/app_manage_v0.6.jpg'} width="800px" />
 </p>
 
-As shown in the figure, the application management interface. First, let's take a look at the creation of an application. In DB-GPT, four application creation modes are provided. 
+如图所示，应用管理界面。首先，让我们看一下应用程序的创建。 DB-GPT中提供了四种应用程序创建模式。 
 
-- Multi-agent automatic planning mode
-- Task flow orchestration mode 
-- Single Agent Mode 
-- Native application mode
+- 多智能体自动规划模式
+- 任务流程编排模式 
+- 单代理模式 
+- 原生应用模式
 
-<p align="center">
+<p对齐=“中心”>
   <img src={'/img/app/app_manage_mode_v0.6.jpg'} width="800px" />
 </p>
 
-Next, we will explain the creation of applications in each mode respectively. Native application mode In the early versions of DB-GPT, six types of native application scenarios were provided, such as `Chat DB`, `Chat Data`, `Chat Dashboard`, `Chat Knowledge Base`, `Chat Normal`, `Chat Excel`, etc. 
+接下来我们将分别讲解每种模式下应用程序的创建。原生应用模式 DB-GPT早期版本提供了“聊天数据库”、“聊天数据”、“聊天仪表板”、“聊天知识库”、“聊天普通”、“聊天Excel”等六种原生应用场景。 
 
-By creating a data intelligence application in the native application mode, you can quickly build a similar application based on your own database, knowledge base and other parameters. Click the upper right cornerCreate an applicationbutton, select **Native application mode**, enter the application name and description, click **Sure**
+通过在原生应用模式下创建数据智能应用，您可以根据自己的数据库、知识库等参数快速构建类似的应用。点击右上角创建应用按钮，选择**原生应用模式**，输入应用名称和描述，点击**确定**
 
-<p align="center">
+<p对齐=“中心”>
   <img src={'/img/app/app_manage_chat_data_v0.6.jpg'} width="800px" />
 </p>
 
-After confirmation, enter the parameter selection panel. As shown in the figure below, we can see selection boxes such as application type, model, temperature, and recommended questions.
+确认无误后，进入参数选择面板。如下图所示，我们可以看到应用类型、型号、温度、推荐问题等选择框。
 
-<p align="center">
+<p对齐=“中心”>
   <img src={'/img/app/app_manage_chat_data_editor_v0.6.jpg'} width="800px" />
 </p>
 
-Here, we select **Chat Data**  Application, fill in the parameters in order according to the requirements. Note that in the data dialogue application, the parameter column needs to fill in the data source. If you do not have a data source, you need to follow [Data Source Tutorial](../datasources.md) to add it.
+这里，我们选择**聊天数据**应用程序，按照要求依次填写参数。注意，在数据对话应用中，参数栏需要填写数据源。如果您没有数据源，则需要按照[数据源教程](../datasources.md)添加。
 
 
-After completing the parameters, click **Save** to view related applications in the application panel.
+参数填写完成后，点击“保存”即可在应用面板中查看相关应用。
 
-<p align="center">
+<p对齐=“中心”>
   <img src={'/img/app/app_manage_app_v0.6.jpg'} width="800px" />
 </p>
 
-Please note that after creating an application, there is a **Publish Application** button. Only after the application is published can it be discovered and used by other users.
+请注意，创建应用程序后，有一个**发布应用程序**按钮。应用程序只有发布后才能被其他用户发现和使用。
 
-<p align="center">
+<p对齐=“中心”>
   <img src={'/img/app/app_manage_app_publish_v0.6.jpg'} width="800px" />
 </p>
 
-Finally, click the **Start a conversation** button to start a conversation with the application you just created.
+最后，单击 **开始对话** 按钮开始与您刚刚创建的应用程序进行对话。
 
-<p align="center">
+<p对齐=“中心”>
   <img src={'/img/app/app_manage_chat_v0.6.jpg'} width="800px" />
 </p>
 
-In addition, you can also edit and delete applications. Just operate on the corresponding interface.
+此外，您还可以编辑和删除应用程序。只需在相应的界面上进行操作即可。

@@ -1,18 +1,17 @@
-# Multimodal Support in DB-GPT
+# DB-GPT 中的多模式支持
 
-DB-GPT supports multimodal capabilities, allowing you to work with various data types such as text, images, and audio. This guide will help you set up and use multimodal features in DB-GPT.
+DB-GPT 支持多模式功能，允许您处理各种数据类型，例如文本、图像和音频。本指南将帮助您在 DB-GPT 中设置和使用多模式功能。
 
-This guide includes run local model and proxy model.
+本指南包括运行本地模型和代理模型。
 
-## Run Local Model
+## 运行本地模型
 
-In this section, we will use the [Kimi-VL-A3B-Thinking](https://huggingface.co/moonshotai/Kimi-VL-A3B-Thinking)
-model as an example to demonstrate how to run a local multimodal model. 
+在本节中，我们将使用 [Kimi-VL-A3B-Thinking](https://huggingface.co/moonshotai/Kimi-VL-A3B-Thinking)
+模型作为示例来演示如何运行本地多模态模型。 
 
-### Step 1: Install Dependencies
+### 第 1 步：安装依赖项
 
-Make sure you have the required dependencies installed. You can do this by running:
-
+确保您已安装所需的依赖项。您可以通过运行以下命令来执行此操作：
 ```bash
 uv sync --all-packages \
 --extra "base" \
@@ -25,13 +24,11 @@ uv sync --all-packages \
 --extra "model_vl" \
 --extra "hf_kimi"
 ```
+### 步骤2：修改配置文件
 
-### Step 2: Modify Configuration File
+安装依赖项后，您可以修改配置文件以使用“Kimi-VL-A3B-Thinking”模型。 
 
-After installing the dependencies, you can modify your configuration file to use the `Kimi-VL-A3B-Thinking` model. 
-
-You can create a new configuration file or modify an existing one. Below is an example configuration file:
-
+您可以创建新的配置文件或修改现有的配置文件。下面是一个配置文件示例：
 ```toml
 # Model Configurations
 [models]
@@ -42,33 +39,29 @@ provider = "hf"
 # uncomment the following line to specify the model path in the local file system
 # path = "the-model-path-in-the-local-file-system"
 ```
+### 第 3 步：运行模型
 
-### Step 3: Run the Model
-
-You can run the model using the following command:
-
+您可以使用以下命令运行模型：
 ```bash
 uv run dbgpt start webserver --config {your_config_file}
 ```
+### 步骤 4：在 DB-GPT 中使用模型
 
-### Step 4: Use The Model In DB-GPT
+目前，DB-GPT仅支持图片输入，并且仅支持“正常聊天”场景。
 
-Now, DB-GPT just support image input, and only the `Chat Normal` scenario is supported.
+您可以单击聊天窗口中的“+”按钮上传图像。然后在输入框中输入您的问题并按 Enter 键。该模型将处理图像并根据图像的内容提供响应。
 
-You can click the `+` button in the chat window to upload an image. Then type your question in the input box and hit enter. The model will process the image and provide a response based on the content of the image.
-
-<p align="left">
+<p对齐=“左”>
   <img src={'/img/installation/advanced_usage/dbgpt-multimodal-local.jpg'} width="720px"/>
 </p>
 
-## Run Proxy Model
+## 运行代理模型
 
-In this section, we will use the [Qwen/Qwen2.5-VL-32B-Instruct](https://huggingface.co/Qwen/Qwen2.5-VL-32B-Instruct) which is hosted on [SiliconFlow](https://siliconflow.cn/) as an example to demonstrate how to run a proxy multimodal model.
+在本节中，我们将使用 [SiliconFlow](https://siliconflow.cn/) 上托管的 [Qwen/Qwen2.5-VL-32B-Instruct](https://huggingface.co/Qwen/Qwen2.5-VL-32B-Instruct) 作为示例来演示如何运行代理多模态模型。
 
-### Step 1: Install Dependencies
+### 第 1 步：安装依赖项
 
-Make sure you have the required dependencies installed. You can do this by running:
-
+确保您已安装所需的依赖项。您可以通过运行以下命令来执行此操作：
 ```bash
 uv sync --all-packages \
 --extra "base" \
@@ -79,14 +72,12 @@ uv sync --all-packages \
 --extra "model_vl" \
 --extra "file_s3"
 ```
+现在，大多数代理模型无法接收图像原始数据，因此您需要将图像上传到S3、MinIO、阿里云OSS等存储服务，然后为图像生成公共URL。由于许多存储将提供 S3 兼容的 API，因此您可以使用额外的“file_s3”将图像上传到存储服务。
 
-Now, most proxy model can't receive image raw data, so you need to upload your image to a storage service like S3, MinIO, Aliyun OSS, etc, then generate a public URL for the image. Because many storages will provide a S3 compatible API, you can use the `file_s3` extra to upload your image to your storage service.
+### 步骤2：修改配置文件
 
-### Step 2: Modify Configuration File
-
-After installing the dependencies, you can modify your configuration file to use the `Qwen/Qwen2.5-VL-32B-Instruct` model.
-You can create a new configuration file or modify an existing one. Below is an example configuration file:
-
+安装依赖项后，您可以修改配置文件以使用“Qwen/Qwen2.5-VL-32B-Instruct”模型。
+您可以创建新的配置文件或修改现有的配置文件。下面是一个配置文件示例：
 ```toml
 # Model Configurations
 [[models.llms]]
@@ -109,9 +100,7 @@ access_key_id = "${env:COS_SECRETID}"
 access_key_secret = "${env:COS_SECRETKEY}"
 fixed_bucket = "{your_bucket_name}"
 ```
-
-Optionally, you can use the Aliyun OSS storage service as the file server(You should install dependency `--extra "file_oss"` first).
-
+或者，您可以使用阿里云OSS存储服务作为文件服务器（您应该先安装依赖项`--extra "file_oss"`）。
 ```toml
 [[serves]]
 type = "file"
@@ -126,16 +115,13 @@ access_key_id = "${env:OSS_ACCESS_KEY_ID}"
 access_key_secret = "${env:OSS_ACCESS_KEY_SECRET}"
 fixed_bucket = "{your_bucket_name}"
 ```
-
-### Step 3: Run the Model
-You can run the model using the following command:
-
+### 第 3 步：运行模型
+您可以使用以下命令运行模型：
 ```bash
 uv run dbgpt start webserver --config {your_config_file}
 ```
+### 步骤 4：在 DB-GPT 中使用模型
 
-### Step 4: Use The Model In DB-GPT
-
-<p align="left">
+<p对齐=“左”>
   <img src={'/img/installation/advanced_usage/dbgpt-multimodal-proxy.jpg'} width="720px"/>
 </p>

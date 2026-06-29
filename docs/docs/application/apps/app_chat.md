@@ -1,15 +1,15 @@
-# App Chat
+# 应用程序聊天
 
-The online Chat interface provides the main conversation capabilities, showing the historical conversation records and the application currently in conversation. As shown in the figure below, clicking any smart application will also jump to this interface.
+在线聊天界面提供主要的对话功能，显示历史对话记录以及当前对话的应用程序。如下图，点击任意智能应用也会跳转到该界面。
 
-<p align="center">
+<p对齐=“中心”>
   <img src={'/img/app/app_chat_v0.6.jpg'} width="800px" />
 </p>
 
-In the dialogue interface, a series of operations such as refreshing and pausing the dialogue are supported. The specific operation buttons are in the edit box at the bottom right. At the same time, the dialog box also provides a variety of parameter selections, such as model selection, temperature parameter adjustment, file upload, etc.
+在对话界面中，支持刷新、暂停对话等一系列操作。具体操作按钮在右下角的编辑框中。同时该对话框还提供了多种参数选择，如型号选择、温度参数调整、文件上传等。
 
-<p align="center">
+<p对齐=“中心”>
   <img src={'/img/app/app_chat_op_v0.6.jpg'} width="800" />
 </p>
 
-If you find new problems or have good ideas during use, you can also directly post them on Github [issue](https://github.com/eosphoros-ai/DB-GPT/issues) feedback.
+如果您在使用过程中发现新问题或者有好的想法，也可以直接在Github上发布[issue](https://github.com/eosphoros-ai/DB-GPT/issues)反馈。

@@ -1,30 +1,26 @@
-# DB-GPT documentation 
+# DB-GPT 文档 
 
-## Quick Start
+## 快速入门
 
-### Install dependencies 
-- Clone current project firstly!
-- Install docusaurus dependencies, generate node_modules folder.
-
+### 安装依赖项 
+- 首先克隆当前项目！
+- 安装docusaurus依赖项，生成node_modules文件夹。
 ```
 yarn install
 ```
-
-### launch
+＃＃＃ 发射
 ``` 
 yarn start
 ```
+默认服务在`3000`端口启动，访问`localhost:3000`
 
-The default service starts on port `3000`, visit `localhost:3000`
+## 部署多版本文档
 
-## Deploy Multi-Version Documentation
+我们可以通过docker部署多个版本的文档。
 
-We can deploy multiple versions of the documentation by docker.
+### 构建 Docker 镜像
 
-### Build Docker Image
-
-Firstly, build the docker image in `DB-GPT` project root directory.
-
+首先，在“DB-GPT”项目根目录中构建docker镜像。
 ```bash
 # Use the default NPM_REGISTRY=https://registry.npmjs.org
 # Use https://www.npmmirror.com/
@@ -35,15 +31,13 @@ docker build -f docs/Dockerfile-deploy \
 --build-arg CI=false \
 --build-arg NUM_VERSION=2 .
 ```
+### 运行 Docker 容器
 
-### Run Docker Container
-
-Run the docker container with the following command:
+使用以下命令运行 docker 容器：
 ```bash
 docker run -it --rm -p 8089:8089 \
 --name my-dbgpt-docs \
 -v $(pwd)/docs/nginx/nginx-docs.conf:/etc/nginx/nginx.conf \
 eosphorosai/dbgpt-docs
 ```
-
-Open the browser and visit `localhost:8089` to see the documentation.
+打开浏览器并访问“localhost:8089”即可查看文档。

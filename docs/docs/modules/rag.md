@@ -1,273 +1,268 @@
 # MS-RAG
 
-Multi-Source Enhanced Retrieval-Augmented Generation Framework (MS-RAG)
+多源增强检索-增强生成框架（MS-RAG）
 
-# Introduction
+# 简介
 
-Large Language Models (LLMs) are powerful, but they can only answer based on the data they were trained on. When users need up-to-date or domain-specific information — such as internal documents, proprietary databases, or the latest reports — LLMs alone fall short.
+大型语言模型 (LLM) 很强大，但它们只能根据训练过的数据来回答。当用户需要最新或特定领域的信息（例如内部文档、专有数据库或最新报告）时，仅法学硕士是不够的。
 
-**Retrieval-Augmented Generation (RAG)** bridges this gap by retrieving relevant information from external knowledge sources and feeding it as context to the LLM before generating a response. This ensures answers are grounded in real data rather than memorized patterns.
+**检索增强生成 (RAG)** 通过从外部知识源检索相关信息并在生成响应之前将其作为上下文提供给 LLM，从而弥补了这一差距。这确保答案基于真实数据而不是记忆模式。
 
-DB-GPT implements a **Multi-Source RAG (MS-RAG)** framework that goes beyond basic document Q&A. It supports multiple knowledge sources (documents, URLs, databases, knowledge graphs), multiple retrieval strategies (vector, keyword, graph, hybrid), and integrates deeply with the DB-GPT agent and workflow ecosystem.
+DB-GPT 实现了超越基本文档问答的**多源 RAG (MS-RAG)** 框架。它支持多种知识源（文档、URL、数据库、知识图）、多种检索策略（向量、关键字、图、混合），并与 DB-GPT 代理和工作流生态系统深度集成。
 
-# Architecture
+# 架构
 
-## Overall Pipeline
+## 总体管道
 
-The MS-RAG pipeline consists of four stages:
-
+MS-RAG 管道由四个阶段组成：
 ```
 Knowledge Source → Chunking → Indexing → Retrieval → LLM Generation
 ```
+1. **知识加载** — `KnowledgeFactory` 根据类型和文件扩展名自动将数据源（文件、URL、文本）路由到适当的 `Knowledge` 实现。
+2. **分块** — `ChunkManager` 使用可配置的策略（按大小、页面、段落、分隔符或 Markdown 标题）将加载的文档拆分为可管理的块。
+3. **索引** - `Assembler` 类（Embedding、BM25、Summary、DBSchema）将块保存到适当的索引存储（向量数据库、全文引擎或知识图）中。
+4. **检索和生成** - 在查询时，“Retriever”获取相关块，可选的“QueryRewrite”扩展查询，“Ranker”在 LLM 生成最终答案之前对结果重新排名。
 
-1. **Knowledge Loading** — `KnowledgeFactory` automatically routes data sources (files, URLs, text) to the appropriate `Knowledge` implementation based on type and file extension.
-2. **Chunking** — `ChunkManager` splits loaded documents into manageable chunks using configurable strategies (by size, page, paragraph, separator, or markdown headers).
-3. **Indexing** — `Assembler` classes (Embedding, BM25, Summary, DBSchema) persist chunks into the appropriate index store (vector database, full-text engine, or knowledge graph).
-4. **Retrieval & Generation** — At query time, `Retriever` fetches relevant chunks, optional `QueryRewrite` expands the query, and `Ranker` re-ranks results before the LLM generates the final answer.
+## 汇编器管道
 
-## Assembler Pipeline
-
-The `BaseAssembler` defines a unified pipeline that connects all stages:
-
+`BaseAssembler` 定义了一个连接所有阶段的统一管道：
 ```python
 Knowledge.load() → ChunkManager.split() → Assembler.persist() → Assembler.as_retriever()
 ```
+DB-GPT 提供四种专用汇编器：
 
-DB-GPT provides four specialized assemblers:
-
-| Assembler | Purpose | Index Backend |
+|汇编器|目的|索引后端 |
 |---|---|---|
-| **EmbeddingAssembler** | Vector similarity RAG (most common) | Vector Store (Chroma, Milvus, etc.) |
-| **BM25Assembler** | Keyword-based full-text retrieval | Elasticsearch |
-| **SummaryAssembler** | Summary-based RAG for long documents | Vector Store |
-| **DBSchemaAssembler** | Database schema retrieval for Text2SQL | Vector Store |
+| **嵌入汇编器** |向量相似度 RAG（最常见）|矢量商店（Chroma、Milvus 等）|
+| **BM25汇编器** |基于关键词的全文检索|弹性搜索 |
+| **摘要汇编器** |针对长文档的基于摘要的 RAG |矢量商店|
+| **DBSchemaAssembler** | Text2SQL 的数据库模式检索 |矢量商店|
 
-# Knowledge Sources
+# 知识来源
 
-DB-GPT supports loading knowledge from multiple source types. In the Web UI, you can select a datasource type when uploading:
+DB-GPT 支持从多种源类型加载知识。在Web UI中，您可以在上传时选择数据源类型：
 
-<p align="center">
+<p对齐=“中心”>
   <img src={'/img/rag/knowledge_datasource_type.png'} width="720px" />
 </p>
 
-## Datasource Types
+## 数据源类型
 
-| Type | Description | Example |
+|类型 |描述 |示例|
 |---|---|---|
-| **Document** | Upload files in various formats | PDF, Word, Excel, CSV, Markdown, PowerPoint, TXT, HTML, JSON, ZIP |
-| **URL** | Fetch and index web page content | Any accessible HTTP/HTTPS URL |
-| **Text** | Directly input raw text | Paste text content in the UI |
-| **Yuque** | Import from Yuque documentation platform | Yuque document links |
+| **文件** |上传各种格式的文件 | PDF、Word、Excel、CSV、Markdown、PowerPoint、TXT、HTML、JSON、ZIP |
+| **网址** |获取网页内容并建立索引 |任何可访问的 HTTP/HTTPS URL |
+| **文字** |直接输入原始文本 |在 UI 中粘贴文本内容 |
+| **玉雀** |从语雀文档平台导入|语雀文档链接|
 
-## Supported Document Formats
+## 支持的文档格式
 
-| Format | Extension | Knowledge Class |
+|格式|扩展|知识课堂|
 |---|---|---|
-| PDF | `.pdf` | `PDFKnowledge` |
-| CSV | `.csv` | `CSVKnowledge` |
-| Markdown | `.md` | `MarkdownKnowledge` |
-| Word (docx) | `.docx` | `DocxKnowledge` |
-| Word (legacy) | `.doc` | `Word97DocKnowledge` |
-| Excel | `.xlsx` | `ExcelKnowledge` |
-| PowerPoint | `.pptx` | `PPTXKnowledge` |
-| Plain Text | `.txt` | `TXTKnowledge` |
-| HTML | `.html` | `HTMLKnowledge` |
-| JSON | `.json` | `JSONKnowledge` |
+| PDF | `.pdf` | `PDF知识` |
+| CSV | `.csv` | `CSV知识` |
+|降价| `.md` | `Markdown知识` |
+|字 (docx) | `.docx` | `Docx知识` |
+|字（遗留）| `.doc` | `Word97DocKnowledge` |
+| Excel | `.xlsx` | `Excel知识` |
+|幻灯片| `.pptx` | `PPTX知识` |
+|纯文本| `.txt` | `TXT知识` |
+| HTML | `.html` | `HTML知识` |
+| JSON | `.json` | `JSON 知识` |
 
-# Storage Types
+# 存储类型
 
-When creating a knowledge base, you can choose from three storage types:
+创建知识库时，您可以选择三种存储类型：
 
-<p align="center">
+<p对齐=“中心”>
   <img src={'/img/rag/choose_knowledge_type.png'} width="720px" />
 </p>
 
-| Storage Type | Description | Best For |
+|存储类型|描述 |最适合 |
 |---|---|---|
-| **Vector Store** | Stores document embeddings for semantic similarity search | General-purpose document Q&A |
-| **Knowledge Graph** | Stores entities and relationships as a graph structure | Domain knowledge with complex entity relationships |
-| **Full Text** | Full-text index for keyword-based retrieval | Exact term matching and keyword search |
+| **矢量商店** |存储文档嵌入以进行语义相似性搜索 |通用文档问答 |
+| **知识图谱** |将实体和关系存储为图形结构 |具有复杂实体关系的领域知识 |
+| **全文** |基于关键字检索的全文索引 |词条精确匹配和关键词搜索 |
 
-## Vector Store Backends
+## 矢量存储后端
 
-| Backend | Description | Install Extra |
+|后端|描述 |安装额外 |
 |---|---|---|
-| **ChromaDB** | Default embedded vector database, zero setup | `storage_chromadb` |
-| **Milvus** | Distributed vector database for production scale | `storage_milvus` |
-| **PGVector** | PostgreSQL extension for vector operations | `storage_pgvector` |
-| **Valkey** | High-performance in-memory vector store with HNSW/FLAT indexing | `storage_valkey` |
-| **Weaviate** | Cloud-native vector search engine | `storage_weaviate` |
-| **Elasticsearch** | Full-text + vector hybrid search | `storage_elasticsearch` |
-| **OceanBase** | Cloud-native distributed database | `storage_oceanbase` |
+| **ChromaDB** |默认嵌入矢量数据库，零设置| `storage_chromadb` |
+| **Milvus** |生产规模的分布式矢量数据库| `storage_milvus` |
+| **PGVector** |用于向量运算的 PostgreSQL 扩展 | `storage_pgvector` |
+| **瓦尔基** |具有 HNSW/FLAT 索引的高性能内存向量存储 | `storage_valkey` |
+| **偏离** |云原生矢量搜索引擎| `storage_weaviate` |
+| **弹性搜索** |全文+矢量混合搜索| `storage_elasticsearch` |
+| **海洋基地** |云原生分布式数据库| `storage_oceanbase` |
 
-## Knowledge Graph Backends
+## 知识图后端
 
-| Backend | Description |
+|后端|描述 |
 |---|---|
-| **TuGraph** | High-performance graph database by Ant Group |
-| **Neo4j** | Popular open-source graph database |
-| **MemGraph** | In-memory graph database for low-latency queries |
+| **图图** |蚂蚁集团高性能图数据库 |
+| **Neo4j** |流行的开源图数据库 |
+| **MemGraph** |用于低延迟查询的内存图形数据库 |
 
-## Full-Text Backends
+## 全文后端
 
-| Backend | Description |
+|后端|描述 |
 |---|---|
-| **Elasticsearch** | Industry-standard full-text search engine |
-| **OpenSearch** | AWS-managed search and analytics suite |
+| **弹性搜索** |行业标准全文搜索引擎 |
+| **打开搜索** | AWS 管理的搜索和分析套件 |
 
-# Retrieval Strategies
+# 检索策略
 
-DB-GPT offers multiple retrieval modes. You can configure the retrieve mode in the knowledge base settings:
+DB-GPT提供多种检索模式。您可以在知识库设置中配置检索模式：
 
-<p align="center">
+<p对齐=“中心”>
   <img src={'/img/rag/embedding_retrieve_mode.png'} width="720px" />
 </p>
 
-| Strategy | Description | Backend Required |
+|战略|描述 |需要后端 |
 |---|---|---|
-| **Semantic** | Vector similarity search using embeddings | Vector Store |
-| **Keyword** | BM25-based keyword matching | Elasticsearch |
-| **Hybrid** | Combines vector + keyword search with Reciprocal Rank Fusion (RRF) | Vector Store + Elasticsearch |
-| **Tree** | Tree-structured retrieval for hierarchical documents | Vector Store |
+| **语义** |使用嵌入进行向量相似度搜索 |矢量商店|
+| **关键字** |基于BM25的关键词匹配 |弹性搜索 |
+| **混合** |将矢量 + 关键字搜索与倒数排名融合 (RRF) 相结合 |矢量存储 + Elasticsearch |
+| **树** |分层文档的树结构检索 |矢量商店|
 
-## Query Enhancement
+## 查询增强
 
-Beyond basic retrieval, DB-GPT provides advanced query processing:
+除了基本检索之外，DB-GPT 还提供高级查询处理：
 
-- **Query Rewrite** — Uses an LLM to expand and rephrase the original query into multiple search queries for better recall.
-- **Reranking** — After initial retrieval, a reranker model re-scores and re-orders the results for higher precision.
+- **查询重写** — 使用法学硕士将原始查询扩展并改写为多个搜索查询，以便更好地回忆。
+- **重新排名** - 初始检索后，重新排名模型会对结果进行重新评分和重新排序，以获得更高的精度。
 
-### Supported Rerankers
+### 支持的重新排序器
 
-| Reranker | Type | Description |
+|重新排序 |类型 |描述 |
 |---|---|---|
-| **CrossEncoderRanker** | Local | Uses sentence-transformers CrossEncoder models |
-| **QwenRerankEmbeddings** | Local | Qwen3-Reranker via transformers |
-| **OpenAPIRerankEmbeddings** | API | Compatible with OpenAI-style rerank APIs |
-| **RRFRanker** | Algorithm | Reciprocal Rank Fusion for merging multi-source results |
-| **DefaultRanker** | Algorithm | Simple score-based sorting |
+| **CrossEncoderRanker** |本地|使用句子转换器 CrossEncoder 模型 |
+| **QwenRerankEmbeddings** |本地| Qwen3-Reranker 通过 Transformer |
+| **OpenAPIRerankEmbeddings** |应用程序接口 |兼容 OpenAI 风格的 rerank API |
+| **RRFRanker** |算法|用于合并多源结果的倒数排名融合 |
+| **默认Ranker** |算法|简单的基于分数的排序 |
 
-# Chunking Strategies
+# 分块策略
 
-Document chunking is a critical step in RAG quality. DB-GPT supports multiple chunking strategies:
+文档分块是 RAG 质量的关键步骤。 DB-GPT 支持多种分块策略：
 
-<p align="center">
+<p对齐=“中心”>
   <img src={'/img/rag/file_chunk.png'} width="720px" />
 </p>
 
-| Strategy | Splitter | Description |
+|战略|分离器|描述 |
 |---|---|---|
-| **Chunk by Size** | `RecursiveCharacterTextSplitter` | Split by character count with configurable size and overlap (default: 512 / 50) |
-| **Chunk by Page** | `PageTextSplitter` | Split at page boundaries (useful for PDFs) |
-| **Chunk by Paragraph** | `ParagraphTextSplitter` | Split at paragraph boundaries |
-| **Chunk by Separator** | `SeparatorTextSplitter` | Split at custom separator strings |
-| **Chunk by Markdown Header** | `MarkdownHeaderTextSplitter` | Split at markdown heading levels |
+| **按尺寸分块** | `RecursiveCharacterTextSplitter` |按字符数拆分，并可配置大小和重叠（默认值：512 / 50）|
+| **按页面分块** | `PageTextSplitter` |在页面边界处分割（对于 PDF 很有用）|
+| **按段落分块** | `段落文本分割器` |在段落边界处分割 |
+| **按分隔符分块** | `SeparatorTextSplitter` |在自定义分隔符字符串处拆分 |
+| **按 Markdown 标题划分** | `MarkdownHeaderTextSplitter` |按 Markdown 标题级别拆分 |
 
-## Chunking Parameters
+## 分块参数
 
-<p align="center">
+<p对齐=“中心”>
   <img src={'/img/rag/embedding_argument.png'} width="720px" />
 </p>
 
-| Parameter | Description | Default |
+|参数|描述 |默认|
 |---|---|---|
-| **chunk_size** | Maximum characters per chunk | 512 |
-| **chunk_overlap** | Overlapping characters between adjacent chunks | 50 |
-| **topk** | Number of chunks to retrieve per query | 5 |
-| **recall_score** | Minimum relevance score threshold | 0 |
-| **recall_type** | Recall strategy (TopK) | TopK |
-| **model** | Embedding model to use | Depends on configuration |
+| **块大小** |每个块的最大字符数 | 512 | 512
+| **块重叠** |相邻块之间的重叠字符 | 50 | 50
+| **顶k** |每个查询检索的块数 | 5 |
+| **召回分数** |最低相关性分数阈值 | 0 |
+| **召回类型** |召回策略（TopK）|热门 |
+| **型号** |使用的嵌入模型 |取决于配置 |
 
-# Embedding Models
+# 嵌入模型
 
-DB-GPT supports a wide range of embedding models for converting text into vector representations:
+DB-GPT 支持多种嵌入模型，用于将文本转换为向量表示：
 
-## Local Models
+## 本地模型
 
-| Model | Class | Description |
+|型号|班级 |描述 |
 |---|---|---|
-| **HuggingFace** | `HuggingFaceEmbeddings` | General-purpose HuggingFace models |
-| **BGE Series** | `HuggingFaceBgeEmbeddings` | BAAI BGE models with instruction support (Chinese/English) |
-| **Instructor** | `HuggingFaceInstructEmbeddings` | Instruction-following embedding models |
+| **拥抱脸** | `HuggingFaceEmbeddings` |通用 HuggingFace 模型 |
+| **BGE 系列** | `HuggingFaceBgeEmbeddings` | BAAI BGE模型带指令支持（中/英文）|
+| **导师** | `HuggingFaceInstructEmbeddings` |遵循指令的嵌入模型 |
 
-## Remote API Models
+## 远程 API 模型
 
-| Provider | Class | Description |
+|供应商|班级 |描述 |
 |---|---|---|
-| **OpenAI-compatible** | `OpenAPIEmbeddings` | Any OpenAI-compatible embedding API |
-| **Jina** | `JinaEmbeddings` | Jina AI embedding service |
-| **Ollama** | `OllamaEmbeddings` | Local Ollama embedding server |
-| **Tongyi (Aliyun)** | `TongyiEmbeddings` | Alibaba Cloud DashScope |
-| **Qianfan (Baidu)** | `QianfanEmbeddings` | Baidu Wenxin platform |
-| **SiliconFlow** | `SiliconFlowEmbeddings` | SiliconFlow embedding service |
+| **兼容 OpenAI** | `OpenAPIEmbeddings` |任何兼容 OpenAI 的嵌入 API |
+| **吉娜** | `JinaEmbeddings` |吉娜AI嵌入服务|
+| **奥拉马** | `OllamaEmbeddings` |本地 Ollama 嵌入服务器 |
+| **统一（阿里云）** | `统一嵌入` |阿里云DashScope |
+| **千帆（百度）** | `QianfanEmbeddings` |百度文信平台|
+| **SiliconFlow** | `SiliconFlowEmbeddings` | SiliconFlow 嵌入服务 |
 
-# Knowledge Graph RAG
+# 知识图谱 RAG
 
-Beyond traditional vector-based RAG, DB-GPT supports **Knowledge Graph RAG** for structured knowledge retrieval.
+除了传统的基于向量的 RAG 之外，DB-GPT 还支持用于结构化知识检索的**知识图 RAG**。
 
-## How It Works
+## 它是如何工作的
 
-1. **Triplet Extraction** — An LLM extracts entities and relationships from documents as (subject, predicate, object) triplets.
-2. **Graph Storage** — Triplets are stored in a graph database (TuGraph, Neo4j, or MemGraph).
-3. **Graph Retrieval** — At query time, the `GraphRetriever` combines four sub-strategies:
-   - **Keyword-based** — Match graph nodes by extracted keywords
-   - **Vector-based** — Semantic similarity search on graph node embeddings
-   - **Text-based** — Convert natural language to graph query language (Text2GQL) via LLM
-   - **Document-based** — Retrieve through document-graph associations
-4. **Community Summarization** — Summarize graph communities for high-level understanding.
+1. **三元组提取** — 法学硕士从文档中提取实体和关系作为（主语、谓语、宾语）三元组。
+2. **图形存储** — 三元组存储在图形数据库（TuGraph、Neo4j 或 MemGraph）中。
+3. **图检索** — 在查询时，`GraphRetriever` 结合了四个子策略：
+   - **基于关键字** — 通过提取的关键字匹配图节点
+   - **基于向量** - 图节点嵌入的语义相似性搜索
+   - **基于文本** — 通过 LLM 将自然语言转换为图形查询语言 (Text2GQL)
+   - **基于文档** — 通过文档图关联检索
+4. **社区总结** - 总结图社区以进行高级理解。
 
-# Usage
+# 用法
 
-## Creating a Knowledge Base (Web UI)
+## 创建知识库（Web UI）
 
-### Step 1 — Open Knowledge Management
+### 步骤 1 — 开放知识管理
 
-Navigate to the **Knowledge** section in the sidebar.
+导航至侧栏中的 **知识** 部分。
 
-<p align="center">
+<p对齐=“中心”>
   <img src={'/img/rag/create_knowledge.png'} width="720px" />
 </p>
 
-### Step 2 — Create and Configure
+### 第 2 步 — 创建和配置
 
-1. Click **Create** to start a new knowledge base.
-2. Select the **Storage Type** (Vector Store, Knowledge Graph, or Full Text).
-3. Choose the **Embedding Model** and configure chunk parameters.
+1. 单击“**创建**”启动新的知识库。
+2. 选择**存储类型**（矢量存储、知识图或全文）。
+3. 选择**嵌入模型**并配置块参数。
 
-<p align="center">
+<p对齐=“中心”>
   <img src={'/img/rag/choose_knowledge_type.png'} width="720px" />
 </p>
 
-### Step 3 — Upload Data
+### 第 3 步 — 上传数据
 
-Select a datasource type and upload your content. Supported types include Document (PDF, Word, Excel, CSV, etc.), URL, Text, and Yuque.
+选择数据源类型并上传您的内容。支持的类型包括文档（PDF、Word、Excel、CSV等）、URL、文本、语雀。
 
-### Step 4 — Configure Chunking
+### 步骤 4 — 配置分块
 
-Choose a chunking strategy and set parameters:
+选择分块策略并设置参数：
 
-<p align="center">
+<p对齐=“中心”>
   <img src={'/img/rag/file_chunk.png'} width="720px" />
 </p>
 
-### Step 5 — Configure Retrieval Strategy (Optional)
+### 步骤 5 — 配置检索策略（可选）
 
-You can configure the retrieval strategy for your knowledge base. DB-GPT supports multiple retrieve modes — **Semantic**, **Keyword**, **Hybrid**, and **Tree** — to suit different query scenarios. Select the mode that best fits your use case in the knowledge base settings.
+您可以为您的知识库配置检索策略。 DB-GPT 支持多种检索模式——**语义**、**关键字**、**混合**和**树**——以适应不同的查询场景。在知识库设置中选择最适合您的用例的模式。
 
-<p align="center">
+<p对齐=“中心”>
   <img src={'/img/rag/embedding_retrieve_mode.png'} width="720px" />
 </p>
 
-### Step 6 — Chat with Your Knowledge
+### 第 6 步 — 运用您的知识进行交流
 
-Go to **Chat**, click the knowledge base icon in the chat input toolbar, select your knowledge base from the dropdown, and start asking questions.
+转到 **聊天**，单击聊天输入工具栏中的知识库图标，从下拉列表中选择您的知识库，然后开始提问。
 
-<p align="center">
+<p对齐=“中心”>
   <img src={'/img/rag/use_knowledge.png'} width="720px" />
 </p>
 
-## Programmatic Usage (Python API)
-
+## 编程用法（Python API）
 ```python
 from dbgpt.rag import Chunk
 from dbgpt_ext.rag.assembler import EmbeddingAssembler
@@ -288,13 +283,12 @@ assembler.persist()
 retriever = assembler.as_retriever(top_k=5)
 chunks = await retriever.aretrieve("What is the main topic?")
 ```
+# 后续步骤
 
-# Next Steps
-
-| Topic | Link |
+|主题 |链接 |
 |---|---|
-| Knowledge Base Web UI Guide | [Knowledge Base](/docs/getting-started/web-ui/knowledge-base) |
-| RAG Concepts | [RAG](/docs/getting-started/concepts/rag) |
-| Graph RAG Setup | [Graph RAG](/docs/application/graph_rag) |
-| AWEL RAG Operators | [AWEL](/docs/getting-started/concepts/awel) |
-| Source Code | [GitHub](https://github.com/eosphoros-ai/DB-GPT/tree/main/packages/dbgpt-core/src/dbgpt/rag) |
+|知识库 Web UI 指南 | [知识库](/docs/getting-started/web-ui/knowledge-base) |
+| RAG 概念 | [RAG](/docs/getting-started/concepts/rag) |
+|图 RAG 设置 | [图 RAG](/docs/application/graph_rag) |
+| AWEL RAG 操作员 | [AWEL](/docs/getting-started/concepts/awel) |
+|源代码 | [GitHub](https://github.com/eosphoros-ai/DB-GPT/tree/main/packages/dbgpt-core/src/dbgpt/rag) |

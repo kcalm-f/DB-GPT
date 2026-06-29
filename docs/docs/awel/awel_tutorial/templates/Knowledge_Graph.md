@@ -1,35 +1,34 @@
-# Knowledge Graph Process Workflow
+# 知识图谱流程
 
-# Introduction
-Unlike traditional Native RAG, which requires vectors as data carriers, GraphRAG requires triple extraction (entity -> relationship -> entity) to build a knowledge graph, so the entire knowledge processing can also be regarded as the process of building a knowledge graph. 
+# 简介
+与传统Native RAG需要向量作为数据载体不同，GraphRAG需要三元组提取（实体->关系->实体）来构建知识图谱，所以整个知识处理也可以看成是构建知识图谱的过程。 
 
 ![](https://intranetproxy.alipay.com/skylark/lark/0/2024/png/26456775/1734357331126-a3a96fd7-c8fb-4208-8e3b-be798d1b73b4.png)
 
-# Applicable Scenarios 
-+ It is necessary to use GraphRAG ability to mine the relationship between knowledge for multi-step reasoning. 
-+ Make up for the lack of integrity of Naive RAG in the recall context. 
+# 适用场景 
++ 需要利用GraphRAG能力挖掘知识之间的关系进行多步推理。 
++ 弥补 Naive RAG 在召回场景中完整性的不足。 
 
-# How to use 
-+ Enter the AWEL interface and add a workflow 
+# 如何使用 
++ 进入AWEL界面并添加工作流程 
 
 ![](https://intranetproxy.alipay.com/skylark/lark/0/2024/png/26456775/1734354927468-feed0ac7-e0fe-45e8-b85c-aba170084f82.png)
 
-+ Import Knowledge Processing Template 
++ 导入知识处理模板 
 
 ![](https://intranetproxy.alipay.com/skylark/lark/0/2024/png/26456775/1734356276305-a6e03aff-ba89-40c4-be2d-f88dff29d0f5.png)
 
-+ Adjust parameters and save 
++ 调整参数并保存 
 
 ![](https://intranetproxy.alipay.com/skylark/lark/0/2024/png/26456775/1734356745373-4e449611-d0bc-4735-b142-0aebafaa34d6.png)
 
-    - `document knowledge loading operator `: Knowledge loading factory, by loading the specified document type, find the corresponding document processor for document content parsing. 
-    - `Document Chunk slicing operator `: Slice the loaded document content according to the specified slicing parameters. 
-    - `Knowledge Graph processing operator `: You can connect different knowledge graph processing operators, including native knowledge graph processing operators and community summary Knowledge Graph processing operators. You can also specify different graph databases for storage. Currently, TuGraph databases are supported. 
+    - `文档知识加载算子`：知识加载工厂，通过加载指定的文档类型，找到对应的文档处理器进行文档内容解析。 
+    - `Document Chunk 切片运算符`：根据指定的切片参数对加载的文档内容进行切片。 
+    - `知识图谱处理算子`：可以连接不同的知识图谱处理算子，包括原生知识图谱处理算子和社区汇总知识图谱处理算子。您还可以指定不同的图数据库进行存储。目前支持 TuGraph 数据库。 
 
 
 
-+ Register Post as http request
-
++ 将 Post 注册为 http 请求
 ```bash
 curl --location --request POST 'http://localhost:5670/api/v1/awel/trigger/rag/knowledge/kg/process' \
 --header 'Content-Type: application/json' \

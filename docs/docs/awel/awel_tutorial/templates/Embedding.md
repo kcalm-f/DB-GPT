@@ -1,32 +1,31 @@
-# Embedding Process Workflow 
-# Introduction 
-the traditional knowledge extraction preparation process of Native RAG aims at the process of turning documents into databases, including reading unstructured documents-&gt; knowledge slices-&gt; document slices turning-&gt; import vector databases. 
+# 嵌入过程工作流程 
+# 简介 
+Native RAG传统的知识抽取准备流程是针对文档转数据库的过程，包括读取非结构化文档->知识切片->文档切片转置->导入向量数据库。 
 
-# Applicable Scenarios 
-+ supports simple intelligent question and answer scenarios and recalls context information through semantic similarity. 
-+ Users can cut and add existing embedded processing processes according to their own business scenarios. 
+# 适用场景 
++ 支持简单的智能问答场景，通过语义相似度回忆上下文信息。 
++ 用户可以根据自己的业务场景对现有的嵌入式处理流程进行裁剪和添加。 
 
-# How to use 
-+ enter the AWEL interface and add a workflow 
+# 如何使用 
++ 进入AWEL界面并添加工作流程 
 
 ![](https://intranetproxy.alipay.com/skylark/lark/0/2024/png/26456775/1734354927468-feed0ac7-e0fe-45e8-b85c-aba170084f82.png)
 
-+ import Knowledge Processing Template 
++ 导入知识处理模板 
 
 ![](https://intranetproxy.alipay.com/skylark/lark/0/2024/png/26456775/1734358060884-672d3157-a2ee-498b-887e-ea51f1caddae.png)
 
-+ adjust parameters and save 
++ 调整参数并保存 
 
 ![](https://intranetproxy.alipay.com/skylark/lark/0/2024/png/26456775/1734358170081-32d38282-7765-4bbf-9bf7-c068550907d1.png)
 
-    - `document knowledge loader operator `: Knowledge loading factory, by loading the specified document type, find the corresponding document processor for document content parsing. 
-    - `Document Chunk Manager operator `: Slice the loaded document content according to the specified slicing parameters. 
-    - `Vector storage machining operator `: You can connect different vector databases for vector storage, and you can also connect different Embedding models and services for vector extraction. 
+    - `文档知识加载器`：知识加载工厂，通过加载指定的文档类型，找到对应的文档处理器进行文档内容解析。 
+    - `Document Chunk Manager操作符`：根据指定的切片参数对加载的文档内容进行切片。 
+    - `向量存储加工算子`：可以连接不同的向量数据库进行向量存储，也可以连接不同的Embedding模型和服务进行向量提取。 
 
 
 
-+ Register Post as http request
-
++ 将 Post 注册为 http 请求
 ```bash
 curl --location --request POST 'http://localhost:5670/api/v1/awel/trigger/rag/knowledge/embedding/process' \
 --header 'Content-Type: application/json' \

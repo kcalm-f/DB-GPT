@@ -1,59 +1,51 @@
-# Cluster Deployment
+# 集群部署
 
-## Install command line tools
-All the following operations are completed through the `dbgpt` command. To use the `dbgpt` command, you first need to install the `DB-GPT` project. You can install it through the following command
-
+## 安装命令行工具
+以下所有操作都是通过`dbgpt`命令完成的。要使用 dbgpt 命令，首先需要安装 DB-GPT 项目。您可以通过以下命令安装它
 ```shell
 $ pip install -e ".[default]"
 ```
-It can also be used in script mode
+也可以在脚本模式下使用
 ```shell
 $ python pilot/scripts/cli_scripts.py
 ```
-
-## Start Model Controller
+## 启动模型控制器
 ```shell
 $ dbgpt start controller
 ```
-
-## View log
+## 查看日志
 ```shell
 $ docker logs db-gpt-webserver-1 -f
 ```
-By default, `Model Server` will start on port `8000`
+默认情况下，“模型服务器”将在端口“8000”上启动
 
-## Start Model Worker
+## 启动劳模
 
-:::tip
-Start `glm-4-9b-chat` model Worker
+:::提示
+启动 `glm-4-9b-chat` 模型 Worker
 :::
-
 ```shell
 dbgpt start worker --model_name glm-4-9b-chat \
 --model_path /app/models/glm-4-9b-chat \
 --port 8001 \
 --controller_addr http://127.0.0.1:8000
 ```
-
-
-:::tip
-Start `vicuna-13b-v1.5` model Worker
+:::提示
+启动 `vicuna-13b-v1.5` 模型 Worker
 :::
-
 ```shell
 dbgpt start worker --model_name vicuna-13b-v1.5 \
 --model_path /app/models/vicuna-13b-v1.5 \
 --port 8002 \
 --controller_addr http://127.0.0.1:8000
 ```
-:::info note
-⚠️  Make sure to use your own model name and model path.
+:::信息说明
+⚠️ 确保使用您自己的模型名称和模型路径。
 
 :::
 
 
-## Start Embedding Model Worker
-
+## 开始嵌入 Model Worker
 ```shell
 dbgpt start worker --model_name text2vec \
 --model_path /app/models/text2vec-large-chinese \
@@ -61,13 +53,12 @@ dbgpt start worker --model_name text2vec \
 --port 8003 \
 --controller_addr http://127.0.0.1:8000
 ```
-:::info note
-⚠️  Make sure to use your own model name and model path.
+:::信息说明
+⚠️ 确保使用您自己的模型名称和模型路径。
 
 :::
 
-## Start Reranking Model Worker
-
+## 开始重新排名劳动模范
 ```shell
 dbgpt start worker --worker_type text2vec \
 --rerank \
@@ -76,16 +67,14 @@ dbgpt start worker --worker_type text2vec \
 --port 8004 \
 --controller_addr http://127.0.0.1:8000
 ```
-:::info note
-⚠️  Make sure to use your own model name and model path.
+:::信息说明
+⚠️ 确保使用您自己的模型名称和模型路径。
 
 :::
 
-:::tip
-View and inspect deployed models
+:::提示
+查看和检查已部署的模型
 :::
-
-
 ```shell
 $ dbgpt model list
 
@@ -102,39 +91,32 @@ $ dbgpt model list
 | bge-reranker-base |  text2vec  | 172.21.0.5 | 8004 |   True  |   True  |                 | 2024-05-15T11:36:12.935012 |
 +-------------------+------------+------------+------+---------+---------+-----------------+----------------------------+
 ```
+## 使用模型服务
 
-
-## Use model serving
-
-The model service deployed as above can be used through dbgpt_server. First modify the `.env` configuration file to change the connection model address
-
+上面部署的模型服务可以通过dbgpt_server来使用。首先修改`.env`配置文件，更改连接模型地址
 ```shell
 dbgpt start webserver --light
 ```
-
-## Start Webserver 
-
+## 启动网络服务器
 ```shell
 LLM_MODEL=vicuna-13b-v1.5
 # The current default MODEL_SERVER address is the address of the Model Controller
 MODEL_SERVER=http://127.0.0.1:8000
 ```
-`--light` means not to start the embedded model service.
+`--light` 表示不启动嵌入模型服务。
 
 
-Or it can be started directly by command to formulate the model.
+或者可以直接通过命令启动来建立模型。
 ```shell
 LLM_MODEL=glm-4-9b-chat dbgpt start webserver --light --remote_embedding
 ```
+## 命令行使用
+有关命令行使用的更多信息，可以查看命令行帮助。下面是一个参考示例。
 
-## Command line usage
-For more information about the use of the command line, you can view the command line help. The following is a reference example.
 
-
-:::tip
-View dbgpt help `dbgpt --help`
+:::提示
+查看 dbgpt 帮助 `dbgpt --help`
 :::
-
 ```shell
 dbgpt --help
 
@@ -154,12 +136,9 @@ Commands:
   stop       Start specific server.
   trace      Analyze and visualize trace spans.
 ```
-
-
-:::tip
-Check the dbgpt start command `dbgpt start --help`
+:::提示
+检查 dbgpt 启动命令 `dbgpt start --help`
 :::
-
 ```shell
 dbgpt start --help
 
@@ -178,11 +157,9 @@ Commands:
   worker      Start model worker
 (dbgpt_env) magic@B-4TMH9N3X-2120 ~ %
 ```
-
-:::tip
-View the dbgpt start model service help command `dbgpt start worker --help`
+:::提示
+查看dbgpt启动模型服务帮助命令`dbgpt start worker --help`
 :::
-
 ```shell
 dbgpt start worker --help
 
@@ -251,11 +228,9 @@ Options:
   --verbose                       Show verbose output.
   --help                          Show this message and exit.
 ```
-
-:::tip
-View dbgpt model service related commands `dbgpt model --help`
+:::提示
+查看dbgpt模型服务相关命令 `dbgpt model --help`
 :::
-
 ```shell
 dbgpt model --help
 

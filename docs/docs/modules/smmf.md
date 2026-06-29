@@ -1,49 +1,49 @@
-# SMMF
-Service-oriented Multi-model Management Framework(SMMF)
+#SMMF
+面向服务的多模型管理框架（SMMF）
 
-# Introduction
+# 简介
 
-In AIGC application exploration and production landing, it is difficult to avoid directly interfacing with modeling services, but at present there is no de facto standard for the deployment of inference of large models, new models are constantly released and new training methods are constantly proposed, and we need to spend a lot of time adapting to the changing underlying modeling environments, which to a certain extent restricts the exploration and landing of AIGC applications
+在AIGC应用探索和生产落地中，很难避免与建模服务直接对接，但目前大模型推理的部署还没有事实上的标准，新模型不断发布、新训练方法不断提出，需要花费大量时间来适应不断变化的底层建模环境，这在一定程度上制约了AIGC应用的探索和落地
 
 
-# System Design
-In order to simplify the model adaptation process and improve model deployment efficiency and performance, we proposed a service-oriented Multi-Model Management Framework (SMMF).
+# 系统设计
+为了简化模型适配过程，提高模型部署效率和性能，我们提出了面向服务的多模型管理框架（SMMF）。
 
-<p align="center">
+<p对齐=“中心”>
   <img src={'/img/module/smmf_layer.png'} width="360px" />
 </p>
 
-SMMF consists of two parts: model inference layer and model deployment layer. The model inference layer corresponds to the model inference framework vLLM, TGI and TensorRT, etc. The model deployment layer connects downward to the inference layer and provides model service capabilities upward. The model deployment framework is based on the inference framework and provides capabilities such as multiple model instances, multiple inference frameworks, multi-cloud, automatic expansion and contraction<sup>[1]</sup> , and observability<sup>[2]</sup>
+SMMF由两部分组成：模型推理层和模型部署层。模型推理层对应模型推理框架vLLM、TGI、TensorRT等。模型部署层向下连接推理层，向上提供模型服务能力。模型部署框架基于推理框架，提供多模型实例、多推理框架、多云、自动扩缩容<sup>[1]</sup>、可观察性<sup>[2]</sup>等能力
 
 
-<p align="center">
+<p对齐=“中心”>
   <img src={'/img/module/smmf.png'} width="600px" />
 </p>
 
-In DB-GPT, SMMF is specifically shown in the figure above: the top layer corresponds to the service and application layer (such as DB-GPT WebServer, Agents system, applications, etc.). The next layer is the model deployment framework layer, which includes the API Server and Model Handle that provide model services to the application layer, the Metadata Management and Control Center Model Controller of the entire deployment framework, and the Model Worker that directly interfaces with the inference framework and the underlying environment. The next layer is the inference framework layer, which includes vLLM, llama.cpp and FastChat (since DB-GPT directly uses the inference interface of FastChat, here we also classify FastChat as an inference framework), large language models (Vicuna, Llama, Baichuan, ChatGLM), etc. are deployed in the inference framework. The bottom layer is the actual deployment environment, including Kubernetes, Ray, AWS, Alibaba Cloud, private cloud, etc
+在DB-GPT中，SMMF具体如上图所示：顶层对应服务和应用层（如DB-GPT WebServer、Agents系统、应用程序等）。再下一层是模型部署框架层，包括为应用层提供模型服务的API Server和Model Handle，整个部署框架的元数据管控中心模型控制器，以及直接与推理框架和底层环境对接的Model Worker。再下一层是推理框架层，包括vLLM、llama.cpp和FastChat（由于DB-GPT直接使用了FastChat的推理接口，这里我们也将FastChat归为推理框架），推理框架中部署了大语言模型（Vicuna、Llama、Baichuan、ChatGLM）等。底层是实际的部署环境，包括Kubernetes、Ray、AWS、阿里云、私有云等
 
-## SMMF features
-- Supports multiple models and multiple inference frameworks
+## SMMF 特性
+- 支持多种模型和多种推理框架
 
-- Scalability and stability
+- 可扩展性和稳定性
 
-- High framework performance
+- 高框架性能
 
-- Manageable and monitorable
+- 可管理、可监控
 
-- Lightweight
+- 轻量级
 
-### Multiple models and multiple inference frameworks
-The current development in the field of large models is changing with each passing day. New models are constantly being released, and new methods are constantly being proposed in terms of model training and inference. We judge that this situation will continue for some time.
+### 多种模型和多种推理框架
+当前大型模型领域的发展日新月异。新的模型不断发布，模型训练和推理方面新的方法不断被提出。我们判断这种情况还将持续一段时间。
 
-For most users exploring and implementing AIGC application scenarios, this situation has both advantages and disadvantages. A typical drawback is to be "led by the nose" by the model, and it is necessary to constantly try and explore new models and new reasoning frameworks.
+对于大多数探索和实施AIGC应用场景的用户来说，这种情况既有优点也有缺点。一个典型的弊端就是被模型“牵着鼻子走”，需要不断尝试和探索新模型、新推理框架。
 
-In DB-GPT, seamless support for FastChat, vLLM and llama.cpp is directly provided. In theory, DB-GPT supports all the models they support. If you have needs for reasoning speed and tactical capabilities, you can directly use vLLM , if you want the CPU or Mac's M1/M2 chip to also get good inference performance, you can use llama.cpp. In addition, DB-GPT also supports proxy models, such as: OpenAI, Azure, Google Bard, Tongyi, Baichuan, Xun Feixinghuo, Baidu Wenxin, Zhipu AI, etc
+DB-GPT 直接提供了对 FastChat、vLLM 和 llama.cpp 的无缝支持。理论上，DB-GPT 支持其支持的所有模型。如果你对推理速度和战术能力有需求，可以直接使用 vLLM ，如果你想让 CPU 或者 Mac 的 M1/M2 芯片也获得良好的推理性能，可以使用 llama.cpp 。此外，DB-GPT还支持代理模型，如：OpenAI、Azure、Google Bard、统易、百川、迅飞星火、百度文信、智浦AI等
 
 
-### Support LLMs
-#### Open-source Models
-  - [Vicuna](https://huggingface.co/Tribbiani/vicuna-13b)
+### 支持法学硕士
+#### 开源模型
+  - [骆驼毛](https://huggingface.co/Tribbiani/vicuna-13b)
   - [vicuna-13b-v1.5](https://huggingface.co/lmsys/vicuna-13b-v1.5)
   - [LLama2](https://huggingface.co/meta-llama/Llama-2-7b-chat-hf)
   - [baichuan2-13b](https://huggingface.co/baichuan-inc/Baichuan2-13B-Chat)
@@ -65,83 +65,82 @@ In DB-GPT, seamless support for FastChat, vLLM and llama.cpp is directly provide
   - [Yi-34B-Chat](https://huggingface.co/01-ai/Yi-34B-Chat)
 
 
-#### Proxy Models
+#### 代理模型
   - [OpenAI·ChatGPT](https://api.openai.com/)
-  - [百川·Baichuan](https://platform.baichuan-ai.com/)
-  - [Alibaba·通义](https://www.aliyun.com/product/dashscope)
-  - [Google·Bard](https://bard.google.com/)
-  - [Baidu·文心](https://cloud.baidu.com/product/wenxinworkshop?track=dingbutonglan)
+  - [百川·百川](https://platform.baichuan-ai.com/)
+  - [阿里巴巴·通义](https://www.aliyun.com/product/dashscope)
+  - [谷歌·巴德](https://bard.google.com/)
+  - [百度·文心](https://cloud.baidu.com/product/wenxinworkshop?track=dingbutonglan)
   - [智谱·ChatGLM](http://open.bigmodel.cn/)
-  - [讯飞·星火](https://xinghuo.xfyun.cn/)
+- [讯飞·星火](https://xinghuo.xfyun.cn/)
 
 
-:::info
-More LLMs, please refer to the [source code](https://github.com/eosphoros-ai/DB-GPT/blob/main/pilot/configs/model_config.py)
+:::信息
+更多LLM请参考【源码】(https://github.com/eosphoros-ai/DB-GPT/blob/main/pilot/configs/model_config.py)
 :::
 
-###  Scalability and stability
-The cloud native field solves the core pain points of management, control, scheduling, and utilization of massive computing resources. Let the value of computing be fully released, making large-scale computing a ubiquitous technology.
+### 可扩展性和稳定性
+云原生领域解决海量计算资源的管理、控制、调度、利用的核心痛点。让计算的价值得到充分释放，让大规模计算成为无所不在的技术。
 
-In the field of large models, we are also concerned about the explosive demand for computing resources during model inference. Therefore, multi-model management with scheduling supercomputing capabilities is what we focus on during production implementation. In view of the outstanding achievements of computing scheduling layers such as Kubernetes and Istio in the past few years, we fully draw on relevant design concepts in multi-model management and control.
+在大模型领域，我们也担心模型推理过程中对计算资源的爆炸性需求。因此，具有调度超算能力的多模型管理是我们在生产实施过程中关注的重点。鉴于过去几年Kubernetes、Istio等计算调度层取得的突出成就，我们在多模型管控方面充分借鉴相关设计理念。
 
-A relatively complete model deployment framework requires multiple parts, including a Model Worker that directly interfaces with the underlying reasoning framework, a Model Controller that manages and maintains multiple model components, and a Model API that provides external model service capabilities. The Model Worker must be scalable. It can be a Model Worker that specifically deploys large language models, or a Model Worker that is used to deploy Embedding models. Of course, it can also be based on the deployment environment, such as physical machine environment, kubernetes environment, and some specific clouds. Choose different Model Workers based on the cloud environment provided by the service provider.
+一个比较完整的模型部署框架需要多个部分，包括直接与底层推理框架对接的Model Worker、管理和维护多个模型组件的Model Controller以及提供外部模型服务能力的Model API。 Model Worker 必须是可扩展的。它可以是专门部署大型语言模型的 Model Worker，也可以是用于部署 Embedding 模型的 Model Worker。当然也可以基于部署环境，比如物理机环境、kubernetes环境、以及一些特定的云。根据服务商提供的云环境选择不同的Model Worker。
 
-The Model Controller used to manage metadata also needs to be extensible, and different Model Controllers must be selected for different deployment environments and different model management and control requirements. In addition, from a technical point of view, model services have a lot in common with traditional microservices. In microservices, a certain service in the microservice can have multiple service instances, and all service instances are uniformly registered to the registration center. The service caller pulls the service list corresponding to the service name from the registration center based on the service name, and then selects a specific service instance to call according to a certain load balancing policy.
+用于管理元数据的模型控制器也需要具有可扩展性，针对不同的部署环境和不同的模型管控需求，必须选择不同的模型控制器。另外，从技术角度来看，模型服务与传统微服务有很多共同点。在微服务中，微服务中的某个服务可以有多个服务实例，所有服务实例都统一注册到注册中心。服务调用方根据服务名称从注册中心拉取该服务名称对应的服务列表，然后根据一定的负载均衡策略选择具体的服务实例进行调用。
 
-In model deployment, a similar architecture can also be considered. A certain model can have multiple model instances. All model instances are uniformly registered to the model registration center, and then the model service caller goes to the registration center to pull the model instance based on the model name. list, and then call a specific model instance according to the load balancing policy of the model.
+在模型部署中，也可以考虑类似的架构。某个模型可以有多个模型实例。所有模型实例统一注册到模型注册中心，然后模型服务调用者根据模型名称去注册中心拉取模型实例。列表，然后根据模型的负载均衡策略调用具体的模型实例。
 
-Here we introduce the model registration center, which is responsible for storing model instance metadata in the Model Controller. It can directly use the registration center in existing microservices as an implementation (such as nacos, eureka, etcd and console, etc.), so that the entire deployment system is Can achieve high availability.
+这里我们介绍一下模型注册中心，它负责在Model Controller中存储模型实例元数据。它可以直接使用现有微服务中的注册中心作为实现（例如nacos、eureka、etcd和console等），这样整个部署系统就可以实现高可用性。
 
-### High framework performance
+### 高框架性能
 
-The framework layer should not be the bottleneck of model inference performance. In most cases, the hardware and inference framework determines the capability of the model service, and the deployment and optimization of model inference is a complex project, and inappropriate framework design may increase this complexity. In our opinion, there are two main concerns in deploying the framework in order to "not drag the feet" on performance: ● The framework should not be the bottleneck of model inference performance.
+框架层不应该成为模型推理性能的瓶颈。大多数情况下，硬件和推理框架决定了模型服务的能力，而模型推理的部署和优化是一个复杂的工程，不合适的框架设计可能会增加这种复杂性。我们认为，为了“不拖累”性能，部署框架主要关注两个问题： ● 框架不应该成为模型推理性能的瓶颈。
 
-Avoid excessive encapsulation: the more encapsulation and the longer the links, the harder it is to troubleshoot performance issues.
+避免过度封装：封装越多、链路越长，性能问题就越难排查。
+高性能通信设计：高性能通信设计有很多要点，这里不再赘述。由于Python目前在AIGC应用中处于领先地位，因此在Python中，异步接口对于服务的性能至关重要。因此，模型服务层仅提供异步接口来与模型推理框架对接层兼容，如果模型推理框架提供异步接口则直接对接。否则使用同步到异步任务支持。
 
-High-performance communication design: There are many points in high-performance communication design, so I won't go into them here. Since Python is currently taking the lead in AIGC applications, in Python, asynchronous interfaces are critical to the performance of the service. Therefore, the model service layer only provides asynchronous interfaces to make compatibility with the model reasoning framework docking layer, and directly dock if the model reasoning framework provides asynchronous interfaces. Otherwise use synchronous to asynchronous task support.
+### 可管理和可监控
+在AIGC应用探索或者AIGC应用生产实施中，我们需要模型部署系统具有一定的管理能力，对通过API或者命令行部署的模型实例进行一定的管理和控制（如：上线、下线、重启、调试等）
 
-### Manageable and monitorable
-In AIGC application exploration or AIGC application production and implementation, we need the model deployment system to have certain management capabilities, and to perform certain management and control on model instances deployed through API or command line (such as: online, offline, restart, debug, etc.)
+可观察性是生产系统的一个非常重要的能力。我们相信可观测性在 AIGC 应用中至关重要。由于用户体验以及用户与系统之间的交互更加复杂，除了传统的观察指标之外，我们还更关注用户的输入信息以及对应场景的上下文信息。调用了哪些模型实例和模型参数、模型的输出内容和响应时间、用户反馈等。
 
-Observability is a very important capability of production systems. We believe that observability is crucial in AIGC applications. Because the user experience and the interaction between the user and the system are more complex, in addition to traditional observation indicators, we are also more concerned about the user's input information and the contextual information of the corresponding scene. Which model instance and model parameters were called, the output content and response time of the model, user feedback, etc.
+从这些信息中我们可以发现模型服务的一些性能瓶颈以及一些用户体验数据。
 
-We can find some performance bottlenecks of model services and some user experience data from this information.
+响应延迟怎么样？
 
-What about response latency?
+是否解决用户问题，从用户内容中提取用户满意度等？
 
-Does it solve user problems and extract user satisfaction, etc. from user content?
+这些是整个应用进一步优化的基础。
 
-These are the basis for further optimization of the entire application.
+### 轻量级
+考虑到支持的模型和推理框架众多，我们需要努力避免不必要的依赖，并确保用户可以根据需要安装它们。
 
-### Lightweight
-Considering the numerous supported models and inference frameworks, we need to work hard to avoid unnecessary dependencies and ensure that users can install them as needed.
+在DB-GPT中，用户可以按需安装自己的依赖项。一些主要的可选依赖项如下：
 
-In DB-GPT, users can install their own dependencies on demand. Some of the main optional dependencies are as follows:
+- 安装最基本的依赖项 `pip install -e .` 或 `pip install -e ".[core]"`
 
-- Install the most basic dependencies `pip install -e .` or  `pip install -e ".[core]"`
+- 安装基础框架的依赖`pip install -e ".[framework]"`
 
-- Install the dependencies of the basic framework `pip install -e ".[framework]"`
+- 安装openai代理模型的依赖项 `pip install -e ".[openai]"`
 
-- Install the dependencies of the openai proxy model `pip install -e ".[openai]"`
+- 安装默认依赖项 `pip install -e ".[default]"`
 
-- Install default dependencies `pip install -e ".[default]"`
+- 安装 vLLM 推理框架的依赖项 `pip install -e ".[vllm]"`
 
-- Install dependencies of vLLM inference framework `pip install -e ".[vllm]"`
+- 安装模型量化部署的依赖项 `pip install -e ".[quantization]"`
 
-- Install dependencies for model quantization deployment `pip install -e ".[quantization]"`
+- 安装知识库相关依赖项 `pip install -e ".[knowledge]"`
 
-- Install knowledge base related dependencies `pip install -e ".[knowledge]"`
+- 安装 pytorch 依赖项 `pip install -e ".[torch]"`
 
-- Install pytorch dependencies `pip install -e ".[torch]"`
+- 安装 llama.cpp 的依赖项 `pip install -e ".[llama_cpp]"`
 
-- Install the dependencies of llama.cpp `pip install -e ".[llama_cpp]"`
+- 安装矢量化数据库依赖项 `pip install -e ".[vstore]"`
 
-- Install vectorized database dependencies `pip install -e ".[vstore]"`
+- 安装数据源依赖项 `pip install -e ".[datasource]"`
 
-- Install data source dependencies `pip install -e ".[datasource]"`
+## 实施
+多模型相关实现请参考【源码】(https://github.com/eosphoros-ai/DB-GPT/tree/main/pilot/model)
 
-## Implementation
-For multi-model related implementation, please refer to the [source code](https://github.com/eosphoros-ai/DB-GPT/tree/main/pilot/model)
-
-# Appendix
-`[1]` `[2]` Capabilities such as automatic scaling and observability are still in incubation and have not yet been implemented.
+# 附录
+`[1]` `[2]` 自动缩放和可观察性等功能仍处于孵化阶段，尚未实现。

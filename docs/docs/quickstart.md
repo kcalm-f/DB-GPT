@@ -1,47 +1,44 @@
 ---
 sidebar_position: 0
 ---
-# Quickstart
+# 快速入门
 
-DB-GPT supports the installation and use of various open-source and closed-source models. Different models have different requirements for environment and resources. If local model deployment is required, GPU resources are necessary. The API proxy model requires relatively few resources and can be deployed and started on a CPU machine.
+DB-GPT支持各种开源和闭源模型的安装和使用。不同的模型对环境和资源的要求不同。如果需要本地模型部署，则需要GPU资源。 API代理模型需要的资源相对较少，可以在CPU机器上部署和启动。
 
-:::info note
-- Detailed installation and deployment tutorials can be found in [Installation](./installation).
-- This page only introduces deployment based on ChatGPT proxy and local GLM model.
+:::信息说明
+- 详细的安装和部署教程可以在[安装](./installation)中找到。
+- 本页仅介绍基于ChatGPT代理和本地GLM模型的部署。
 :::
 
-## Environment Preparation
+## 环境准备
 
-### Download Source Code
+### 下载源代码
 
-:::tip
-Download DB-GPT
+:::提示
+下载 DB-GPT
 :::
-
 ```bash
 git clone https://github.com/eosphoros-ai/DB-GPT.git
 ```
+### 环境设置
 
-### Environment Setup
-
-- The default database uses SQLite, so there is no need to install a database in the 
-default startup mode. If you need to use other databases, please refer to the [advanced tutorials](./application/advanced_tutorial/rag.md) below. 
-Starting from version 0.7.0, DB-GPT uses uv for environment and package management, providing faster and more stable dependency management.
+- 默认数据库使用SQLite，因此无需在系统中安装数据库 
+默认启动模式。如果需要使用其他数据库，请参考下面的【高级教程】(./application/advanced_tutorial/rag.md)。 
+从0.7.0版本开始，DB-GPT使用uv进行环境和包管理，提供更快、更稳定的依赖管理。
 
 
-:::info note
-There are some ways to install uv:
+:::信息说明
+安装uv有以下几种方法：
 :::
-
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 <Tabs
-  defaultValue="uv_sh"
-  values={[
-    {label: 'Command (macOS And Linux)', value: 'uv_sh'},
-    {label: 'PyPI', value: 'uv_pypi'},
-    {label: 'Other', value: 'uv_other'},
+默认值=“uv_sh”
+  值={[
+    {label: '命令（macOS 和 Linux）', value: 'uv_sh'},
+    {标签：'PyPI'，值：'uv_pypi'}，
+    {标签：'其他'，值：'uv_other'}，
   ]}>
   <TabItem value="uv_sh" label="Command">
 ```bash
@@ -50,8 +47,7 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
   </TabItem>
 
   <TabItem value="uv_pypi" label="Pypi">
-Install uv using pipx.
-
+使用 pipx 安装 uv。
 ```bash
 python -m pip install --upgrade pip
 python -m pip install --upgrade pipx
@@ -61,21 +57,17 @@ pipx install uv --global
   </TabItem>
 
   <TabItem value="uv_other" label="Other">
-
-You can see more installation methods on the [uv installation](https://docs.astral.sh/uv/getting-started/installation/)
+更多安装方法可以参见【uv安装】(https://docs.astral.sh/uv/getting-started/installation/)
   </TabItem>
 
 </Tabs>
-
-Then, you can run `uv --version` to check if uv is installed successfully.
-
+然后，您可以运行“uv --version”来检查uv是否安装成功。
 ```bash
 uv --version
 ```
-
-## Deploy DB-GPT 
-:::tip
-If you are in the China region, you can add --index-url=https://pypi.tuna.tsinghua.edu.cn/simple at the end of the command.Like this:
+## 部署 DB-GPT 
+:::提示
+如果您在中国地区，可以在命令末尾添加 --index-url=https://pypi.tuna.tsinghua.edu.cn/simple。如下所示：
 ```bash
 uv sync --all-packages \
 --extra "base" \
@@ -85,28 +77,25 @@ uv sync --all-packages \
 --extra "dbgpts" \
 --index-url=https://pypi.tuna.tsinghua.edu.cn/simple
 ```
-And we recommend you to configure you pypi index to environment variable `UV_INDEX_URL`
-example:
+我们建议您将 pypi 索引配置到环境变量“UV_INDEX_URL”
+示例：
 ```bash
 echo "export UV_INDEX_URL=https://pypi.tuna.tsinghua.edu.cn/simple" >> ~/.bashrc
 ```
-
-This tutorial assumes that you can establish network communication with the dependency download sources.
+本教程假设您可以与依赖项下载源建立网络通信。
 :::
 
-### Install Dependencies
-
+### 安装依赖项
 <Tabs
-  defaultValue="openai"
-  values={[
-    {label: 'OpenAI (proxy)', value: 'openai'},
-    {label: 'DeepSeek (proxy)', value: 'deepseek'},
-    {label: 'GLM4 (local)', value: 'glm-4'},
-    {label: 'VLLM (local)', value: 'vllm'},
-    {label: 'LLAMA_CPP (local)', value: 'llama_cpp'},
-    {label: 'Ollama (proxy)', value: 'ollama'},
+默认值=“openai”
+  值={[
+    {标签：'OpenAI（代理）'，值：'openai'}，
+    {标签：'DeepSeek（代理）'，值：'deepseek'}，
+    {标签：'GLM4（本地）'，值：'glm-4'}，
+    {标签：'VLLM（本地）'，值：'vllm'}，
+    {标签：'LLAMA_CPP（本地）'，值：'llama_cpp'}，
+    {label: 'Ollama (代理)', value: 'ollama'},
   ]}>
-
   <TabItem value="openai" label="OpenAI(proxy)">
 
 ```bash
@@ -118,11 +107,9 @@ uv sync --all-packages \
 --extra "storage_chromadb" \
 --extra "dbgpts"
 ```
+### 运行网络服务器
 
-### Run Webserver
-
-To run DB-GPT with OpenAI proxy, you must provide the OpenAI API key in the `configs/dbgpt-proxy-openai.toml` configuration file or privide it in the environment variable with key `OPENAI_API_KEY`.
-
+要使用 OpenAI 代理运行 DB-GPT，您必须在“configs/dbgpt-proxy-openai.toml”配置文件中提供 OpenAI API 密钥，或在环境变量中使用密钥“OPENAI_API_KEY”提供它。
 ```toml
 # Model Configurations
 [models]
@@ -133,15 +120,13 @@ api_key = "your-openai-api-key"
 ...
 api_key = "your-openai-api-key"
 ```
-
-Then run the following command to start the webserver:
-
+然后运行以下命令来启动网络服务器：
 ```bash
 uv run dbgpt start webserver --config configs/dbgpt-proxy-openai.toml
 ```
-In the above command, `--config` specifies the configuration file, and `configs/dbgpt-proxy-openai.toml` is the configuration file for the OpenAI proxy model, you can also use other configuration files or create your own configuration file according to your needs.
+上面命令中，`--config`指定配置文件，`configs/dbgpt-proxy-openai.toml`是OpenAI代理模型的配置文件，您也可以使用其他配置文件或根据需要创建自己的配置文件。
 
-Optionally, you can also use the following command to start the webserver:
+或者，您还可以使用以下命令来启动网络服务器：
 ```bash
 uv run python packages/dbgpt-app/src/dbgpt_app/dbgpt_server.py --config configs/dbgpt-proxy-openai.toml
 ```
@@ -158,12 +143,11 @@ uv sync --all-packages \
 --extra "storage_chromadb" \
 --extra "dbgpts"
 ```
+### 运行网络服务器
 
-### Run Webserver
+要使用 DeepSeek 代理运行 DB-GPT，您必须在“configs/dbgpt-proxy-deepseek.toml”中提供 DeepSeek API 密钥。
 
-To run DB-GPT with DeepSeek proxy, you must provide the DeepSeek API key in the `configs/dbgpt-proxy-deepseek.toml`.
-
-And you can specify your embedding model in the `configs/dbgpt-proxy-deepseek.toml` configuration file, the default embedding model is `BAAI/bge-large-zh-v1.5`. If you want to use other embedding models, you can modify the `configs/dbgpt-proxy-deepseek.toml` configuration file and specify the `name` and `provider` of the embedding model in the `[[models.embeddings]]` section. The provider can be `hf`.Finally, you need to append `--extra "hf"` at the end of the dependency installation command. Here's the updated command:
+您可以在`configs/dbgpt-proxy-deepseek.toml`配置文件中指定您的嵌入模型，默认嵌入模型是`BAAI/bge-large-zh-v1.5`。如果想使用其他嵌入模型，可以修改 configs/dbgpt-proxy-deepseek.toml 配置文件，并在 [[models.embeddings]] 部分指定嵌入模型的 name 和provider 。提供者可以是`hf`。最后，您需要在依赖安装命令末尾附加`--extra "hf"`。这是更新后的命令：
 ```bash
 uv sync --all-packages \
 --extra "base" \
@@ -174,8 +158,7 @@ uv sync --all-packages \
 --extra "hf" \
 --extra "cpu"
 ```
-
-**Model Configurations**:
+**型号配置**：
 ```toml
 # Model Configurations
 [models]
@@ -192,15 +175,13 @@ provider = "hf"
 # path = "the-model-path-in-the-local-file-system"
 path = "/data/models/bge-large-zh-v1.5"
 ```
-
-Then run the following command to start the webserver:
-
+然后运行以下命令来启动网络服务器：
 ```bash
 uv run dbgpt start webserver --config configs/dbgpt-proxy-deepseek.toml
 ```
-In the above command, `--config` specifies the configuration file, and `configs/dbgpt-proxy-deepseek.toml` is the configuration file for the DeepSeek proxy model, you can also use other configuration files or create your own configuration file according to your needs.
+上面命令中，`--config`指定配置文件，`configs/dbgpt-proxy-deepseek.toml`是DeepSeek代理模型的配置文件，您也可以使用其他配置文件或根据需要创建自己的配置文件。
 
-Optionally, you can also use the following command to start the webserver:
+或者，您还可以使用以下命令来启动网络服务器：
 ```bash
 uv run python packages/dbgpt-app/src/dbgpt_app/dbgpt_server.py --config configs/dbgpt-proxy-deepseek.toml
 ```
@@ -220,11 +201,9 @@ uv sync --all-packages \
 --extra "quant_bnb" \
 --extra "dbgpts"
 ```
+### 运行网络服务器
 
-### Run Webserver
-
-To run DB-GPT with the local model. You can modify the `configs/dbgpt-local-glm.toml` configuration file to specify the model path and other parameters.
-
+使用本地模型运行 DB-GPT。您可以修改 configs/dbgpt-local-glm.toml 配置文件来指定模型路径和其他参数。
 ```toml
 # Model Configurations
 [models]
@@ -242,10 +221,9 @@ provider = "hf"
 # uncomment the following line to specify the model path in the local file system
 # path = "the-model-path-in-the-local-file-system"
 ```
-In the above configuration file, `[[models.llms]]` specifies the LLM model, and `[[models.embeddings]]` specifies the embedding model. If you not provide the `path` parameter, the model will be downloaded from the Hugging Face model hub according to the `name` parameter.
+在上面的配置文件中，“[[models.llms]]”指定LLM模型，“[[models.embeddings]]”指定嵌入模型。如果您不提供“path”参数，则将根据“name”参数从Hugging Face模型中心下载模型。
 
-Then run the following command to start the webserver:
-
+然后运行以下命令来启动网络服务器：
 ```bash
 uv run dbgpt start webserver --config configs/dbgpt-local-glm.toml
 ```
@@ -266,11 +244,9 @@ uv sync --all-packages \
 --extra "quant_bnb" \
 --extra "dbgpts"
 ```
+### 运行网络服务器
 
-### Run Webserver
-
-To run DB-GPT with the local model. You can modify the `configs/dbgpt-local-vllm.toml` configuration file to specify the model path and other parameters.
-
+使用本地模型运行 DB-GPT。您可以修改 configs/dbgpt-local-vllm.toml 配置文件来指定模型路径和其他参数。
 ```toml
 # Model Configurations
 [models]
@@ -288,19 +264,16 @@ provider = "hf"
 # uncomment the following line to specify the model path in the local file system
 # path = "the-model-path-in-the-local-file-system"
 ```
-In the above configuration file, `[[models.llms]]` specifies the LLM model, and `[[models.embeddings]]` specifies the embedding model. If you not provide the `path` parameter, the model will be downloaded from the Hugging Face model hub according to the `name` parameter.
+在上面的配置文件中，“[[models.llms]]”指定LLM模型，“[[models.embeddings]]”指定嵌入模型。如果您不提供“path”参数，则将根据“name”参数从Hugging Face模型中心下载模型。
 
-Then run the following command to start the webserver:
-
+然后运行以下命令来启动网络服务器：
 ```bash
 uv run dbgpt start webserver --config configs/dbgpt-local-vllm.toml
 ```
 
   </TabItem>
   <TabItem value="llama_cpp" label="LLAMA_CPP(local)">
-
-If you has a Nvidia GPU, you can enable the CUDA support by setting the environment variable `CMAKE_ARGS="-DGGML_CUDA=ON"`.
-
+如果您有 Nvidia GPU，则可以通过设置环境变量 CMAKE_ARGS="-DGGML_CUDA=ON" 来启用 CUDA 支持。
 ```bash
 # Use uv to install dependencies needed for llama-cpp
 # Install core dependencies and select desired extensions
@@ -314,8 +287,7 @@ CMAKE_ARGS="-DGGML_CUDA=ON" uv sync --all-packages \
 --extra "quant_bnb" \
 --extra "dbgpts"
 ```
-
-Otherwise, run the following command to install dependencies without CUDA support.
+否则，运行以下命令来安装不支持 CUDA 的依赖项。
 ```bash
 # Use uv to install dependencies needed for llama-cpp
 # Install core dependencies and select desired extensions
@@ -328,11 +300,9 @@ uv sync --all-packages \
 --extra "quant_bnb" \
 --extra "dbgpts"
 ```
+### 运行网络服务器
 
-### Run Webserver
-
-To run DB-GPT with the local model. You can modify the `configs/dbgpt-local-llama-cpp.toml` configuration file to specify the model path and other parameters.
-
+使用本地模型运行 DB-GPT。您可以修改 configs/dbgpt-local-llama-cpp.toml 配置文件来指定模型路径和其他参数。
 ```toml
 # Model Configurations
 [models]
@@ -350,10 +320,9 @@ provider = "hf"
 # uncomment the following line to specify the model path in the local file system
 # path = "the-model-path-in-the-local-file-system"
 ```
-In the above configuration file, `[[models.llms]]` specifies the LLM model, and `[[models.embeddings]]` specifies the embedding model. If you not provide the `path` parameter, the model will be downloaded from the Hugging Face model hub according to the `name` parameter.
+在上面的配置文件中，“[[models.llms]]”指定LLM模型，“[[models.embeddings]]”指定嵌入模型。如果您不提供“path”参数，则将根据“name”参数从Hugging Face模型中心下载模型。
 
-Then run the following command to start the webserver:
-
+然后运行以下命令来启动网络服务器：
 ```bash
 uv run dbgpt start webserver --config configs/dbgpt-local-llama-cpp.toml
 ```
@@ -370,11 +339,9 @@ uv sync --all-packages \
 --extra "storage_chromadb" \
 --extra "dbgpts"
 ```
+### 运行网络服务器
 
-### Run Webserver
-
-To run DB-GPT with Ollama proxy, you must provide the Ollama API base in the `configs/dbgpt-proxy-ollama.toml` configuration file.
-
+要使用 Ollama 代理运行 DB-GPT，您必须在“configs/dbgpt-proxy-ollama.toml”配置文件中提供 Ollama API 库。
 ```toml
 # Model Configurations
 [models]
@@ -385,73 +352,60 @@ api_base = "your-ollama-api-base"
 ...
 api_base = "your-ollama-api-base"
 ```
-
-Then run the following command to start the webserver:
-
+然后运行以下命令来启动网络服务器：
 ```bash
 uv run dbgpt start webserver --config configs/dbgpt-proxy-ollama.toml
 ```
-In the above command, `--config` specifies the configuration file, and `configs/dbgpt-proxy-ollama.toml` is the configuration file for the Ollama proxy model, you can also use other configuration files or create your own configuration file according to your needs.
+上面命令中，`--config`指定配置文件，`configs/dbgpt-proxy-ollama.toml`是Ollama代理模型的配置文件，您也可以使用其他配置文件或根据需要创建自己的配置文件。
 
-Optionally, you can also use the following command to start the webserver:
+或者，您还可以使用以下命令来启动网络服务器：
 ```bash
 uv run python packages/dbgpt-app/src/dbgpt_app/dbgpt_server.py --config configs/dbgpt-proxy-ollama.toml
 ```
 
   </TabItem>
 </Tabs>
+##（可选）更多配置
 
-## (Optional) More Configuration
+您可以在[配置](./config/config-reference)中查看配置来了解更多 
+配置选项。
 
-You can view the configuration in [Configuration](./config/config-reference) to learn more about 
-the configuration options.
+例如，如果您想配置LLM模型，您可以在[LLM配置](./config-reference/llm/)中看到所有可用的选项。
 
-For example, if you want to configure the LLM model, you can see all available options in the [LLM Configuration](./config-reference/llm/).
-
-And another example, if you want to how to configure the vllm model, you can see all available options in the [VLLM Configuration](./config-reference/llm/vllm_adapter_vllmdeploymodelparameters_1d4a24.mdx).
+另一个例子，如果您想了解如何配置vllm模型，您可以在[VLLM配置](./config-reference/llm/vllm_adapter_vllmdeploymodelparameters_1d4a24.mdx)中查看所有可用选项。
 
 
-## DB-GPT Install Help Tool
+## DB-GPT 安装帮助工具
 
-If you need help with the installation, you can use the `uv` script to get help.
-
+如果您需要安装帮助，可以使用“uv”脚本来获取帮助。
 ```bash
 uv run install_help.py --help
 ```
+## 生成安装命令
 
-## Generate Install Command
-
-You can use the `uv` script to generate the install command in the interactive mode.
-
+您可以使用 uv 脚本以交互模式生成安装命令。
 ```bash
 uv run install_help.py install-cmd --interactive
 ```
-
-And you can generate an install command with all the dependencies needed for the OpenAI proxy model.
-
+您可以生成一个安装命令，其中包含 OpenAI 代理模型所需的所有依赖项。
 ```bash
 uv run install_help.py install-cmd --all
 ```
-
-You can found all the dependencies and extras.
-
+您可以找到所有依赖项和附加项。
 ```bash
 uv run install_help.py list
 ```
+## 访问网站
 
+打开浏览器并访问 [`http://localhost:5670`](http://localhost:5670)
 
-## Visit Website
+### （可选）单独运行 Web 前端
 
-Open your browser and visit [`http://localhost:5670`](http://localhost:5670)
-
-### (Optional) Run Web Front-end Separately
-
-You can also run the web front-end separately:
-
+您还可以单独运行 Web 前端：
 ```bash
 cd web && npm install
 cp .env.template .env
 // Set API_BASE_URL to your DB-GPT server address, usually http://localhost:5670
 npm run dev
 ```
-Open your browser and visit [`http://localhost:3000`](http://localhost:3000)
+打开浏览器并访问 [`http://localhost:3000`](http://localhost:3000)

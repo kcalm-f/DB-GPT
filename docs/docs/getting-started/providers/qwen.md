@@ -2,18 +2,16 @@
 sidebar_position: 3
 title: Qwen (Tongyi)
 ---
+#Qwen（统一）
 
-# Qwen (Tongyi)
+通过 DashScope API 配置 DB-GPT 以使用阿里云的 Qwen 模型。
 
-Configure DB-GPT to use Alibaba Cloud's Qwen models via the DashScope API.
+## 先决条件
 
-## Prerequisites
+- [DashScope API 密钥](https://dashscope.console.aliyun.com/)
+- DB-GPT 安装了额外的 `proxy_openai`
 
-- A [DashScope API key](https://dashscope.console.aliyun.com/)
-- DB-GPT installed with `proxy_openai` extra
-
-## Install dependencies
-
+## 安装依赖项
 ```bash
 uv sync --all-packages \
   --extra "base" \
@@ -22,11 +20,9 @@ uv sync --all-packages \
   --extra "storage_chromadb" \
   --extra "dbgpts"
 ```
+## 配置
 
-## Configuration
-
-Edit `configs/dbgpt-proxy-tongyi.toml`:
-
+编辑`configs/dbgpt-proxy-tongyi.toml`：
 ```toml
 [models]
 [[models.llms]]
@@ -41,48 +37,44 @@ provider = "proxy/tongyi"
 api_url = "https://dashscope.aliyuncs.com/compatible-mode/v1/embeddings"
 api_key = "${env:DASHSCOPE_API_KEY}"
 ```
-
-:::tip
-Set the environment variable to keep your key out of config:
-
+:::提示
+设置环境变量以使您的密钥远离配置：
 ```bash
 export DASHSCOPE_API_KEY="your-dashscope-api-key"
 ```
 :::
 
-## Available models
+## 可用型号
 
-### LLMs
+### 法学硕士
 
-| Model | Config name | Notes |
+|型号|配置名称 |笔记|
 |---|---|---|
-| Qwen-Max | `qwen-max` | Flagship model, best quality |
-| Qwen-Plus | `qwen-plus` | Balanced performance and cost |
-| Qwen-Turbo | `qwen-turbo` | Fastest and cheapest |
-| Qwen-Long | `qwen-long` | Extended context window |
+| Qwen-麦克斯 | `qwen-max` |旗舰机型，最佳品质 |
+| Qwen-Plus | `qwen-plus` |平衡性能与成本|
+| Qwen-涡轮| `qwen-turbo` |最快最便宜|
+|昆龙 | `qwen-long` |扩展上下文窗口|
 
-### Embeddings
+### 嵌入
 
-| Model | Config name | Notes |
+|型号|配置名称 |笔记|
 |---|---|---|
-| text-embedding-v3 | `text-embedding-v3` | Recommended |
-| text-embedding-v2 | `text-embedding-v2` | Previous generation |
+|文本嵌入-v3 | `文本嵌入-v3` |推荐|
+|文本嵌入-v2 | `文本嵌入-v2` |上一代|
 
-## Start the server
-
+## 启动服务器
 ```bash
 uv run dbgpt start webserver --config configs/dbgpt-proxy-tongyi.toml
 ```
+## 故障排除
 
-## Troubleshooting
-
-| Issue | Solution |
+|问题 |解决方案 |
 |---|---|
-| `InvalidAPIKey` | Verify your DashScope API key and ensure it is activated |
-| Model quota exceeded | Check your DashScope console for usage limits |
-| Slow response | Try `qwen-turbo` for faster responses |
+| `无效的APIKey` |验证您的 DashScope API 密钥并确保其已激活 |
+|型号配额超出 |检查您的 DashScope 控制台的使用限制 |
+|反应慢|尝试“qwen-turbo”以获得更快的响应 |
 
-## What's next
+## 接下来是什么
 
-- [Getting Started](/docs/getting-started/quick-start) — Full setup walkthrough
-- [Model Providers](/docs/getting-started/providers/) — Try other providers
+- [入门](/docs/getting-started/quick-start) — 完整设置演练
+- [模型提供程序](/docs/getting-started/providers/) — 尝试其他提供程序

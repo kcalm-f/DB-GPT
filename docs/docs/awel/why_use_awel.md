@@ -1,10 +1,10 @@
-# Why use AWEL?
+# 为什么使用 AWEL？
 
-AWEL (Agentic Workflow Expression Language) is an intelligent agent workflow expression language specifically designed for the development of LLMs applications. In the design of DB-GPT, Agents are considered first-class citizens. RAGs, Datasources (DS), SMMF(Service-oriented Multi-model Management Framework), and Plugins are all resources that agents depend on.
+AWEL（代理工作流表达语言）是一种智能代理工作流表达语言，专门为法学硕士应用程序的开发而设计。在 DB-GPT 的设计中，Agent 被视为一等公民。 RAG、数据源（DS）、SMMF（面向服务的多模型管理框架）和插件都是代理所依赖的资源。
 
-We currently also see that the auto-orchestration capabilities of multi-agents are greatly limited by the model's capabilities, and at the same time, for scenarios that require determinism. For instance, tasks like pipeline work do not need to utilize the auto-orchestration capabilities of large models. Therefore, in DB-GPT, the integration of AWEL with agents can satisfy the implementation of a production-level pipeline and the auto-orchestration of agents systems that address open-ended problems.
+我们目前还看到，多智能体的自动编排能力受到模型能力的极大限制，同时对于需要确定性的场景也是如此。例如，管道工作等任务不需要利用大型模型的自动编排功能。因此，在DB-GPT中，AWEL与代理的集成可以满足生产级管道的实现以及解决开放式问题的代理系统的自动编排。
 
 
-Through the orchestration capabilities of AWEL, it is possible to develop large language model applications with a minimal amount of code.
+通过AWEL的编排功能，可以用最少的代码开发大型语言模型应用程序。
 
-**AWEL  and  agents are all you need**. 
+**AWEL 和代理就是您所需要的**。

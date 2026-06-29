@@ -15,229 +15,187 @@ keywords:
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
+从“@theme/CodeBlock”导入CodeBlock；
 
-# DB-GPT Docker Build Guide
+# DB-GPT Docker 构建指南
 
-This guide provides comprehensive instructions for building DB-GPT Docker images with various configurations using the `docker/base/build_image.sh` script.
+本指南提供了使用“docker/base/build_image.sh”脚本构建具有各种配置的 DB-GPT Docker 映像的全面说明。
 
-## Overview
+## 概述
 
-The DB-GPT build script allows you to create Docker images tailored to your specific requirements. You can choose from predefined installation modes or customize the build with specific extras, environment variables, and other settings.
+DB-GPT 构建脚本允许您创建适合您的特定要求的 Docker 映像。您可以从预定义的安装模式中进行选择，也可以使用特定的附加功能、环境变量和其他设置来自定义构建。
 
-## Available Installation Modes
-
+## 可用的安装模式
 <Tabs>
   <TabItem value="default" label="Default" default>
-    CUDA-based image with standard features.
-    
+具有标准功能的基于 CUDA 的图像。
     ```bash
     bash docker/base/build_image.sh
     ```
-    
-    Includes: CUDA support, proxy integrations (OpenAI, Ollama, Zhipuai, Anthropic, Qianfan, Tongyi), RAG capabilities, graph RAG, Hugging Face integration, and quantization support.
+包括：CUDA 支持、代理集成（OpenAI、Ollama、Zhippuai、Anthropic、Qianfan、Tongyi）、RAG 功能、图 RAG、Hugging Face 集成和量化支持。
   </TabItem>
   <TabItem value="openai" label="OpenAI">
-    CPU-based image optimized for OpenAI API usage.
-    
+基于 CPU 的图像针对 OpenAI API 使用进行了优化。
     ```bash
     bash docker/base/build_image.sh --install-mode openai
     ```
-    
-    Includes: Basic functionality, all proxy integrations, and RAG capabilities without GPU acceleration.
+包括：基本功能、所有代理集成以及不带 GPU 加速的 RAG 功能。
   </TabItem>
   <TabItem value="vllm" label="VLLM">
-    CUDA-based image with VLLM for optimized inference.
-    
+基于 CUDA 的图像，具有 VLLM 以优化推理。
     ```bash
     bash docker/base/build_image.sh --install-mode vllm
     ```
-    
-    Includes: All default features plus VLLM support for high-performance inference.
+包括：所有默认功能以及用于高性能推理的 VLLM 支持。
   </TabItem>
   <TabItem value="llama-cpp" label="Llama-cpp">
-    CUDA-based image with Llama-cpp support.
-    
+基于 CUDA 的图像，支持 Llama-cpp。
     ```bash
     bash docker/base/build_image.sh --install-mode llama-cpp
     ```
-    
-    Includes: All default features plus Llama-cpp and Llama-cpp server with CUDA acceleration enabled via `CMAKE_ARGS="-DGGML_CUDA=ON"`.
+包括：所有默认功能加上 Llama-cpp 和 Llama-cpp 服务器，通过“CMAKE_ARGS="-DGGML_CUDA=ON"”启用 CUDA 加速。
   </TabItem>
   <TabItem value="full" label="Full">
-    CUDA-based image with all available features.
-    
+基于 CUDA 的图像，具有所有可用功能。
     ```bash
     bash docker/base/build_image.sh --install-mode full
     ```
-    
-    Includes: All features from other modes plus embedding capabilities.
+包括：其他模式的所有功能以及嵌入功能。
   </TabItem>
 </Tabs>
+## 基本用法
 
-## Basic Usage
+### 查看可用模式
 
-### View Available Modes
-
-To see all available installation modes and their configurations:
-
+要查看所有可用的安装模式及其配置：
 ```bash
 bash docker/base/build_image.sh --list-modes
 ```
+### 获取帮助
 
-### Get Help
-
-Display all available options:
-
+显示所有可用选项：
 ```bash
 bash docker/base/build_image.sh --help
 ```
+## 定制选项
 
-## Customization Options
+### Python版本
 
-### Python Version
-
-DB-GPT requires Python 3.10 or higher. The default is Python 3.11, but you can specify a different version:
-
+DB-GPT 需要 Python 3.10 或更高版本。默认为 Python 3.11，但您可以指定不同的版本：
 ```bash
 bash docker/base/build_image.sh --python-version 3.10
 ```
+### 自定义图像名称
 
-### Custom Image Name
-
-Set a custom name for the built image:
-
+为构建的图像设置自定义名称：
 ```bash
 bash docker/base/build_image.sh --image-name mycompany/dbgpt
 ```
+### 图片名称后缀
 
-### Image Name Suffix
-
-Add a suffix to the image name for versioning or environment identification:
-
+为镜像名称添加后缀以进行版本控制或环境识别：
 ```bash
 bash docker/base/build_image.sh --image-name-suffix v1.0
 ```
+这将为默认模式生成“eosphorosai/dbgpt-v1.0”，或为特定模式生成“eosphorosai/dbgpt-MODE-v1.0”。
 
-This will generate `eosphorosai/dbgpt-v1.0` for the default mode or `eosphorosai/dbgpt-MODE-v1.0` for specific modes.
+### 画中画镜子
 
-### PIP Mirror
-
-Choose a different PIP index URL:
-
+选择不同的 PIP 索引 URL：
 ```bash
 bash docker/base/build_image.sh --pip-index-url https://pypi.org/simple
 ```
+### Ubuntu 镜像
 
-### Ubuntu Mirror
-
-Control whether to use Tsinghua Ubuntu mirror:
-
+控制是否使用清华Ubuntu镜像：
 ```bash
 bash docker/base/build_image.sh --use-tsinghua-ubuntu false
 ```
+### 语言偏好
 
-### Language Preference
-
-Set your preferred language (default is English):
-
+设置您的首选语言（默认为英语）：
 ```bash
 bash docker/base/build_image.sh --language zh
 ```
+## 高级定制
 
-## Advanced Customization
+### 自定义附加功能
 
-### Custom Extras
-
-You can customize the Python package extras installed in the image:
-
+您可以自定义映像中安装的 Python 包附加功能：
 <Tabs>
   <TabItem value="override" label="Override Extras" default>
-    Completely replace the default extras with your own selection:
-    
+用您自己的选择完全替换默认的附加功能：
     ```bash
     bash docker/base/build_image.sh --extras "base,proxy_openai,rag,storage_chromadb"
     ```
   </TabItem>
   <TabItem value="add" label="Add Extras">
-    Keep the default extras and add more:
-    
+保留默认的附加功能并添加更多：
     ```bash
     bash docker/base/build_image.sh --add-extras "storage_milvus,storage_elasticsearch,datasource_postgres"
     ```
   </TabItem>
   <TabItem value="mode-specific" label="Mode-Specific">
-    Add specific extras to a particular installation mode:
-    
+将特定的附加功能添加到特定的安装模式：
     ```bash
     bash docker/base/build_image.sh --install-mode vllm --add-extras "storage_milvus,datasource_postgres"
     ```
   </TabItem>
 </Tabs>
+#### 可用的额外选项
 
-#### Available Extra Options
+以下是您可以添加的一些有用的附加功能：
 
-Here are some useful extras you can add:
-
-| Extra Package | Description |
+|额外套餐 |描述 |
 |--------------|-------------|
-| `storage_milvus` | Vector store integration with Milvus |
-| `storage_valkey` | Vector store integration with Valkey |
-| `storage_elasticsearch` | Vector store integration with Elasticsearch |
-| `datasource_postgres` | Database connector for PostgreSQL |
-| `vllm` | VLLM integration for optimized inference |
-| `llama_cpp` | Llama-cpp Python bindings |
-| `llama_cpp_server` | Llama-cpp HTTP server |
+| `storage_milvus` | Vector 商店与 Milvus 集成 |
+| `storage_valkey` | Vector 商店与 Valkey 集成 |
+| `storage_elasticsearch` |矢量存储与 Elasticsearch 集成 |
+| `datasource_postgres` | PostgreSQL 的数据库连接器 |
+| `vllm` | VLLM 集成以优化推理 |
+| `llama_cpp` | Llama-cpp Python 绑定 |
+| `llama_cpp_server` | Llama-cpp HTTP 服务器 |
 
-You can run `uv run install_help.py list` in your local DB-GPT repository to see all available extras.
+您可以在本地 DB-GPT 存储库中运行“uv run install_help.py list”来查看所有可用的附加功能。
 
-### Environment Variables
+### 环境变量
 
-DB-GPT build supports environment variables for specialized builds. The main environment variable used is `CMAKE_ARGS` which is particularly important for Llama-cpp compilation.
-
+DB-GPT 构建支持专门构建的环境变量。使用的主要环境变量是“CMAKE_ARGS”，它对于 Llama-cpp 编译特别重要。
 <Tabs>
   <TabItem value="override-env" label="Override Env Vars" default>
-    Replace the default environment variables:
-    
+替换默认环境变量：
     ```bash
     bash docker/base/build_image.sh --env-vars "CMAKE_ARGS=\"-DGGML_CUDA=ON -DLLAMA_CUBLAS=ON\""
     ```
   </TabItem>
   <TabItem value="add-env" label="Add Env Vars">
-    Add additional environment variables:
-    
+添加额外的环境变量：
     ```bash
     bash docker/base/build_image.sh --install-mode llama-cpp --add-env-vars "FORCE_CMAKE=1"
     ```
   </TabItem>
 </Tabs>
-
-:::note
-For Llama-cpp mode, `CMAKE_ARGS="-DGGML_CUDA=ON"` is automatically set to enable CUDA acceleration.
+:::注意
+对于 Llama-cpp 模式，会自动设置 CMAKE_ARGS="-DGGML_CUDA=ON" 来启用 CUDA 加速。
 :::
 
-### Docker Network
+### Docker 网络
 
-Specify a Docker network for building:
-
+指定用于构建的 Docker 网络：
 ```bash
 bash docker/base/build_image.sh --network host
 ```
+### 自定义 Dockerfile
 
-### Custom Dockerfile
-
-Use a custom Dockerfile:
-
+使用自定义 Dockerfile：
 ```bash
 bash docker/base/build_image.sh --dockerfile Dockerfile.custom
 ```
+## 示例场景
 
-## Example Scenarios
+### 带有 PostgreSQL 和 Elasticsearch 的企业 DB-GPT
 
-### Enterprise DB-GPT with PostgreSQL and Elasticsearch
-
-Build a full-featured enterprise version with PostgreSQL and Elasticsearch support:
-
+构建具有 PostgreSQL 和 Elasticsearch 支持的全功能企业版：
 ```bash
 bash docker/base/build_image.sh --install-mode full \
   --add-extras "storage_elasticsearch,datasource_postgres" \
@@ -245,96 +203,81 @@ bash docker/base/build_image.sh --install-mode full \
   --python-version 3.10 \
   --load-examples false
 ```
+### 针对特定硬件优化的 Llama-cpp
 
-### Optimized Llama-cpp for Specific Hardware
-
-Build with custom Llama-cpp optimization flags:
-
+使用自定义 Llama-cpp 优化标志构建：
 ```bash
 bash docker/base/build_image.sh --install-mode llama-cpp \
   --env-vars "CMAKE_ARGS=\"-DGGML_CUDA=ON -DGGML_AVX2=OFF -DGGML_AVX512=ON\"" \
   --python-version 3.11
 ```
+### 轻量级 OpenAI 代理
 
-### Lightweight OpenAI Proxy
-
-Build a minimal OpenAI proxy image:
-
+构建一个最小的 OpenAI 代理镜像：
 ```bash
 bash docker/base/build_image.sh --install-mode openai \
   --use-tsinghua-ubuntu false \
   --pip-index-url https://pypi.org/simple \
   --load-examples false
 ```
+### 使用 Milvus 进行开发构建
 
-### Development Build with Milvus
-
-Build a development version with Milvus support:
-
+构建一个支持 Milvus 的开发版本：
 ```bash
 bash docker/base/build_image.sh --install-mode vllm \
   --add-extras "storage_milvus" \
   --image-name-suffix dev
 ```
-
-## Troubleshooting
-
+## 故障排除
 <details>
 <summary>Common Build Issues</summary>
+### 未找到 CUDA
 
-### CUDA Not Found
-
-If you encounter CUDA-related errors:
-
+如果遇到 CUDA 相关错误：
 ```bash
 # Try building with a different CUDA base image
 bash docker/base/build_image.sh --base-image nvidia/cuda:12.1.0-devel-ubuntu22.04
 ```
+### 包安装失败
 
-### Package Installation Failures
-
-If extras fail to install:
-
+如果附加组件安装失败：
 ```bash
 # Try building with fewer extras to isolate the problem
 bash docker/base/build_image.sh --extras "base,proxy_openai,rag"
 ```
+### 网络问题
 
-### Network Issues
-
-If you encounter network problems:
-
+如果您遇到网络问题：
 ```bash
 # Use a specific network
 bash docker/base/build_image.sh --network host
 ```
+</详情>
 
-</details>
+## API 参考
 
-## API Reference
+### 脚本选项
 
-### Script Options
-
-| Option | Description | Default Value |
+|选项|描述 |默认值 |
 |--------|-------------|---------------|
-| `--install-mode` | Installation mode | `default` |
-| `--base-image` | Base Docker image | `nvidia/cuda:12.4.0-devel-ubuntu22.04` |
-| `--image-name` | Docker image name | `eosphorosai/dbgpt` |
-| `--image-name-suffix` | Suffix for image name | ` ` |
-| `--pip-index-url` | PIP mirror URL | `https://pypi.tuna.tsinghua.edu.cn/simple` |
-| `--language` | Interface language | `en` |
-| `--load-examples` | Load example data | `true` |
-| `--python-version` | Python version | `3.11` |
-| `--use-tsinghua-ubuntu` | Use Tsinghua Ubuntu mirror | `true` |
-| `--extras` | Extra packages to install | Mode dependent |
-| `--add-extras` | Additional extra packages | ` ` |
-| `--env-vars` | Build environment variables | Mode dependent |
-| `--add-env-vars` | Additional environment variables | ` ` |
-| `--dockerfile` | Dockerfile to use | `Dockerfile` |
-| `--network` | Docker network to use | ` ` |
+| `--安装模式` |安装方式 | `默认` |
+| `--基本图像` |基础 Docker 镜像 | `nvidia/cuda:12.4.0-devel-ubuntu22.04` |
+| `--图像名称` | Docker 镜像名称 | `eosphorosai/dbgpt` |
+| `--图像名称后缀` |图片名称后缀 | `` |
+| `--pip-index-url` | PIP 镜像网址 | `https://pypi.tuna.tsinghua.edu.cn/simple` |
+| `--语言` |界面语言 | `en` |
+| `--load-examples` |加载示例数据 | `真实` |
+| `--python-版本` | Python版本| `3.11` |
+| `--使用-tsinghua-ubuntu` |使用清华Ubuntu镜像| `真实` |
+| `--额外` |要安装的额外软件包 |模式相关 |
+| `--add-extras` |额外的额外套餐 | `` |
+| `--env-vars` |构建环境变量|模式相关 |
+| `--add-env-vars` |附加环境变量 | `` |
+| `--dockerfile` |使用 Dockerfile | `Dockerfile` |
+| `--网络` | Docker网络使用| `` |
 
-## Additional Resources
+## 其他资源
 
-- [DB-GPT Documentation](https://github.com/eosphoros-ai/DB-GPT)
-- [Docker Documentation](https://docs.docker.com/)
-- [CUDA Documentation](https://docs.nvidia.com/cuda/)
+- [DB-GPT 文档](https://github.com/eosphoros-ai/DB-GPT)
+- [Docker 文档](https://docs.docker.com/)
+- [CUDA 文档](https://docs.nvidia.com/cuda/)

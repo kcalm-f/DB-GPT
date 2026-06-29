@@ -1,29 +1,26 @@
-# Proxy LLMs
+# 代理法学硕士
 
-DB-GPT can be deployed on servers with lower hardware requirements through proxy LLMs. DB-GPT supports many proxy LLMs, such as OpenAI, Azure, DeepSeek, Ollama, and more.
+DB-GPT可以通过代理LLM部署在硬件要求较低的服务器上。 DB-GPT 支持许多代理 LLM，例如 OpenAI、Azure、DeepSeek、Ollama 等。
 
-## Installation and Configuration
+## 安装和配置
 
-Installing DB-GPT with proxy LLM support requires using the `uv` package manager for a faster and more stable dependency management experience.
-
+安装具有代理 LLM 支持的 DB-GPT 需要使用“uv”包管理器以获得更快、更稳定的依赖关系管理体验。
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 <Tabs
-  defaultValue="openai"
-  values={[
-    {label: 'OpenAI', value: 'openai'},
-    {label: 'Azure', value: 'azure'},
-    {label: 'DeepSeek', value: 'deepseek'},
-    {label: 'Ollama', value: 'ollama'},
-    {label: 'Qwen', value: 'qwen'},
-    {label: 'ChatGLM', value: 'chatglm'},
-    {label: 'WenXin', value: 'erniebot'},
+默认值=“openai”
+  值={[
+    {标签：'OpenAI'，值：'openai'}，
+    {标签：'天蓝色'，值：'天蓝色'}，
+    {标签：'DeepSeek'，值：'deepseek'}，
+    {标签：'奥拉马'，值：'奥拉马'}，
+    {标签：'Qwen'，值：'Qwen'}，
+    {标签：'ChatGLM'，值：'chatglm'}，
+    {label: '文心', value: 'erniebot'},
   ]}>
   <TabItem value="openai" label="OpenAI">
-
-### Install Dependencies
-
+### 安装依赖项
 ```bash
 # Use uv to install dependencies needed for OpenAI proxy
 uv sync --all-packages \
@@ -33,11 +30,9 @@ uv sync --all-packages \
 --extra "storage_chromadb" \
 --extra "dbgpts"
 ```
+### 配置 OpenAI
 
-### Configure OpenAI
-
-Edit the `configs/dbgpt-proxy-openai.toml` configuration file to specify your OpenAI API key:
-
+编辑 configs/dbgpt-proxy-openai.toml 配置文件以指定您的 OpenAI API 密钥：
 ```toml
 # Model Configurations
 [models]
@@ -52,18 +47,14 @@ name = "text-embedding-ada-002"
 provider = "proxy/openai"
 api_key = "your-openai-api-key"
 ```
-
-### Run Webserver
-
+### 运行网络服务器
 ```bash
 uv run dbgpt start webserver --config configs/dbgpt-proxy-openai.toml
 ```
 
   </TabItem>
   <TabItem value="azure" label="Azure">
-
-### Install Dependencies
-
+### 安装依赖项
 ```bash
 # Use uv to install dependencies needed for Azure OpenAI proxy
 uv sync --all-packages \
@@ -73,11 +64,9 @@ uv sync --all-packages \
 --extra "storage_chromadb" \
 --extra "dbgpts"
 ```
+### 配置 Azure OpenAI
 
-### Configure Azure OpenAI
-
-Edit the `configs/dbgpt-proxy-azure.toml` configuration file to specify your Azure OpenAI settings:
-
+编辑“configs/dbgpt-proxy-azure.toml”配置文件以指定 Azure OpenAI 设置：
 ```toml
 # Model Configurations
 [models]
@@ -89,18 +78,14 @@ api_key = "your-azure-openai-api-key"
 api_version = "2023-05-15"  # or your specific API version
 api_type = "azure"
 ```
-
-### Run Webserver
-
+### 运行网络服务器
 ```bash
 uv run dbgpt start webserver --config configs/dbgpt-proxy-azure.toml
 ```
 
   </TabItem>
   <TabItem value="deepseek" label="DeepSeek">
-
-### Install Dependencies
-
+### 安装依赖项
 ```bash
 # Use uv to install dependencies needed for DeepSeek proxy
 uv sync --all-packages \
@@ -110,11 +95,9 @@ uv sync --all-packages \
 --extra "storage_chromadb" \
 --extra "dbgpts"
 ```
+### 配置 DeepSeek
 
-### Configure DeepSeek
-
-Edit the `configs/dbgpt-proxy-deepseek.toml` configuration file to specify your DeepSeek API key:
-
+编辑“configs/dbgpt-proxy-deepseek.toml”配置文件以指定您的 DeepSeek API 密钥：
 ```toml
 # Model Configurations
 [models]
@@ -124,18 +107,14 @@ name = "deepseek-reasoner"
 provider = "proxy/deepseek"
 api_key = "your-deepseek-api-key"
 ```
-
-### Run Webserver
-
+### 运行网络服务器
 ```bash
 uv run dbgpt start webserver --config configs/dbgpt-proxy-deepseek.toml
 ```
 
   </TabItem>
   <TabItem value="ollama" label="Ollama">
-
-### Install Dependencies
-
+### 安装依赖项
 ```bash
 # Use uv to install dependencies needed for Ollama proxy
 uv sync --all-packages \
@@ -145,11 +124,9 @@ uv sync --all-packages \
 --extra "storage_chromadb" \
 --extra "dbgpts"
 ```
+### 配置Ollama
 
-### Configure Ollama
-
-Edit the `configs/dbgpt-proxy-ollama.toml` configuration file to specify your Ollama API base:
-
+编辑 configs/dbgpt-proxy-ollama.toml 配置文件以指定您的 Ollama API 基础：
 ```toml
 # Model Configurations
 [models]
@@ -163,18 +140,14 @@ name = "nomic-embed-text"  # or any other embedding model in Ollama
 provider = "proxy/ollama"
 api_base = "http://localhost:11434" # your-ollama-api-base
 ```
-
-### Run Webserver
-
+### 运行网络服务器
 ```bash
 uv run dbgpt start webserver --config configs/dbgpt-proxy-ollama.toml
 ```
 
   </TabItem>
   <TabItem value="qwen" label="Qwen (Tongyi)">
-
-### Install Dependencies
-
+### 安装依赖项
 ```bash
 # Use uv to install dependencies needed for Aliyun Qwen (Tongyi) proxy
 uv sync --all-packages \
@@ -184,11 +157,9 @@ uv sync --all-packages \
 --extra "storage_chromadb" \
 --extra "dbgpts"
 ```
+### 配置Qwen
 
-### Configure Qwen
-
-Create or edit a configuration file (e.g., `configs/dbgpt-proxy-tongyi.toml`):
-
+创建或编辑配置文件（例如`configs/dbgpt-proxy-tongyi.toml`）：
 ```toml
 # Model Configurations
 [models]
@@ -197,18 +168,14 @@ name = "qwen-turbo"  # or qwen-max, qwen-plus
 provider = "proxy/tongyi"
 api_key = "your-tongyi-api-key"
 ```
-
-### Run Webserver
-
+### 运行网络服务器
 ```bash
 uv run dbgpt start webserver --config configs/dbgpt-proxy-tongyi.toml
 ```
 
   </TabItem>
   <TabItem value="chatglm" label="ChatGLM (Zhipu)">
-
-### Install Dependencies
-
+### 安装依赖项
 ```bash
 # Use uv to install dependencies needed for Zhipu (ChatGLM) proxy
 uv sync --all-packages \
@@ -218,11 +185,9 @@ uv sync --all-packages \
 --extra "storage_chromadb" \
 --extra "dbgpts"
 ```
+### 配置 ChatGLM
 
-### Configure ChatGLM
-
-Create or edit a configuration file (e.g., `configs/dbgpt-proxy-zhipu.toml`):
-
+创建或编辑配置文件（例如`configs/dbgpt-proxy-zhipu.toml`）：
 ```toml
 # Model Configurations
 [models]
@@ -231,18 +196,14 @@ name = "glm-4"  # or other available model versions
 provider = "proxy/zhipu"
 api_key = "your-zhipu-api-key"
 ```
-
-### Run Webserver
-
+### 运行网络服务器
 ```bash
 uv run dbgpt start webserver --config configs/dbgpt-proxy-zhipu.toml
 ```
 
   </TabItem>
   <TabItem value="erniebot" label="WenXin (Ernie)">
-
-### Install Dependencies
-
+### 安装依赖项
 ```bash
 # Use uv to install dependencies needed for Baidu WenXin proxy
 uv sync --all-packages \
@@ -252,11 +213,9 @@ uv sync --all-packages \
 --extra "storage_chromadb" \
 --extra "dbgpts"
 ```
+### 配置文心
 
-### Configure WenXin
-
-Create or edit a configuration file (e.g., `configs/dbgpt-proxy-wenxin.toml`):
-
+创建或编辑配置文件（例如`configs/dbgpt-proxy-wenxin.toml`）：
 ```toml
 # Model Configurations
 [models]
@@ -266,20 +225,17 @@ provider = "proxy/wenxin"
 api_key = "your-wenxin-api-key"
 api_secret = "your-wenxin-api-secret"
 ```
-
-### Run Webserver
-
+### 运行网络服务器
 ```bash
 uv run dbgpt start webserver --config configs/dbgpt-proxy-wenxin.toml
 ```
 
   </TabItem>
 </Tabs>
-
-:::info note
-If you are in the China region, you can add `--index-url=https://pypi.tuna.tsinghua.edu.cn/simple` at the end of the `uv sync` command for faster package downloads.
+:::信息说明
+如果您在中国地区，可以在“uvsync”命令末尾添加“--index-url=https://pypi.tuna.tsinghua.edu.cn/simple”，以加快包下载速度。
 :::
 
-## Visit Website
+## 访问网站
 
-After starting the webserver, open your browser and visit [`http://localhost:5670`](http://localhost:5670)
+启动网络服务器后，打开浏览器并访问 [`http://localhost:5670`](http://localhost:5670)

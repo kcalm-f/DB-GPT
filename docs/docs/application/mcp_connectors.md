@@ -2,28 +2,26 @@
 sidebar_position: 1
 title: MCP Connectors
 ---
+# MCP 连接器
 
-# MCP Connectors
+**MCP 连接器** 通过 **模型上下文协议 (MCP)** 连接到外部服务，让您的 DB-GPT 代理能够超越数据库 - 发送消息、读写文档、管理问题和搜索网络。
 
-**MCP Connectors** let your DB-GPT agents reach beyond the database — sending messages, reading and writing documents, managing issues, and searching the web — by connecting to external services through the **Model Context Protocol (MCP)**.
+激活内置模板或插入任何自定义 MCP 服务器，然后在 Composer 中选择所需的连接器。代理只能看到您选择的工具，任何写入操作都会先暂停以供您确认。
 
-Activate a built-in template or plug in any custom MCP server, then pick the connectors you want in the composer. The agent only sees the tools you select, and any write action pauses for your confirmation first.
-
-:::info What is MCP?
-The [Model Context Protocol](https://modelcontextprotocol.io) is an open standard that gives AI applications a uniform way to talk to external tools and services. Each connector in DB-GPT is backed by an MCP server, so adding a new capability is as simple as pointing to its endpoint.
+:::info 什么是 MCP？
+[模型上下文协议](https://modelcontextprotocol.io) 是一个开放标准，为 AI 应用程序提供了与外部工具和服务进行通信的统一方式。 DB-GPT 中的每个连接器均由 MCP 服务器支持，因此添加新功能就像指向其端点一样简单。
 :::
 
-## Highlights
+## 亮点
 
-- **Built-in templates** — One-click activation for Feishu, DingTalk, Yuque, GitHub, Notion, Linear, Tavily, and DeepWiki.
-- **Custom MCP servers** — Connect any SSE or Streamable HTTP MCP endpoint with your own auth.
-- **Per-conversation selection** — Choose which connectors to attach in the composer; the agent's prompt stays focused and token-efficient.
-- **Human-in-the-loop confirmation** — Write actions (create / update / delete) pop a confirmation dialog before they run.
-- **Tool transparency** — Inspect the full tool list of any connector, with parameters and descriptions.
-- **Secure credentials** — Tokens are encrypted at rest and survive process restarts.
+- **内置模板** — 一键激活飞书、钉钉、语雀、GitHub、Notion、Linear、Tavily、DeepWiki。
+- **自定义 MCP 服务器** — 使用您自己的身份验证连接任何 SSE 或可流式 HTTP MCP 端点。
+- **按对话选择** — 选择要在 Composer 中附加的连接器；代理的提示保持专注且高效。
+- **人机交互确认** — 写入操作（创建/更新/删除）在运行之前会弹出一个确认对话框。
+- **工具透明度** — 检查任何连接器的完整工具列表，包括参数和说明。
+- **安全凭证** — 令牌在静态时进行加密，并在进程重新启动后继续存在。
 
-## How it works
-
+## 它是如何工作的
 ```mermaid
 graph LR
   User[You] -->|select connectors| Composer[Home Composer]
@@ -35,78 +33,77 @@ graph LR
   Confirm -->|approve| MCPClient
   Confirm -->|reject| Skip[Skip action]
 ```
+连接器处于以下三种状态之一：
 
-A connector lives in one of three states:
-
-| State | Meaning |
+|状态|意义|
 | --- | --- |
-| **Available** | A template in the catalog, or the generic "custom MCP" entry — not yet configured. |
-| **Active** | Configured with credentials and connected; its tools are ready to use. |
-| **Attached** | Selected in the current conversation — the agent actually injects its tools. |
+| **可用** |目录中的模板或通用“自定义 MCP”条目 - 尚未配置。 |
+| **活跃** |配置凭据并连接；它的工具已经可以使用了。 |
+| **附上** |在当前对话中选择 - 代理实际上注入其工具。 |
 
-## Built-in connectors
+## 内置连接器
 
-| Connector | Category | Default transport | Typical tools |
+|连接器|类别 |默认运输 |典型工具|
 | --- | --- | --- | --- |
-| Feishu | Communication | SSE | Send messages, read / write docs, calendar |
-| DingTalk | Communication | SSE | Group messages, bot notifications |
-| Yuque | Document | SSE | Read / write knowledge base docs |
-| GitHub | Project | Streamable HTTP | Issues, PRs, repository management |
-| Notion | Document | Streamable HTTP | Pages and databases read / write |
-| Linear | Project | Streamable HTTP | Issues / projects collaboration |
-| Tavily | Search | Streamable HTTP | LLM-optimized web search, returns Markdown |
-| DeepWiki | Dev Tools | Streamable HTTP | AI reading & Q&A over any GitHub repo |
+|飞书 |通讯 |上交所 |发送消息、读/写文档、日历 |
+|钉钉 |通讯 |上交所 |群组消息、机器人通知 |
+|语雀|文件|上交所 |读/写知识库文档 |
+| GitHub |项目|流式 HTTP |问题、PR、存储库管理 |
+|概念 |文件|流式 HTTP |页面和数据库读/写|
+|线性|项目|流式 HTTP |问题/项目协作 |
+|塔维利 |搜索 |流式 HTTP | LLM 优化的网络搜索，返回 Markdown |
+|深度维基 |开发工具|流式 HTTP |任意 GitHub 存储库上的 AI 阅读和问答 |
 
-## Managing connectors
+## 管理连接器
 
-Open the **Connectors** page to see every template and custom server as a card. Each card shows the icon, name, a `Template` / `Custom` badge, its category, the `MCP / SSE` (or Streamable HTTP) transport, and a short description. Use the search box and the **All / Active / Inactive / Needs attention** tabs to filter.
+打开 **连接器** 页面以卡片形式查看每个模板和自定义服务器。每张卡片都会显示图标、名称、“模板”/“自定义”徽章、其类别、“MCP / SSE”（或可流式 HTTP）传输以及简短说明。使用搜索框和**全部/活动/非活动/需要注意**选项卡进行过滤。
 
-<p align="center">
+<p对齐=“中心”>
   <img src={'/img/mcp/mcp_list.png'} width="800px" />
 </p>
 
-- **Template cards** show an `Activate` button — click it to fill in credentials and connect.
-- **Active cards** show an `● Active` badge and quick actions to test the connection, edit, or delete.
+- **模板卡**显示“激活”按钮 - 单击它即可填写凭据并连接。
+- **活动卡** 显示“● 活动”徽章和用于测试连接、编辑或删除的快速操作。
 
-### Add a connector
+### 添加连接器
 
-Click **Add Connector** to open the dialog:
+单击 **添加连接器** 打开对话框：
 
-<p align="center">
+<p对齐=“中心”>
   <img src={'/img/mcp/add_mcp.png'} width="800px" />
 </p>
 
-| Field | Description |
+|领域 |描述 |
 | --- | --- |
-| **Connector name** | A display name for this connector. |
-| **Connector type** | Pick a built-in template or **Custom MCP Server**. |
-| **Transport protocol** | **Streamable HTTP** (default) or **SSE**. |
-| **Auth type** | `none`, `bearer`, or `token` — show the token / header fields as needed. |
-| **Connector description** | Optional. Shown in the agent's tool description. |
+| **连接器名称** |此连接器的显示名称。 |
+| **连接器类型** |选择内置模板或**自定义 MCP 服务器**。 |
+| **传输协议** | **流式 HTTP**（默认）或 **SSE**。 |
+| **身份验证类型** | `none`、`bearer` 或 `token` — 根据需要显示令牌/标头字段。 |
+| **连接器说明** |选修的。显示在代理的工具说明中。 |
 
-For a custom server, just provide the endpoint URL, transport, and authentication. Credentials are encrypted before they are stored.
+对于自定义服务器，只需提供端点 URL、传输和身份验证。凭证在存储之前会被加密。
 
-### Inspect the tools
+### 检查工具
 
-Open a connector's detail to browse every tool it exposes. The panel lists each tool name with its description and an **Input parameters** table (name, type, required, description) — useful for understanding exactly what the agent can call.
+打开连接器的详细信息以浏览它公开的每个工具。该面板列出了每个工具名称及其描述和**输入参数**表（名称、类型、必需、描述）——有助于准确理解代理可以调用​​的内容。
 
-<p align="center">
+<p对齐=“中心”>
   <img src={'/img/mcp/mcp_tool_list.png'} width="800px" />
 </p>
 
-## Using connectors in a conversation
+## 在对话中使用连接器
 
-1. On the home page, open the connector picker in the composer toolbar (**Select MCP**).
-2. Tick one or more connectors. The composer shows the selected count, and the agent will only be given those connectors' tools.
-3. Ask your question. When the agent needs a tool, it calls it automatically.
-4. If the agent triggers a **write action** (for example, creating a doc or sending a message), a confirmation dialog appears. Approve to run it, or reject to skip — the agent continues either way.
+1. 在主页上，打开 Composer 工具栏中的连接器选取器（**选择 MCP**）。
+2. 勾选一个或多个连接器。作曲家会显示所选的计数，而代理只会获得这些连接器的工具。
+3.提出你的问题。当代理需要工具时，它会自动调用它。
+4. 如果代理触发**写入操作**（例如，创建文档或发送消息），则会出现确认对话框。批准运行它，或拒绝跳过 - 代理将继续任一方式。
 
-:::tip Why selection matters
-Attaching only the connectors you need keeps the agent's prompt focused, reduces token usage, and prevents the model from picking the wrong tool.
+:::tip 为什么选择很重要
+仅连接您需要的连接器可以使代理的提示保持集中，减少令牌使用，并防止模型选择错误的工具。
 :::
 
-## Notes & limitations
+## 注意事项和限制
 
-- Built-in templates ship with sensible `confirm` actions (write operations require confirmation); custom MCP tools run without confirmation in this release.
-- Credentials are scoped per user and restored automatically after a restart.
-- If a server is offline at startup, its connector is marked so you can re-test it from the card.
+- 内置模板附带合理的“确认”操作（写入操作需要确认）；在此版本中，自定义 MCP 工具无需确认即可运行。
+- 凭据的范围是针对每个用户的，并在重新启动后自动恢复。
+- 如果服务器在启动时离线，其连接器会被标记，以便您可以从卡上重新测试它。

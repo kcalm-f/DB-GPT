@@ -1,9 +1,8 @@
-# vLLM Inference
-DB-GPT supports [vLLM](https://github.com/vllm-project/vllm) inference, a fast and easy-to-use LLM inference and service library.
+# vLLM 推理
+DB-GPT 支持 [vLLM](https://github.com/vllm-project/vllm) 推理，这是一个快速且易于使用的 LLM 推理和服务库。
 
-## Install dependencies
-`vLLM` is an optional dependency in DB-GPT. You can install it by adding the extra `--extra "vllm"` when installing dependencies.
-
+## 安装依赖项
+`vLLM` 是 DB-GPT 中的可选依赖项。您可以通过在安装依赖项时添加额外的 `--extra "vllm"` 来安装它。
 ```bash
 # Use uv to install dependencies needed for vllm
 # Install core dependencies and select desired extensions
@@ -17,11 +16,9 @@ uv sync --all-packages \
 --extra "quant_bnb" \
 --extra "dbgpts"
 ```
+## 修改配置文件
 
-## Modify configuration file
-
-After installing the dependencies, you can modify your configuration file to use the `vllm` provider.
-
+安装依赖项后，您可以修改配置文件以使用“vllm”提供程序。
 ```toml
 # Model Configurations
 [models]
@@ -32,6 +29,4 @@ provider = "vllm"
 # uncomment the following line to specify the model path in the local file system
 # path = "the-model-path-in-the-local-file-system"
 ```
-
-For more information about the list of models supported by `vLLM`, please refer to the [vLLM supported model document](https://docs.vllm.ai/en/latest/models/supported_models.html#supported-models).
-
+有关“vLLM”支持的模型列表的更多信息，请参阅[vLLM支持的模型文档](https://docs.vllm.ai/en/latest/models/supported_models.html#supported-models)。

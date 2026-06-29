@@ -2,18 +2,16 @@
 sidebar_position: 1
 title: OpenAI
 ---
+# 开放人工智能
 
-# OpenAI
+配置 DB-GPT 以使用 OpenAI 的 GPT 模型和嵌入模型。
 
-Configure DB-GPT to use OpenAI's GPT models and embedding models.
+## 先决条件
 
-## Prerequisites
+- [OpenAI API 密钥](https://platform.openai.com/api-keys)
+- DB-GPT 安装了额外的 `proxy_openai`
 
-- An [OpenAI API key](https://platform.openai.com/api-keys)
-- DB-GPT installed with `proxy_openai` extra
-
-## Install dependencies
-
+## 安装依赖项
 ```bash
 uv sync --all-packages \
   --extra "base" \
@@ -22,11 +20,9 @@ uv sync --all-packages \
   --extra "storage_chromadb" \
   --extra "dbgpts"
 ```
+## 配置
 
-## Configuration
-
-Edit `configs/dbgpt-proxy-openai.toml`:
-
+编辑`configs/dbgpt-proxy-openai.toml`：
 ```toml
 [models]
 [[models.llms]]
@@ -41,10 +37,8 @@ provider = "proxy/openai"
 api_url = "https://api.openai.com/v1/embeddings"
 api_key = "sk-your-openai-api-key"
 ```
-
-:::tip Use environment variables
-Instead of hardcoding your API key, use environment variables:
-
+:::提示使用环境变量
+不要对 API 密钥进行硬编码，而是使用环境变量：
 ```toml
 api_key = "${env:OPENAI_API_KEY}"
 ```
@@ -54,35 +48,32 @@ export OPENAI_API_KEY="sk-your-openai-api-key"
 ```
 :::
 
-## Available models
+## 可用型号
 
-### LLMs
+### 法学硕士
 
-| Model | Config name | Notes |
+|型号|配置名称 |笔记|
 |---|---|---|
-| GPT-4o | `gpt-4o` | Recommended — best quality |
-| GPT-4o mini | `gpt-4o-mini` | Faster and cheaper |
-| GPT-4 Turbo | `gpt-4-turbo` | Previous generation |
-| GPT-3.5 Turbo | `gpt-3.5-turbo` | Budget option |
+| GPT-4o | `gpt-4o` |推荐—最佳品质|
+| GPT-4o 迷你 | `gpt-4o-mini` |更快更便宜|
+| GPT-4 涡轮 | `gpt-4-turbo` |上一代|
+| GPT-3.5 涡轮| `gpt-3.5-turbo` |预算选项|
 
-### Embeddings
+### 嵌入
 
-| Model | Config name | Dimensions |
+|型号|配置名称 |尺寸|
 |---|---|---|
-| text-embedding-3-small | `text-embedding-3-small` | 1536 |
-| text-embedding-3-large | `text-embedding-3-large` | 3072 |
-| text-embedding-ada-002 | `text-embedding-ada-002` | 1536 |
+|文本嵌入-3-小| `文本嵌入-3-小` | 1536 | 1536
+|文本嵌入 3 大 | `文本嵌入-3-大` | 3072 | 3072
+|文本嵌入-ada-002 | `文本嵌入-ada-002` | 1536 | 1536
 
-## Start the server
-
+## 启动服务器
 ```bash
 uv run dbgpt start webserver --config configs/dbgpt-proxy-openai.toml
 ```
-
 ## Azure OpenAI
 
-To use Azure OpenAI, change the `api_base` to your Azure endpoint:
-
+要使用 Azure OpenAI，请将“api_base”更改为您的 Azure 端点：
 ```toml
 [[models.llms]]
 name = "gpt-4o"
@@ -90,18 +81,17 @@ provider = "proxy/openai"
 api_base = "https://your-resource.openai.azure.com/openai/deployments/your-deployment"
 api_key = "your-azure-api-key"
 ```
+## 故障排除
 
-## Troubleshooting
-
-| Issue | Solution |
+|问题 |解决方案 |
 |---|---|
-| `AuthenticationError` | Check that your API key is valid and has billing enabled |
-| `RateLimitError` | Reduce request frequency or upgrade your OpenAI plan |
-| Connection timeout | Check network connectivity; configure proxy if needed |
-| Model not found | Verify the model name matches OpenAI's current offerings |
+| `身份验证错误` |检查您的 API 密钥是否有效并已启用计费 |
+| `速率限制错误` |减少请求频率或升级您的 OpenAI 计划 |
+|连接超时|检查网络连接；如果需要的话配置代理 |
+|找不到型号 |验证模型名称是否与 OpenAI 的当前产品相匹配 |
 
-## What's next
+## 接下来是什么
 
-- [Getting Started](/docs/getting-started/quick-start) — Full setup walkthrough
-- [Config Reference](/docs/config/config-reference) — All configuration options
-- [More Proxy LLMs](/docs/installation/advanced_usage/More_proxyllms) — Additional API providers
+- [入门](/docs/getting-started/quick-start) — 完整设置演练
+- [配置参考](/docs/config/config-reference) — 所有配置选项
+- [更多代理 LLM](/docs/installation/advanced_usage/More_proxyllms) — 其他 API 提供商

@@ -1,38 +1,35 @@
-# Source Code Deployment
+# 源码部署
 
-## Environmental requirements
+## 环境要求
 
-| Startup Mode         | CPU * MEM    |       GPU      |         Remark  |
-|:--------------------:|:------------:|:--------------:|:---------------:|
-|     Proxy model          |    4C * 8G      |        None    |  Proxy model does not rely on GPU                         |
-|     Local model          |    8C * 32G     |       24G      |  It is best to start locally with a GPU of 24G or above   |
+|启动模式| CPU * 内存 |       图形处理器 |         备注 |
+|:--------------------:|:------------:|:--------------:|:----------------:|
+|     代理模式|    4C*8G |        无 |  代理模型不依赖GPU |
+|     本地模特|    8C*32G |       24G |  本地启动最好24G以上GPU |
 
 
-## Environment Preparation
+## 环境准备
 
-### Download Source Code
+### 下载源代码
 
-:::tip
-Download DB-GPT
+:::提示
+下载 DB-GPT
 :::
-
 ```bash
 git clone https://github.com/eosphoros-ai/DB-GPT.git
 ```
-
-:::info note
-There are some ways to install uv:
+:::信息说明
+安装uv有以下几种方法：
 :::
-
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 <Tabs
-  defaultValue="uv_sh"
-  values={[
-    {label: 'Command (macOS And Linux)', value: 'uv_sh'},
-    {label: 'PyPI', value: 'uv_pypi'},
-    {label: 'Other', value: 'uv_other'},
+默认值=“uv_sh”
+  值={[
+    {label: '命令（macOS 和 Linux）', value: 'uv_sh'},
+    {标签：'PyPI'，值：'uv_pypi'}，
+    {标签：'其他'，值：'uv_other'}，
   ]}>
   <TabItem value="uv_sh" label="Command">
 ```bash
@@ -41,8 +38,7 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
   </TabItem>
 
   <TabItem value="uv_pypi" label="Pypi">
-Install uv using pipx.
-
+使用 pipx 安装 uv。
 ```bash
 python -m pip install --upgrade pip
 python -m pip install --upgrade pipx
@@ -52,30 +48,24 @@ pipx install uv --global
   </TabItem>
 
   <TabItem value="uv_other" label="Other">
-
-You can see more installation methods on the [uv installation](https://docs.astral.sh/uv/getting-started/installation/)
+更多安装方法可以参见【uv安装】(https://docs.astral.sh/uv/getting-started/installation/)
   </TabItem>
 
 </Tabs>
-
-Then, you can run `uv --version` to check if uv is installed successfully.
-
+然后，您可以运行“uv --version”来检查uv是否安装成功。
 ```bash
 uv --version
 ```
+## 部署 DB-GPT 
 
-## Deploy DB-GPT 
-
-### Install Dependencies
-
+### 安装依赖项
 <Tabs
-  defaultValue="openai"
-  values={[
-    {label: 'OpenAI (proxy)', value: 'openai'},
-    {label: 'DeepSeek (proxy)', value: 'deepseek'},
-    {label: 'GLM4 (local)', value: 'glm-4'},
+默认值=“openai”
+  值={[
+    {标签：'OpenAI（代理）'，值：'openai'}，
+    {标签：'DeepSeek（代理）'，值：'deepseek'}，
+    {标签：'GLM4（本地）'，值：'glm-4'}，
   ]}>
-
   <TabItem value="openai" label="OpenAI(proxy)">
 
 ```bash
@@ -87,11 +77,9 @@ uv sync --all-packages \
 --extra "storage_chromadb" \
 --extra "dbgpts"
 ```
+### 运行网络服务器
 
-### Run Webserver
-
-To run DB-GPT with OpenAI proxy, you must provide the OpenAI API key in the `configs/dbgpt-proxy-openai.toml` configuration file or privide it in the environment variable with key `OPENAI_API_KEY`.
-
+要使用 OpenAI 代理运行 DB-GPT，您必须在“configs/dbgpt-proxy-openai.toml”配置文件中提供 OpenAI API 密钥，或在环境变量中使用密钥“OPENAI_API_KEY”提供它。
 ```toml
 # Model Configurations
 [models]
@@ -102,15 +90,13 @@ api_key = "your-openai-api-key"
 ...
 api_key = "your-openai-api-key"
 ```
-
-Then run the following command to start the webserver:
-
+然后运行以下命令来启动网络服务器：
 ```bash
 uv run dbgpt start webserver --config configs/dbgpt-proxy-openai.toml
 ```
-In the above command, `--config` specifies the configuration file, and `configs/dbgpt-proxy-openai.toml` is the configuration file for the OpenAI proxy model, you can also use other configuration files or create your own configuration file according to your needs.
+上面命令中，`--config`指定配置文件，`configs/dbgpt-proxy-openai.toml`是OpenAI代理模型的配置文件，您也可以使用其他配置文件或根据需要创建自己的配置文件。
 
-Optionally, you can also use the following command to start the webserver:
+或者，您还可以使用以下命令来启动网络服务器：
 ```bash
 uv run python packages/dbgpt-app/src/dbgpt_app/dbgpt_server.py --config configs/dbgpt-proxy-openai.toml
 ```
@@ -127,13 +113,11 @@ uv sync --all-packages \
 --extra "storage_chromadb" \
 --extra "dbgpts"
 ```
+### 运行网络服务器
 
-### Run Webserver
+要使用 DeepSeek 代理运行 DB-GPT，您必须在“configs/dbgpt-proxy-deepseek.toml”中提供 DeepSeek API 密钥。
 
-To run DB-GPT with DeepSeek proxy, you must provide the DeepSeek API key in the `configs/dbgpt-proxy-deepseek.toml`.
-
-And you can specify your embedding model in the `configs/dbgpt-proxy-deepseek.toml` configuration file, the default embedding model is `BAAI/bge-large-zh-v1.5`. If you want to use other embedding models, you can modify the `configs/dbgpt-proxy-deepseek.toml` configuration file and specify the `name` and `provider` of the embedding model in the `[[models.embeddings]]` section. The provider can be `hf`.
-
+您可以在`configs/dbgpt-proxy-deepseek.toml`配置文件中指定您的嵌入模型，默认嵌入模型是`BAAI/bge-large-zh-v1.5`。如果想使用其他嵌入模型，可以修改 configs/dbgpt-proxy-deepseek.toml 配置文件，并在 [[models.embeddings]] 部分指定嵌入模型的 name 和provider 。提供者可以是“hf”。
 ```toml
 # Model Configurations
 [models]
@@ -150,15 +134,13 @@ provider = "hf"
 # path = "the-model-path-in-the-local-file-system"
 path = "/data/models/bge-large-zh-v1.5"
 ```
-
-Then run the following command to start the webserver:
-
+然后运行以下命令来启动网络服务器：
 ```bash
 uv run dbgpt start webserver --config configs/dbgpt-proxy-deepseek.toml
 ```
-In the above command, `--config` specifies the configuration file, and `configs/dbgpt-proxy-deepseek.toml` is the configuration file for the DeepSeek proxy model, you can also use other configuration files or create your own configuration file according to your needs.
+上面命令中，`--config`指定配置文件，`configs/dbgpt-proxy-deepseek.toml`是DeepSeek代理模型的配置文件，您也可以使用其他配置文件或根据需要创建自己的配置文件。
 
-Optionally, you can also use the following command to start the webserver:
+或者，您还可以使用以下命令来启动网络服务器：
 ```bash
 uv run python packages/dbgpt-app/src/dbgpt_app/dbgpt_server.py --config configs/dbgpt-proxy-deepseek.toml
 ```
@@ -178,11 +160,9 @@ uv sync --all-packages \
 --extra "quant_bnb" \
 --extra "dbgpts"
 ```
+### 运行网络服务器
 
-### Run Webserver
-
-To run DB-GPT with the local model. You can modify the `configs/dbgpt-local-glm.toml` configuration file to specify the model path and other parameters.
-
+使用本地模型运行 DB-GPT。您可以修改 configs/dbgpt-local-glm.toml 配置文件来指定模型路径和其他参数。
 ```toml
 # Model Configurations
 [models]
@@ -200,52 +180,47 @@ provider = "hf"
 # uncomment the following line to specify the model path in the local file system
 # path = "the-model-path-in-the-local-file-system"
 ```
-In the above configuration file, `[[models.llms]]` specifies the LLM model, and `[[models.embeddings]]` specifies the embedding model. If you not provide the `path` parameter, the model will be downloaded from the Hugging Face model hub according to the `name` parameter.
+在上面的配置文件中，“[[models.llms]]”指定LLM模型，“[[models.embeddings]]”指定嵌入模型。如果您不提供“path”参数，则将根据“name”参数从Hugging Face模型中心下载模型。
 
-Then run the following command to start the webserver:
-
+然后运行以下命令来启动网络服务器：
 ```bash
 uv run dbgpt start webserver --config configs/dbgpt-local-glm.toml
 ```
 
   </TabItem>
 </Tabs>
+## 访问网站
 
+打开浏览器并访问 [`http://localhost:5670`](http://localhost:5670)
 
-## Visit Website
+### （可选）单独运行 Web 前端
 
-Open your browser and visit [`http://localhost:5670`](http://localhost:5670)
-
-### (Optional) Run Web Front-end Separately
-
-You can also run the web front-end separately:
-
+您还可以单独运行 Web 前端：
 ```bash
 cd web && npm install
 cp .env.template .env
 // Set API_BASE_URL to your DB-GPT server address, usually http://localhost:5670
 npm run dev
 ```
-Open your browser and visit [`http://localhost:3000`](http://localhost:3000)
+打开浏览器并访问 [`http://localhost:3000`](http://localhost:3000)
 
 
-## Install DB-GPT Application Database
+## 安装 DB-GPT 应用数据库
 <Tabs
-  defaultValue="sqlite"
-  values={[
-    {label: 'SQLite', value: 'sqlite'},
-    {label: 'MySQL', value: 'mysql'},
+默认值=“sqlite”
+  值={[
+    {标签：'SQLite'，值：'SQLite'}，
+    {标签：'MySQL'，值：'mysql'}，
   ]}>
 <TabItem value="sqlite" label="sqlite">
+:::提示注意
 
-:::tip NOTE
-
-You do not need to separately create the database tables related to the DB-GPT application in SQLite; 
-they will be created automatically for you by default.
+不需要在SQLite中单独创建与DB-GPT应用相关的数据库表； 
+默认情况下，它们会自动为您创建。
 
 :::
 
-Modify your toml configuration file to use SQLite as the database(Is the default setting).
+修改您的 toml 配置文件以使用 SQLite 作为数据库（是默认设置）。
 ```toml
 [service.web.database]
 type = "sqlite"
@@ -255,21 +230,17 @@ path = "pilot/meta_data/dbgpt.db"
 
  </TabItem>
 <TabItem value="mysql" label="MySQL">
+:::警告注意
 
-:::warning NOTE
-
-After version 0.4.7, we removed the automatic generation of MySQL database Schema for safety.
+在0.4.7版本之后，为了安全起见，我们删除了MySQL数据库Schema的自动生成。
 
 :::
 
-1. Frist, execute MySQL script to create database and tables.
-
+1. 首先，执行MySQL脚本创建数据库和表。
 ```bash
 $ mysql -h127.0.0.1 -uroot -p{your_password} < ./assets/schema/dbgpt.sql
 ```
-
-2. Second, modify your toml configuration file to use MySQL as the database.
-
+2. 其次，修改 toml 配置文件以使用 MySQL 作为数据库。
 ```toml
 [service.web.database]
 type = "mysql"
@@ -279,27 +250,21 @@ user = "root"
 database = "dbgpt"
 password = "aa123456"
 ```
-Please replace the `host`, `port`, `user`, `database`, and `password` with your own MySQL database settings.
-
+请将“主机”、“端口”、“用户”、“数据库”和“密码”替换为您自己的 MySQL 数据库设置。
  </TabItem>
 </Tabs>
-
-
-## Test data (optional)
-The DB-GPT project has a part of test data built-in by default, which can be loaded into the local database for testing through the following command
+## 测试数据（可选）
+DB-GPT项目默认内置了部分测试数据，可以通过以下命令加载到本地数据库进行测试
 - **Linux**
-
 ```bash
 bash ./scripts/examples/load_examples.sh
 
 ```
 - **Windows**
-
 ```bash
 .\scripts\examples\load_examples.bat
 ```
-
 :::
 
-## Visit website
-Open the browser and visit [`http://localhost:5670`](http://localhost:5670)
+## 访问网站
+打开浏览器并访问[`http://localhost:5670`](http://localhost:5670)

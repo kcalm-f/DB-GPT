@@ -1,72 +1,68 @@
-# Observability
+# 可观测性
 
-**Observability** is a measure of how well internal states of a system can be inferred from 
-knowledge of its external outputs. In the context of a software system, observability 
-is the ability to understand the internal state of the system by examining its outputs. 
-This is important for debugging, monitoring, and maintaining the system.
-
-
-## Observability In DB-GPT
-
-DB-GPT provides observability through the following mechanisms:
-- **Logging**: DB-GPT logs various events and metrics to help you understand the internal state of the system.
-- **Tracing**: DB-GPT provides tracing capabilities to help you understand the flow of requests through the system.
-
-## Logging
-
-You can configure the logging level and storage location for DB-GPT logs. By default, 
-logs are stored in the `logs` directory in the DB-GPT root directory. You can change 
-the log level and storage location by setting the `DBGPT_LOG_LEVEL` and `DBGPT_LOG_DIR` environment.
+**可观察性** 是衡量系统内部状态的推断程度的指标 
+了解其外部输出。在软件系统的背景下，可观察性 
+是通过检查系统输出来了解系统内部状态的能力。 
+这对于调试、监控和维护系统非常重要。
 
 
-## Tracing
+## DB-GPT 中的可观察性
 
-DB-GPT has built-in tracing capabilities that allow you to trace the flow of requests 
-through the system. 
+DB-GPT 通过以下机制提供可观察性：
+- **日志记录**：DB-GPT 记录各种事件和指标，以帮助您了解系统的内部状态。
+- **跟踪**：DB-GPT 提供跟踪功能，帮助您了解系统中的请求流。
 
+## 日志记录
 
-## Trace Storage
-
-### Local Storage
-
-DB-GPT will store traces in the `traces` directory in the DB-GPT logs directory, by default, 
-they are located in `logs/dbgpt*.jsonl`. 
-
-If you want to know more about the local storage of traces and how to use them, you 
-can refer to the [Debugging](./debugging) documentation.
+您可以配置 DB-GPT 日志的日志记录级别和存储位置。默认情况下， 
+日志存储在DB-GPT根目录下的“logs”目录中。你可以改变 
+通过设置`DBGPT_LOG_LEVEL`和`DBGPT_LOG_DIR`环境来设置日志级别和存储位置。
 
 
-### OpenTelemetry Support
+## 追踪
 
-DB-GPT also supports [OpenTelemetry](https://opentelemetry.io/) for distributed tracing. 
-Now, you can export traces to open-telemetry compatible backends like Jaeger, Zipkin, 
-and others with OpenTelemetry Protocol (OTLP).
+DB-GPT 具有内置跟踪功能，可让您跟踪请求流 
+通过系统。 
 
-To enable OpenTelemetry support, you need install following packages:
 
+## 跟踪存储
+
+### 本地存储
+
+DB-GPT 会将跟踪存储在 DB-GPT 日志目录中的 `traces` 目录中，默认情况下， 
+它们位于“logs/dbgpt*.jsonl”中。 
+
+如果您想了解更多有关痕迹本地存储以及如何使用它们的信息，您可以 
+可以参考[调试](./debugging)文档。
+
+
+### OpenTelemetry 支持
+
+DB-GPT 还支持 [OpenTelemetry](https://opentelemetry.io/) 进行分布式跟踪。 
+现在，您可以将跟踪导出到开放遥测兼容的后端，例如 Jaeger、Zipkin、 
+以及其他具有开放遥测协议 (OTLP) 的协议。
+
+要启用 OpenTelemetry 支持，您需要安装以下软件包：
 ```bash
 pip install opentelemetry-api opentelemetry-sdk opentelemetry-exporter-otlp
 ```
-
-Then, modify your `.env` file to enable OpenTelemetry tracing:
-
+然后，修改您的 .env 文件以启用 OpenTelemetry 跟踪：
 ```bash
 ## Whether to enable DB-GPT send trace to OpenTelemetry
 TRACER_TO_OPEN_TELEMETRY=True
 ## More details see https://opentelemetry-python.readthedocs.io/en/latest/exporter/otlp/otlp.html
 OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=http://localhost:4317
 ```
-In the above configuration, you can change the `OTEL_EXPORTER_OTLP_TRACES_ENDPOINT` to 
-your OTLP collector or backend, we use gRPC endpoint by default.
+在上面的配置中，您可以将`OTEL_EXPORTER_OTLP_TRACES_ENDPOINT`更改为 
+您的 OTLP 收集器或后端，我们默认使用 gRPC 端点。
 
-Here, we use Jaeger as an example to show how to use OpenTelemetry to trace DB-GPT.
+这里我们以 Jaeger 为例，展示如何使用 OpenTelemetry 来追踪 DB-GPT。
 
-### Jaeger Support
+### Jaeger 支持
 
-Here is an example of how to use Jaeger to trace DB-GPT with docker:
+以下是如何使用 Jaeger 和 docker 跟踪 DB-GPT 的示例：
 
-Run the Jaeger all-in-one image:
-
+运行 Jaeger 一体化映像：
 ```bash
 docker run --rm --name jaeger \
   -e COLLECTOR_ZIPKIN_HOST_PORT=:9411 \
@@ -82,53 +78,48 @@ docker run --rm --name jaeger \
   -p 9411:9411 \
   jaegertracing/all-in-one:1.58
 ```
-Then, modify your `.env` file to enable OpenTelemetry tracing like above.
-
+然后，修改您的“.env”文件以启用 OpenTelemetry 跟踪，如上所示。
 ```bash
 TRACER_TO_OPEN_TELEMETRY=True
 OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=http://localhost:4317
 ```
-
-Start the DB-GPT server:
-
+启动 DB-GPT 服务器：
 ```bash
 dbgpt start webserver
 ```
+现在，您可以通过“http://localhost:16686”访问 Jaeger UI 来查看跟踪记录。
 
-Now, you can access the Jaeger UI at `http://localhost:16686` to view the traces.
+以下是 Jaeger UI 的一些屏幕截图示例：
 
-Here are some examples of screenshot of Jaeger UI:
-
-**Search Traces Page**
-<p align="left">
+**搜索痕迹页面**
+<p对齐=“左”>
   <img src={'/img/application/advanced_tutorial/observability_img1.png'} width="720px"/>
 </p>
 
-**Show Normal Conversation Trace**
+**显示正常对话轨迹**
 
-<p align="left">
+<p对齐=“左”>
   <img src={'/img/application/advanced_tutorial/observability_img2.png'} width="720px"/>
 </p>
 
-**Show Conversation Detail Tags**
+**显示对话详细标签**
 
-<p align="left">
+<p对齐=“左”>
   <img src={'/img/application/advanced_tutorial/observability_img3.png'} width="720px"/>
 </p>
 
-**Show Agent Conversation Trace**
+**显示代理对话轨迹**
 
-<p align="left">
+<p对齐=“左”>
   <img src={'/img/application/advanced_tutorial/observability_img4.png'} width="720px"/>
 </p>
 
-**Show Trace In Cluster**
+**显示集群中的跟踪**
 
-### Jaeger Support With Docker Compose
+### Jaeger 对 Docker Compose 的支持
 
-If you want to use docker-compose to start DB-GPT and Jaeger, you can use the following
-`docker-compose.yml` file:
-
+如果你想使用 docker-compose 来启动 DB-GPT 和 Jaeger，可以使用以下命令
+`docker-compose.yml` 文件：
 ```yaml
 # An example of using docker-compose to start a cluster with observability enabled.
 version: '3.10'
@@ -226,22 +217,20 @@ networks:
     driver: bridge
     name: dbgptnet
 ```
-
-You can start the cluster with the following command:
-
+您可以使用以下命令启动集群：
 ```bash
 OPENAI_API_KEY="{your api key}" OPENAI_API_BASE="https://api.openai.com/v1" docker compose up -d
 ```
-Please replace `{your api key}` with your real OpenAI API key and `https://api.openai.com/v1` 
-with your real OpenAI API base URL.
-You can see more details about the docker-compose file in the `docker/compose_examples/observability/docker-compose.yml` documentation.
+请将“{your api key}”替换为您真实的 OpenAI API 密钥和“https://api.openai.com/v1” 
+与您真实的 OpenAI API 基本 URL 一起使用。
+您可以在“docker/compose_examples/observability/docker-compose.yml”文档中查看有关 docker-compose 文件的更多详细信息。
 
-After the cluster is started, you can access the Jaeger UI at `http://localhost:16686` to view the traces.
+集群启动后，您可以通过“http://localhost:16686”访问Jaeger UI来查看跟踪信息。
 
-**Show RAG Conversation Trace**
+**显示 RAG 对话轨迹**
 
-<p align="left">
+<p对齐=“左”>
   <img src={'/img/application/advanced_tutorial/observability_img5.png'} width="720px"/>
 </p>
 
-In the above screenshot, you can see the trace of cross-service communication between the DB-GPT controller, LLM worker, and webserver.
+在上面的屏幕截图中，您可以看到 DB-GPT 控制器、LLM Worker 和 Web 服务器之间跨服务通信的痕迹。

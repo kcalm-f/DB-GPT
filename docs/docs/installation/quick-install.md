@@ -6,122 +6,119 @@ read_when:
   - You want the shortest path to a working DB-GPT web UI
   - You prefer the installer script over a manual source setup
 ---
+从“@site/src/components/mdx/CommandCopyCard”导入CommandCopyCard；
 
-import CommandCopyCard from "@site/src/components/mdx/CommandCopyCard";
+# 快速安装
 
-# Quick Install
+运行 DB-GPT 的最快方法。安装程序脚本会准备本地 DB-GPT 工作区、生成提供程序配置文件，并为您提供可立即运行的 Web 服务器命令。
 
-The fastest way to get DB-GPT running. The installer script prepares a local DB-GPT workspace, generates a provider profile, and gives you a ready-to-run webserver command.
+## 推荐：安装程序脚本
 
-## Recommended: installer script
+如果您想要从零到工作 DB-GPT Web UI 的最短路径，请使用安装程序脚本。
 
-Use the installer script if you want the shortest path from zero to a working DB-GPT web UI.
+<CommandCopyCard 命令={`curl -fsSL https://raw.githubusercontent.com/eosphoros-ai/DB-GPT/main/scripts/install/install.sh | bash`} />
 
-<CommandCopyCard command={`curl -fsSL https://raw.githubusercontent.com/eosphoros-ai/DB-GPT/main/scripts/install/install.sh | bash`} />
+## 系统要求
 
-## System requirements
+此快速安装流程设计用于：
 
-This quick-install flow is designed for:
+- **macOS** 或 **Linux**
+- 可以运行 bash 的 shell 环境
+- 网络访问下载依赖项
+- 如果您计划立即使用托管模型提供商，则需要 API 密钥
 
-- **macOS** or **Linux**
-- a shell environment that can run `bash`
-- network access to download dependencies
-- an API key if you plan to use a hosted model provider immediately
-
-:::tip Best fit
-Choose this path if you want to try DB-GPT quickly without managing the repository structure yourself.
+:::提示 最适合
+如果您想快速尝试 DB-GPT 而无需自行管理存储库结构，请选择此路径。
 :::
 
-## Install with a provider profile
+## 使用提供商配置文件进行安装
 
-If you already know which provider you want, pass the profile and API key directly during installation.
+如果您已经知道所需的提供商，请在安装过程中直接传递配置文件和 API 密钥。
 
-### OpenAI-compatible profile
+### OpenAI 兼容配置文件
 
-<CommandCopyCard command={`curl -fsSL https://raw.githubusercontent.com/eosphoros-ai/DB-GPT/main/scripts/install/install.sh \
+<CommandCopyCard 命令={`curl -fsSL https://raw.githubusercontent.com/eosphoros-ai/DB-GPT/main/scripts/install/install.sh \
   | OPENAI_API_KEY=sk-xxx bash -s -- --profile openai`} />
 
-### Kimi 2.5 via Moonshot API
+### Kimi 2.5 通过 Moonshot API
 
-<CommandCopyCard command={`curl -fsSL https://raw.githubusercontent.com/eosphoros-ai/DB-GPT/main/scripts/install/install.sh \
+<CommandCopyCard 命令={`curl -fsSL https://raw.githubusercontent.com/eosphoros-ai/DB-GPT/main/scripts/install/install.sh \
   | MOONSHOT_API_KEY=sk-xxx bash -s -- --profile kimi`} />
 
-### MiniMax via an OpenAI-compatible API
+### MiniMax 通过 OpenAI 兼容的 API
 
-<CommandCopyCard command={`curl -fsSL https://raw.githubusercontent.com/eosphoros-ai/DB-GPT/main/scripts/install/install.sh \
+<CommandCopyCard 命令={`curl -fsSL https://raw.githubusercontent.com/eosphoros-ai/DB-GPT/main/scripts/install/install.sh \
   | MINIMAX_API_KEY=sk-xxx bash -s -- --profile minimax`} />
 
-## Reuse an existing local checkout
+## 重用现有的本地结账
 
-Already have a local DB-GPT repository? Reuse it instead of cloning into `~/.dbgpt/DB-GPT`.
+已经有本地 DB-GPT 存储库？重用它而不是克隆到`~/.dbgpt/DB-GPT`。
 
-### Reuse local repo with OpenAI
+### 通过 OpenAI 重用本地存储库
 
-<CommandCopyCard command={`OPENAI_API_KEY=sk-xxx \
-  bash scripts/install/install.sh --profile openai --repo-dir "$(pwd)" --yes`} />
+<CommandCopyCard 命令={`OPENAI_API_KEY=sk-xxx \
+  bash脚本/install/install.sh --profile openai --repo-dir "$(pwd)" --yes`} />
 
-### Reuse local repo with Kimi
+### 与 Kimi 重用本地存储库
 
-<CommandCopyCard command={`MOONSHOT_API_KEY=sk-xxx \
-  bash scripts/install/install.sh --profile kimi --repo-dir "$(pwd)" --yes`} />
+<CommandCopyCard 命令={`MOONSHOT_API_KEY=sk-xxx \
+  bash 脚本/install/install.sh --profile kimi --repo-dir "$(pwd)" --yes`} />
 
-### Reuse local repo with MiniMax
+### 通过 MiniMax 重用本地存储库
 
-<CommandCopyCard command={`MINIMAX_API_KEY=sk-xxx \
-  bash scripts/install/install.sh --profile minimax --repo-dir "$(pwd)" --yes`} />
+<CommandCopyCard 命令={`MINIMAX_API_KEY=sk-xxx \
+  bash 脚本/install/install.sh --profile minimax --repo-dir "$(pwd)" --yes`} />
 
-## What the installer prepares
+## 安装程序准备什么
 
-The installer script sets up the common runtime layout for you:
+安装程序脚本为您设置通用运行时布局：
 
-- a DB-GPT checkout under `~/.dbgpt/DB-GPT` unless `--repo-dir` is used
-- generated provider configs under `~/.dbgpt/configs/`
-- the DB-GPT home directory under `~/.dbgpt/`
-- a ready-to-run webserver command using the generated profile
+- 在 `~/.dbgpt/DB-GPT` 下签出 DB-GPT，除非使用 `--repo-dir`
+- 在`~/.dbgpt/configs/`下生成的提供程序配置
+- `~/.dbgpt/` 下的 DB-GPT 主目录
+- 使用生成的配置文件的准备运行的网络服务器命令
 
-## Start DB-GPT after installation
+## 安装后启动DB-GPT
 
-After installation completes, start the webserver with the generated profile config:
+安装完成后，使用生成的配置文件配置启动网络服务器：
 
-<CommandCopyCard command={`cd ~/.dbgpt/DB-GPT && uv run dbgpt start webserver --profile <profile>`} />
+<CommandCopyCard command={`cd ~/.dbgpt/DB-GPT && uv run dbgpt start webserver --profile <配置文件>`} />
 
-Then open [http://localhost:5670](http://localhost:5670).
+然后打开[http://localhost:5670](http://localhost:5670)。
 
-## Verify the install
+## 验证安装
 
-Your install is working if:
+如果满足以下条件，则您的安装工作正常：
 
-- the webserver starts without configuration errors
-- the Web UI opens at `http://localhost:5670`
-- you can start a chat in the browser
+- 网络服务器启动时没有配置错误
+- Web UI 在 `http://localhost:5670` 打开
+- 您可以在浏览器中开始聊天
 
-## Review the script first
+## 先回顾一下脚本
 
-If you prefer to inspect the installer before running it:
-
+如果您希望在运行之前检查安装程序：
 ```bash
 curl -fsSL https://raw.githubusercontent.com/eosphoros-ai/DB-GPT/main/scripts/install/install.sh -o install.sh
 less install.sh
 bash install.sh --profile openai
 ```
+## 替代安装方法
 
-## Alternative install methods
+如果安装程序脚本不适合您的环境：
 
-If the installer script is not the right fit for your environment:
+- 使用 [CLI Install](/docs/getting-started/cli-quickstart) 通过 `dbgpt` 命令进行基于 PyPI 的安装
+- 使用[源安装](/docs/getting-started/deploy/source-code) 进行开发、调试和定制
 
-- use [CLI Install](/docs/getting-started/cli-quickstart) for a PyPI-based install with the `dbgpt` command
-- use [Source Install](/docs/getting-started/deploy/source-code) for development, debugging, and customization
+## 故障排除
 
-## Troubleshooting
+### 安装程序脚本与我的 shell 或平台不匹配
 
-### The installer script does not match my shell or platform
+请改用 [CLI 安装](/docs/getting-started/cli-quickstart) 或 [源安装](/docs/getting-started/deploy/source-code)。
 
-Use [CLI Install](/docs/getting-started/cli-quickstart) or [Source Install](/docs/getting-started/deploy/source-code) instead.
+### 我想要更多地控制依赖项和配置
 
-### I want more control over dependencies and configuration
+使用[源安装](/docs/getting-started/deploy/source-code)。它公开了完整的存储库布局和“uv同步”工作流程。
 
-Use [Source Install](/docs/getting-started/deploy/source-code). It exposes the full repository layout and `uv sync` workflow.
+### 安装已完成，但 DB-GPT 未正常启动
 
-### The install completed, but DB-GPT does not start cleanly
-
-Check the generated config under `~/.dbgpt/configs/`, then see [Installation Issues](/docs/getting-started/troubleshooting/installation).
+检查“~/.dbgpt/configs/”下生成的配置，然后参见[安装问题](/docs/getting-started/troubleshooting/installation)。

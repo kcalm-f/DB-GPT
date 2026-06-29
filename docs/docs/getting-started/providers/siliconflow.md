@@ -2,18 +2,16 @@
 sidebar_position: 4
 title: SiliconFlow
 ---
+# 硅流
 
-# SiliconFlow
+配置 DB-GPT 以使用 SiliconFlow 的托管模型 API。 SiliconFlow 通过在中国托管的统一 API 提供对多个开源模型的访问。
 
-Configure DB-GPT to use SiliconFlow's hosted model API. SiliconFlow provides access to multiple open-source models through a unified API, hosted in China.
+## 先决条件
 
-## Prerequisites
+- 一个 [SiliconFlow API 密钥](https://siliconflow.cn/)
+- DB-GPT 安装了额外的 `proxy_openai`
 
-- A [SiliconFlow API key](https://siliconflow.cn/)
-- DB-GPT installed with `proxy_openai` extra
-
-## Install dependencies
-
+## 安装依赖项
 ```bash
 uv sync --all-packages \
   --extra "base" \
@@ -22,11 +20,9 @@ uv sync --all-packages \
   --extra "storage_chromadb" \
   --extra "dbgpts"
 ```
+## 配置
 
-## Configuration
-
-Edit `configs/dbgpt-proxy-siliconflow.toml`:
-
+编辑`configs/dbgpt-proxy-siliconflow.toml`：
 ```toml
 [models]
 [[models.llms]]
@@ -45,56 +41,50 @@ name = "BAAI/bge-reranker-v2-m3"
 provider = "proxy/siliconflow"
 api_key = "${env:SILICONFLOW_API_KEY}"
 ```
-
-:::tip
-Set the environment variable:
-
+:::提示
+设置环境变量：
 ```bash
 export SILICONFLOW_API_KEY="your-siliconflow-api-key"
 ```
 :::
 
-## Available models
+## 可用型号
 
-SiliconFlow hosts a wide range of open-source models. Some popular choices:
+SiliconFlow 拥有广泛的开源模型。一些流行的选择：
 
-| Model | Config name | Notes |
+|型号|配置名称 |笔记|
 |---|---|---|
-| Qwen2.5-Coder-32B | `Qwen/Qwen2.5-Coder-32B-Instruct` | Code-focused |
-| Qwen2.5-72B | `Qwen/Qwen2.5-72B-Instruct` | General purpose |
-| DeepSeek-V3 | `deepseek-ai/DeepSeek-V3` | Strong reasoning |
-| GLM-4-9B | `THUDM/glm-4-9b-chat` | Chinese & English |
+| Qwen2.5-Coder-32B | `Qwen/Qwen2.5-Coder-32B-Instruct` |以代码为中心 |
+| Qwen2.5-72B | `Qwen/Qwen2.5-72B-指令` |通用|
+| DeepSeek-V3 | `deepseek-ai/DeepSeek-V3` |推理力强 |
+| GLM-4-9B | `THUDM/glm-4-9b-chat` |中英文|
 
-:::info
-Check [SiliconFlow's model list](https://siliconflow.cn/) for the latest available models and pricing.
+:::信息
+查看[SiliconFlow 型号列表](https://siliconflow.cn/) 了解最新可用型号和价格。
 :::
 
-## Features
+## 特点
 
-SiliconFlow configuration also supports **rerankers** for enhanced RAG retrieval:
-
+SiliconFlow 配置还支持**重新排序**以增强 RAG 检索：
 ```toml
 [[models.rerankers]]
 name = "BAAI/bge-reranker-v2-m3"
 provider = "proxy/siliconflow"
 api_key = "${env:SILICONFLOW_API_KEY}"
 ```
-
-## Start the server
-
+## 启动服务器
 ```bash
 uv run dbgpt start webserver --config configs/dbgpt-proxy-siliconflow.toml
 ```
+## 故障排除
 
-## Troubleshooting
-
-| Issue | Solution |
+|问题 |解决方案 |
 |---|---|
-| Authentication failed | Verify your SiliconFlow API key |
-| Model not available | Check SiliconFlow's current model offerings |
-| Slow responses | Some larger models may have higher latency |
+|认证失败 |验证您的 SiliconFlow API 密钥 |
+|型号不可用 |查看 SiliconFlow 的当前型号产品 |
+|反应慢|一些较大的型号可能有较高的延迟 |
 
-## What's next
+## 接下来是什么
 
-- [Getting Started](/docs/getting-started/quick-start) — Full setup walkthrough
-- [Model Providers](/docs/getting-started/providers/) — Try other providers
+- [入门](/docs/getting-started/quick-start) — 完整设置演练
+- [模型提供程序](/docs/getting-started/providers/) — 尝试其他提供程序

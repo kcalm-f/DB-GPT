@@ -113,12 +113,10 @@ class SkillLoader:
         # Look for JSON/YAML files and Claude-style SKILL.md files
         pattern = "**/*" if recursive else "*"
         for file_path in path.glob(pattern):
-            if file_path.is_file() and file_path.suffix in [
-                ".json",
-                ".yaml",
-                ".yml",
-                ".md",
-            ]:
+            if file_path.is_file() and (
+                file_path.suffix in [".json", ".yaml", ".yml"]
+                or file_path.name == "SKILL.md"
+            ):
                 # load_skill_from_file will dispatch appropriately
                 skill = self.load_skill_from_file(str(file_path))
                 if skill:

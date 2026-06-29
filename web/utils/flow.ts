@@ -1,6 +1,133 @@
 import { IFlowData, IFlowDataNode, IFlowNode, IVariableItem } from '@/types/flow';
 import { Node } from 'reactflow';
 
+const FLOW_CATEGORY_LABEL_ZH: Record<string, string> = {
+  trigger: '触发器',
+  sender: '发送器',
+  llm: '大模型',
+  conversion: '数据转换',
+  output_parser: '输出解析',
+  common: '通用',
+  agent: '智能体',
+  rag: '知识检索',
+  experimental: '实验性',
+  database: '数据库',
+  type_converter: '类型转换',
+  example: '示例',
+  code: '代码执行',
+  http_body: 'HTTP 请求体',
+  llm_client: '大模型客户端',
+  storage: '存储',
+  serializer: '序列化器',
+  prompt: '提示词',
+  embeddings: '嵌入模型',
+  vector_store: '向量存储',
+  knowledge_graph: '知识图谱',
+  full_text: '全文检索',
+};
+
+const FLOW_LABEL_ZH: Record<string, string> = {
+  'Common LLM Http Trigger': '通用大语言模型 HTTP 触发器',
+  'Dict Http Trigger': '字典 HTTP 触发器',
+  'String Http Trigger': '字符串 HTTP 触发器',
+  'Request Http Trigger': 'HTTP 请求触发器',
+  'Request Body To Dict Operator': '请求体转字典算子',
+  'User Input Parsed Operator': '用户输入解析算子',
+  'Request Body Parsed To String Operator': '请求体解析为字符串算子',
+  'String Join Operator': '字符串合并算子',
+  'LLM Operator': '大模型调用算子',
+  'Streaming LLM Operator': '流式大模型调用算子',
+  'Prompt Builder Operator': '提示词构建算子',
+  'Chat Prompt Builder Operator': '对话提示词构建算子',
+  'Knowledge Space Operator': '知识空间检索算子',
+  'Knowledge Space Prompt Builder Operator': '知识空间提示词构建算子',
+  'Datasource Retriever Operator': '数据源检索算子',
+  'Datasource Executor Operator': '数据源执行算子',
+  'Datasource Dashboard Operator': '数据源看板算子',
+  'Datasource Structed Operator': '数据源结构化算子',
+  'Report Analyst': '报告分析算子',
+  'Code Map Operator': '代码映射算子',
+  'Code Dict to Model Request Operator': '代码字典转模型请求算子',
+  'HTTP Sender': 'HTTP 发送器',
+  'Example Flow Select': '示例下拉选择算子',
+  'Example Flow Cascader': '示例级联选择算子',
+  'Example Flow Checkbox': '示例复选框算子',
+  'Example Flow Radio': '示例单选框算子',
+  'Example Flow Date Picker': '示例日期选择算子',
+  'Example Flow Input': '示例输入框算子',
+  'Example Flow Text Area': '示例文本域算子',
+  'Example Flow Slider': '示例滑块算子',
+  'Example Flow Slider List': '示例范围滑块算子',
+  'Example Flow Time Picker': '示例时间选择算子',
+  'Example Flow Tree Select': '示例树形选择算子',
+  'Example Refresh Operator': '示例刷新算子',
+  'Example Flow Upload': '示例上传算子',
+  'Example Variables Operator': '示例变量算子',
+  'Example Tags Operator': '示例标签算子',
+  'Example Flow Code Editor': '示例代码编辑器算子',
+  'Example Dynamic Parameters Operator': '示例动态参数算子',
+  'Example Dynamic Outputs Operator': '示例动态输出算子',
+  'Example Dynamic Inputs Operator': '示例动态输入算子',
+  'AWEL Agent Resource': 'AWEL 智能体资源',
+  'Awel Agent Resource Knowledge': 'AWEL 智能体知识资源',
+  'Datasource Resource': '数据源资源',
+};
+
+const FLOW_DESCRIPTION_ZH: Record<string, string> = {
+  'Trigger your workflow by http request, and parse the request body as a common LLM http body':
+    '通过 HTTP 请求触发工作流，并将请求体解析为通用大语言模型 HTTP 请求体。',
+  'Trigger your workflow by http request, and parse the request body as a dict':
+    '通过 HTTP 请求触发工作流，并将请求体解析为字典。',
+  'Trigger your workflow by http request, and parse the request body as a string':
+    '通过 HTTP 请求触发工作流，并将请求体解析为字符串。',
+  'User input parsed operator, parse the user input from request body and return as a string':
+    '用户输入解析算子，从请求体中解析用户输入并以字符串形式返回。',
+  'User input parsed operator, parse the user input from request body and return as a dict':
+    '用户输入解析算子，从请求体中解析用户输入并以字典形式返回。',
+  'Merge multiple inputs into a single string.': '将多个输入合并为一个字符串。',
+  'Send a HTTP request to a specified endpoint': '向指定端点发送 HTTP 请求。',
+  'Report Analyst': '报告分析算子。',
+  'Execute the context from the datasource and output structed data.': '执行数据源上下文并输出结构化数据。',
+  'An example flow operator that includes a select as parameter.': '包含下拉选择参数的示例流程算子。',
+  'An example flow operator that includes a cascader as parameter.': '包含级联选择参数的示例流程算子。',
+  'An example flow operator that includes a checkbox as parameter.': '包含复选框参数的示例流程算子。',
+  'An example flow operator that includes a radio as parameter.': '包含单选框参数的示例流程算子。',
+  'An example flow operator that includes a date picker as parameter.': '包含日期选择参数的示例流程算子。',
+  'An example flow operator that includes a input as parameter.': '包含输入框参数的示例流程算子。',
+  'An example flow operator that includes a text area as parameter.': '包含文本域参数的示例流程算子。',
+  'An example flow operator that includes a slider as parameter.': '包含滑块参数的示例流程算子。',
+  'An example flow operator that includes a slider list as parameter.': '包含范围滑块参数的示例流程算子。',
+  'An example flow operator that includes a time picker as parameter.': '包含时间选择参数的示例流程算子。',
+  'An example flow operator that includes a tree select as parameter.': '包含树形选择参数的示例流程算子。',
+  'An example flow operator that includes a refresh option.': '包含刷新选项的示例流程算子。',
+  'An example flow operator that includes a upload as parameter.': '包含上传参数的示例流程算子。',
+  'An example flow operator that includes a variables option.': '包含变量选项的示例流程算子。',
+  'An example flow operator that includes a tags': '包含标签的示例流程算子。',
+  'An example flow operator that includes a code editor as parameter.': '包含代码编辑器参数的示例流程算子。',
+  'An example flow operator that includes dynamic parameters.': '包含动态参数的示例流程算子。',
+  'An example flow operator that includes dynamic outputs.': '包含动态输出的示例流程算子。',
+  'An example flow operator that includes dynamic inputs.': '包含动态输入的示例流程算子。',
+  'The Agent Resource.': '智能体资源。',
+  'The Agent Resource Knowledge.': '智能体知识资源。',
+  'Connect to a datasource(retrieve table schemas and execute SQL to fetch data).':
+    '连接到数据源（检索表结构并执行 SQL 获取数据）。',
+};
+
+function localizeFlowNodeForDisplay(node: IFlowNode): IFlowNode {
+  return {
+    ...node,
+    original_label: node.original_label || node.label,
+    original_description: node.original_description || node.description,
+    label: FLOW_LABEL_ZH[node.label] || node.label,
+    description: FLOW_DESCRIPTION_ZH[node.description] || node.description,
+    category_label: FLOW_CATEGORY_LABEL_ZH[node.category] || node.category_label,
+  };
+}
+
+export function localizeFlowNodesForDisplay(nodes: IFlowNode[]) {
+  return nodes.map(localizeFlowNodeForDisplay);
+}
+
 export const getUniqueNodeId = (nodeData: IFlowNode, nodes: Node[]) => {
   let count = 0;
   nodes.forEach(node => {

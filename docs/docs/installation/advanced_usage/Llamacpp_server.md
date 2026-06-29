@@ -1,15 +1,14 @@
-# LLama.cpp Server
+# LLama.cpp 服务器
 
-DB-GPT supports native [llama.cpp server](https://github.com/ggerganov/llama.cpp/blob/master/examples/server/README.md), 
-which supports concurrent requests and continuous batching inference.
+DB-GPT 支持本机 [llama.cpp 服务器](https://github.com/ggerganov/llama.cpp/blob/master/examples/server/README.md)， 
+它支持并发请求和连续批处理推理。
 
 
-## Install dependencies
+## 安装依赖项
 
-You can add the extra `--extra "llama_cpp_server"` to install the dependencies needed for llama-cpp server.
+您可以添加额外的 `--extra "llama_cpp_server"` 来安装 llama-cpp 服务器所需的依赖项。
 
-If you has a Nvidia GPU, you can enable the CUDA support by setting the environment variable `CMAKE_ARGS="-DGGML_CUDA=ON"`.
-
+如果您有 Nvidia GPU，则可以通过设置环境变量 CMAKE_ARGS="-DGGML_CUDA=ON" 来启用 CUDA 支持。
 ```bash
 # Use uv to install dependencies needed for llama-cpp
 # Install core dependencies and select desired extensions
@@ -23,9 +22,7 @@ CMAKE_ARGS="-DGGML_CUDA=ON" uv sync --all-packages \
 --extra "quant_bnb" \
 --extra "dbgpts"
 ```
-
-Otherwise, run the following command to install dependencies without CUDA support.
-
+否则，运行以下命令来安装不支持 CUDA 的依赖项。
 ```bash
 # Use uv to install dependencies needed for llama-cpp
 # Install core dependencies and select desired extensions
@@ -38,19 +35,15 @@ uv sync --all-packages \
 --extra "quant_bnb" \
 --extra "dbgpts"
 ```
+## 下载模型
 
-## Download the model
-
-Here, we use the `qwen2.5-0.5b-instruct` model as an example. You can download the model from the [Huggingface](https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct-GGUF).
-
+这里，我们以“qwen2.5-0.5b-instruct”模型为例。您可以从[Huggingface](https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct-GGUF)下载模型。
 ```bash
 wget https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct-GGUF/resolve/main/qwen2.5-0.5b-instruct-q4_k_m.gguf?download=true -O /tmp/qwen2.5-0.5b-instruct-q4_k_m.gguf
 ````
+## 修改配置文件
 
-## Modify configuration file
-
-Just modify you config file to use the `llama.cpp.server` provider.
-
+只需修改您的配置文件即可使用 `llama.cpp.server` 提供程序。
 ```toml
 # Model Configurations
 [models]

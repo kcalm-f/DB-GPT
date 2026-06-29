@@ -1,13 +1,12 @@
 # SQLite
 
-SQLite is a lightweight embedded relational database. DB-GPT includes a native
-SQLite connector in `dbgpt_ext.datasource.rdbms.conn_sqlite`.
+SQLite是一个轻量级的嵌入式关系数据库。 DB-GPT 包括本机
+`dbgpt_ext.datasource.rdbms.conn_sqlite` 中的 SQLite 连接器。
 
-### Install Dependencies
+### 安装依赖项
 
-SQLite support is available in the base installation and does not require an
-additional datasource extra.
-
+SQLite 支持在基本安装中提供，不需要
+额外的额外数据源。
 ```bash
 uv sync --all-packages \
 --extra "base" \
@@ -15,23 +14,20 @@ uv sync --all-packages \
 --extra "storage_chromadb" \
 --extra "dbgpts"
 ```
+### 准备 SQLite
 
-### Prepare SQLite
-
-Prepare a SQLite database file path such as `./data/demo.db`, then start the server:
-
+准备一个SQLite数据库文件路径，例如`./data/demo.db`，然后启动服务器：
 ```bash
 uv run dbgpt start webserver --config configs/dbgpt-proxy-openai.toml
 ```
+### SQLite 配置
 
-### SQLite Configuration
+使用数据源 UI 或配置字段：
 
-Use the datasource UI or configuration fields for:
+- 路径
+- 检查相同线程
+- 驱动程序（`sqlite`）
 
-- path
-- check_same_thread
-- driver (`sqlite`)
-
-The SQLite connector is implemented in:
+SQLite 连接器的实现如下：
 
 - `packages/dbgpt-ext/src/dbgpt_ext/datasource/rdbms/conn_sqlite.py`

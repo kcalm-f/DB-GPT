@@ -1,41 +1,41 @@
-# What is AWEL? 
+# 什么是 AWEL？ 
 
-Agentic Workflow Expression Language(AWEL) is a set of intelligent agent workflow expression language specially designed for large model application
-development. It provides great functionality and flexibility. Through the AWEL API, you can focus on the development of business logic for LLMs applications
-without paying attention to cumbersome model and environment details.
+Agentic Workflow Expression Language（AWEL）是一套专为大型模型应用而设计的智能代理工作流表达语言
+发展。它提供了强大的功能和灵活性。通过AWEL API，您可以专注于LLM应用程序的业务逻辑开发
+无需关注繁琐的模型和环境细节。
 
-AWEL adopts a layered API design. AWEL's layered API design architecture is shown in the figure below.
+AWEL采用分层API设计。 AWEL的分层API设计架构如下图所示。
 
 
-<p align="left">
+<p对齐=“左”>
   <img src={'/img/awel.png'} width="480px"/>
 </p>
 
-## AWEL Design
+## AWEL 设计
 
-AWEL is divided into three levels in deign, namely the operator layer, AgentFream layer and DSL layer. The following is a brief introduction
-to the three levels.
+AWEL在设计上分为三个层次，即算子层、AgentFream层和DSL层。下面简单介绍一下
+到三个层次。
 
-- **Operator layer**
-The operator layer refers to the most basic operation atoms in the LLM application development process, 
-such as when developing a RAG application. Retrieval, vectorization, model interaction, prompt processing, etc. 
-are all basic operators. In the subsequent development, the framework will further abstract and standardize the design of operators. 
-A set of operators can be quickly implemented based on standard APIs
+- **算子层**
+算子层是指LLM应用开发过程中最基本的操作原子， 
+例如开发 RAG 应用程序时。检索、向量化、模型交互、提示处理等 
+都是基本运算符。在后续的发展中，该框架将进一步抽象和规范算子的设计。 
+基于标准API可快速实现一组算子
 
-- **AgentFream layer**
-The AgentFream layer further encapsulates operators and can perform chain calculations based on operators. 
-This layer of chain computing also supports distribution, supporting a set of chain computing operations such as filter, join, map, reduce, etc. More calculation logic will be supported in the future.
+- **AgentFream层**
+AgentFream层进一步封装了算子，可以基于算子进行链式计算。 
+这一层链计算还支持分布式，支持filter、join、map、reduce等一套链计算操作，未来会支持更多的计算逻辑。
 
-- **DSL layer**
-The DSL layer provides a set of standard structured representation languages, which can complete the operations of AgentFream and operators by writing DSL statements, making it more deterministic to write large model applications around data, avoiding the uncertainty of writing in natural language, and making it easier to write around data. Application programming with large models becomes deterministic application programming.
+- **DSL层**
+DSL层提供了一套标准的结构化表示语言，可以通过编写DSL语句来完成AgentFream和算子的操作，使得围绕数据编写大型模型应用更加确定，避免了自然语言编写的不确定性，让围绕数据编写变得更加容易。使用大型模型的应用程序编程变成了确定性应用程序编程。
 
-## Examples
-The preliminary version of AWEL has alse been released, and we have provided some built-in usage examples.
+## 示例
+AWEL 的初级版本也已经发布，我们提供了一些内置的使用示例。
 
-## Operators
+## 运算符
 
-### Example of API-RAG 
-You can find [source code](https://github.com/eosphoros-ai/DB-GPT/blob/main/examples/awel/simple_rag_example.py) from `examples/awel/simple_rag_example.py`
+### API-RAG 示例 
+您可以从`examples/awel/simple_rag_example.py`找到[源代码](https://github.com/eosphoros-ai/DB-GPT/blob/main/examples/awel/simple_rag_example.py)
 ```python
 with DAG("simple_rag_example") as dag:
     trigger_task = HttpTrigger(
@@ -64,20 +64,20 @@ with DAG("simple_rag_example") as dag:
     )
 
 ```
-Bit operations will arrange the entire process in the form of DAG
+位运算将整个过程以DAG的形式排列
 
-<p align="left">
+<p对齐=“左”>
   <img src={'/img/awel_dag_flow.png'} width="360px" />
 </p>
 
-#### Example of LLM + cache
+#### LLM+缓存示例
 
-<p align="left">
+<p对齐=“左”>
   <img src={'/img/awel_cache_flow.png'} width="360px" />
 </p>
 
 
-###  AgentFream Example
+### AgentFream 示例
 ```python
 af = AgentFream(HttpSource("/examples/run_code", method = "post"))
 result = (
@@ -91,9 +91,7 @@ result = (
 )
 result.write_to_sink(type='source_slink')
 ```
-
-### DSL Example
-
+### DSL 示例
 ``` python
 CREATE WORKFLOW RAG AS
 BEGIN
@@ -113,23 +111,20 @@ BEGIN
     		ON ERROR LOG "Failed to respond to request";
 END;
 ```
-
-## Currently supported operators
-- **Basic Operators**
-    - BaseOperator
-    - JoinOperator
-    - ReduceOperator
-    - MapOperator
-    - BranchOperator
-    - InputOperator
-    - TriggerOperator
-- **Stream Operators**
+## 目前支持的运营商
+- **基本运算符**
+    - 基础操作员
+    - 加入操作员
+    - 归约运算符
+    - 地图操作员
+    - 分行操作员
+    - 输入操作符
+    - 触发操作员
+- **流运营商**
     - StreamifyAbsOperator
     - UnstreamifyAbsOperator
     - TransformStreamAbsOperator
 
-## Executable environment
-- Stand-alone environment
-- Ray environment
-
-
+## 可执行环境
+- 单机环境
+- 射线环境

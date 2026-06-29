@@ -6,16 +6,14 @@ read_when:
   - You want the shortest mental model for how DB-GPT is organized
   - You need to understand how UI, API, agents, skills, tools, and data resources connect
 ---
+# 架构
 
-# Architecture
+DB-GPT 被组织为具有以 ReAct 为中心的代理运行时的 Python monorepo。
+Web UI 向应用层发送请求，ReAct Agent 在一个
+代理运行时循环，代理使用工具、技能、数据库和知识
+资源以将分析结果返回给 UI。
 
-DB-GPT is organized as a Python monorepo with a ReAct-centered agent runtime.
-The Web UI sends requests to the application layer, the ReAct Agent executes in an
-agent runtime loop, and the agent uses tools, skills, databases, and knowledge
-resources to produce analysis results back to the UI.
-
-## Repository layout
-
+## 存储库布局
 ```text
 DB-GPT/
 ├── packages/
@@ -31,21 +29,19 @@ DB-GPT/
 ├── configs/               # TOML configuration files
 └── docs/                  # Docusaurus documentation
 ```
+## 包角色
 
-## Package roles
-
-| Package | Role |
+|套餐 |角色 |
 |---|---|
-| `dbgpt-core` | Core agent framework, ReAct parser/action flow, memory, planning, RAG, model interfaces |
-| `dbgpt-app` | FastAPI application server, chat APIs, runtime orchestration, static UI hosting |
-| `dbgpt-serve` | Resource services for knowledge, datasource, flow, app, and agent support |
-| `dbgpt-ext` | External connectors such as database/storage/RAG integrations |
-| `dbgpt-client` | Client SDK for DB-GPT APIs |
-| `dbgpt-sandbox` | Isolated execution runtimes for code and tool execution |
-| `skills/` | Packaged domain workflows, scripts, templates, and references |
+| `dbgpt-核心` |核心代理框架、ReAct 解析器/动作流、内存、规划、RAG、模型接口 |
+| `dbgpt-app` | FastAPI 应用服务器、聊天 API、运行时编排、静态 UI 托管 |
+| `dbgpt-serve` |知识、数据源、流程、应用程序和代理支持的资源服务 |
+| `dbgpt-ext` |外部连接器，例如数据库/存储/RAG 集成 |
+| `dbgpt-客户端` | DB-GPT API 的客户端 SDK |
+| `dbgpt-沙箱` |代码和工具执行的隔离执行运行时 |
+| `技能/` |打包的域工作流程、脚本、模板和参考 |
 
-## High-level architecture
-
+## 高层架构
 ```mermaid
 flowchart TB
     User["User"] --> UI["Web UI / Chat Apps"]
@@ -77,29 +73,28 @@ flowchart TB
     Runtime --> Result["Analysis result / report / chart"]
     Result --> UI
 ```
+## 它是如何工作的
 
-## How it works
+1. 用户与 Web UI 或其他客户端交互。
+2. `dbgpt-app` 接收请求并将其路由到代理聊天 API。
+3. 请求进入`agent_runtime`执行循环。
+4. ReAct Agent 逐步推理并选择下一步操作。
+5.代理根据需要加载并使用外部资源：
+   - 用于SQL分析的结构化数据库
+   - 用于检索的非结构化知识空间
+   - 可重用工作流程的技能
+   - 用于任务执行的内置工具
+   - 用于安全代码执行的沙箱运行时
+6. 代理结合观察结果并产生最终分析输出。
+7. 结果返回到 UI 进行显示。
 
-1. The user interacts with the Web UI or another client.
-2. `dbgpt-app` receives the request and routes it to the agent chat API.
-3. The request enters the `agent_runtime` execution loop.
-4. The ReAct Agent reasons step by step and chooses the next action.
-5. The agent loads and uses external resources as needed:
-   - structured databases for SQL analysis
-   - unstructured knowledge spaces for retrieval
-   - skills for reusable workflows
-   - built-in tools for task execution
-   - sandbox runtimes for safe code execution
-6. The agent combines observations and produces the final analysis output.
-7. The result is streamed back to the UI for display.
+## 代理运行时模型
 
-## Agent runtime model
+运行时是驱动 ReAct 循环的概念执行层。
+在代码库中，这是通过代理构建器、资源管理器实现的，
+ReAct 解析器/操作流，以及连接到 UI 的 API 流处理程序。
 
-The runtime is the conceptual execution layer that drives the ReAct loop.
-In the codebase, this is implemented through the agent builder, resource manager,
-ReAct parser/action flow, and the API streaming handlers that connect to the UI.
-
-Key implementation anchors:
+关键实施锚点：
 
 - `packages/dbgpt-core/src/dbgpt/agent/expand/react_agent.py`
 - `packages/dbgpt-core/src/dbgpt/agent/util/react_parser.py`
@@ -107,33 +102,33 @@ Key implementation anchors:
 - `web/hooks/use-react-agent-chat.ts`
 - `packages/dbgpt-sandbox/src/dbgpt_sandbox/sandbox/execution_layer/runtime_factory.py`
 
-## Resources used by the agent
+## 代理使用的资源
 
-### Structured data
+### 结构化数据
 
-Databases and queryable tabular sources are used for SQL-style analysis, schema
-linking, and report generation.
+数据库和可查询的表格源用于 SQL 风格的分析、模式
+链接和报告生成。
 
-### Unstructured data
+### 非结构化数据
 
-Knowledge spaces and document collections provide retrieval support for
-unstructured content.
+知识空间和文档集合提供检索支持
+非结构化内容。
 
-### Skills
+### 技能
 
-Built-in skills package repeatable workflows into reusable task units. The agent
-can load and execute them during a session.
+内置技能将可重复的工作流程打包成可重用的任务单元。代理
+可以在会话期间加载并执行它们。
 
-### Built-in tools
+### 内置工具
 
-Tools include SQL execution, shell/code execution, HTML rendering, search, and
-other task-specific operations registered through the resource manager.
+工具包括 SQL 执行、shell/代码执行、HTML 渲染、搜索和
+通过资源管理器注册的其他特定于任务的操作。
 
-## Result delivery
+## 结果传递
 
-The output path is designed to be user-facing:
+输出路径被设计为面向用户：
 
-`ReAct Agent` → `agent_runtime` → `streamed result` → `Web UI`
+`ReAct Agent`→`agent_runtime`→`流结果`→`Web UI`
 
-This makes the architecture suitable for interactive data analysis, report
-generation, and tool-assisted reasoning.
+这使得该架构适合交互式数据分析、报告
+生成和工具辅助推理。

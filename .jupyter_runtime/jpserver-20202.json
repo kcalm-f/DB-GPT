@@ -1,0 +1,13 @@
+{
+  "base_url": "/",
+  "hostname": "localhost",
+  "password": false,
+  "pid": 20202,
+  "port": 5671,
+  "root_dir": "/Users/kcalm",
+  "secure": false,
+  "sock": "",
+  "token": "",
+  "url": "http://localhost:5671/",
+  "version": "2.15.0"
+}

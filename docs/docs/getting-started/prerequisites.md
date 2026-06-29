@@ -1,31 +1,31 @@
 ---
 sidebar_position: 1
-title: Prerequisites
-summary: "What you need before running DB-GPT locally or with Docker"
+title: 先决条件
+summary: "在本地或 Docker 中运行 DB-GPT 之前需要准备的内容"
 read_when:
-  - You want to confirm Python, uv, Docker, or GPU requirements before setup
-  - You are deciding between API-proxy mode and local-model mode
+  - 你想在设置前确认 Python、uv、Docker 或 GPU 等环境要求
+  - 你正在选择 API 代理模式还是本地模型模式
 ---
 
-# Prerequisites
+# 先决条件
 
-Everything you need before installing DB-GPT.
+安装 DB-GPT 之前需要准备的所有内容。
 
-:::tip Quick check
-Already have Python 3.10+ and uv? Skip to [Getting Started](/docs/getting-started/quick-start).
+:::tip 快速检查
+已经有 Python 3.10+ 和 uv？直接跳到[快速开始](/docs/getting-started/quick-start)。
 :::
 
-## Required
+## 必需
 
-| Requirement | Version | Check command |
+| 要求 | 版本 | 检查命令 |
 |---|---|---|
-| **Python** | 3.10 or newer | `python --version` |
-| **uv** | Latest | `uv --version` |
-| **Git** | Any recent | `git --version` |
+| **Python** | 3.10 或更新 | `python --version` |
+| **uv** | 最新版 | `uv --version` |
+| **Git** | 任意近期版本 | `git --version` |
 
 ### Python
 
-DB-GPT requires **Python 3.10+**. We recommend Python 3.11 for the best compatibility.
+DB-GPT 需要 **Python 3.10+**。推荐使用 Python 3.11 以获得最佳兼容性。
 
 ```bash
 python --version
@@ -33,12 +33,12 @@ python --version
 ```
 
 :::info
-If you need to manage multiple Python versions, consider using [pyenv](https://github.com/pyenv/pyenv) or [conda](https://docs.conda.io/).
+如果你需要管理多个 Python 版本，可以考虑使用 [pyenv](https://github.com/pyenv/pyenv) 或 [conda](https://docs.conda.io/)。
 :::
 
-### uv (package manager)
+### uv（包管理器）
 
-Starting from v0.7.0, DB-GPT uses [uv](https://docs.astral.sh/uv/) for environment and package management, providing faster and more stable dependency resolution.
+从 v0.7.0 开始，DB-GPT 使用 [uv](https://docs.astral.sh/uv/) 进行环境和包管理，提供更快速、更稳定的依赖解析。
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -61,73 +61,73 @@ pipx install uv --global
 ```
 
   </TabItem>
-  <TabItem value="other" label="Other">
+  <TabItem value="other" label="其他">
 
-See the full [uv installation guide](https://docs.astral.sh/uv/getting-started/installation/) for Homebrew, Scoop, and other methods.
+请参阅完整的 [uv 安装指南](https://docs.astral.sh/uv/getting-started/installation/)，了解 Homebrew、Scoop 和其他安装方式。
 
   </TabItem>
 </Tabs>
 
-Verify the installation:
+验证安装：
 
 ```bash
 uv --version
 ```
 
-## Choose the right setup first
+## 首先选择合适的设置
 
-- **Fastest setup:** API proxy model (OpenAI, DeepSeek, Qwen, SiliconFlow) — no GPU required
-- **Privacy-first local setup:** Ollama — local model runtime, optional GPU
-- **High-performance local inference:** vLLM or HuggingFace GPU stack — NVIDIA GPU required
+- **最快设置：** API 代理模型（OpenAI、DeepSeek、Qwen、SiliconFlow）— 无需 GPU
+- **隐私优先的本地设置：** Ollama — 本地模型运行时，可选 GPU
+- **高性能本地推理：** vLLM 或 HuggingFace GPU 栈 — 需要 NVIDIA GPU
 
-## Optional (based on deployment)
+## 可选（根据部署方式）
 
-### For Web UI development
+### Web UI 开发
 
-| Requirement | Version | Check command |
+| 要求 | 版本 | 检查命令 |
 |---|---|---|
-| **Node.js** | 18 or newer | `node --version` |
-| **npm** | 8 or newer | `npm --version` |
+| **Node.js** | 18 或更新 | `node --version` |
+| **npm** | 8 或更新 | `npm --version` |
 
-### For local model deployment
+### 本地模型部署
 
-| Requirement | Details |
+| 要求 | 详情 |
 |---|---|
-| **NVIDIA GPU** | CUDA 12.1+ for GPU-accelerated inference |
-| **CUDA Toolkit** | Required for vLLM, HuggingFace Transformers with GPU |
-| **Sufficient VRAM** | 8 GB+ for 7B models, 24 GB+ for 13B+ models |
+| **NVIDIA GPU** | CUDA 12.1+ 用于 GPU 加速推理 |
+| **CUDA Toolkit** | vLLM、HuggingFace Transformers GPU 模式所需 |
+| **足够的显存** | 7B 模型需 8 GB+，13B+ 模型需 24 GB+ |
 
 :::info
-If you only use API proxy models (OpenAI, DeepSeek, etc.), **no GPU is required**. You can run on a CPU-only machine.
+如果你只使用 API 代理模型（OpenAI、DeepSeek 等），**无需 GPU**。你可以在纯 CPU 机器上运行。
 :::
 
-### For Docker deployment
+### Docker 部署
 
-| Requirement | Version | Check command |
+| 要求 | 版本 | 检查命令 |
 |---|---|---|
 | **Docker** | 20.10+ | `docker --version` |
 | **Docker Compose** | 2.0+ | `docker compose version` |
-| **NVIDIA Container Toolkit** | Latest (GPU only) | `nvidia-smi` |
+| **NVIDIA Container Toolkit** | 最新版（仅 GPU） | `nvidia-smi` |
 
-## System resources
+## 系统资源
 
-| Deployment Type | CPU | RAM | Disk |
+| 部署类型 | CPU | 内存 | 磁盘 |
 |---|---|---|---|
-| **API proxy only** | 2 cores | 4 GB | 10 GB |
-| **Local 7B model** | 4 cores | 16 GB | 30 GB |
-| **Local 13B+ model** | 8 cores | 32 GB | 60 GB |
+| **仅 API 代理** | 2 核 | 4 GB | 10 GB |
+| **本地 7B 模型** | 4 核 | 16 GB | 30 GB |
+| **本地 13B+ 模型** | 8 核 | 32 GB | 60 GB |
 
-## Network considerations (China)
+## 网络注意事项（中国大陆）
 
-If you are in the China region, configure a PyPI mirror for faster package downloads:
+如果你在中国大陆地区，建议配置 PyPI 镜像以加速包下载：
 
 ```bash
-# Set the mirror as environment variable
+# 将镜像设置为环境变量
 echo "export UV_INDEX_URL=https://pypi.tuna.tsinghua.edu.cn/simple" >> ~/.bashrc
 source ~/.bashrc
 ```
 
-Or append `--index-url` to each `uv sync` command:
+或在每个 `uv sync` 命令后追加 `--index-url`：
 
 ```bash
 uv sync --all-packages \
@@ -136,6 +136,6 @@ uv sync --all-packages \
   --index-url=https://pypi.tuna.tsinghua.edu.cn/simple
 ```
 
-## Next step
+## 下一步
 
-Ready to go? Head to [Getting Started](/docs/getting-started/quick-start) for a 5-minute setup.
+准备好了吗？前往[快速开始](/docs/getting-started/quick-start)，5 分钟完成设置。

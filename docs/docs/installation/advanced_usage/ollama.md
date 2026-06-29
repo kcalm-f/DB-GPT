@@ -1,24 +1,23 @@
-# ollama
-ollama is a model serving platform that allows you to deploy models in a few seconds. 
-It is a great tool.
+# 乌拉马
+ollama 是一个模型服务平台，可让您在几秒钟内部署模型。 
+这是一个很棒的工具。
 
-### Install ollama
-If your system is linux.
+### 安装ollama
+如果你的系统是linux。
 ```bash
 curl -fsSL https://ollama.com/install.sh | sh
 ```
-other environments, please refer to the [official ollama website](https://ollama.com/).
-### Pull models.
-1. Pull LLM
+其他环境请参考【ollama官方网站】(https://ollama.com/)。
+### 拉模型。
+1. 拉法学硕士
 ```bash
 ollama pull qwen:0.5b
 ```
-2. Pull embedding model.
+2. 拉嵌入模型。
 ```bash
 ollama pull nomic-embed-text
 ```
-
-3. install ollama package.
+3.安装ollama包。
 ```bash
 # Use uv to install dependencies needed for Ollama proxy
 uv sync --all-packages \
@@ -28,11 +27,9 @@ uv sync --all-packages \
 --extra "storage_chromadb" \
 --extra "dbgpts"
 ```
+### 配置模型
 
-### Configure the model
-
-Modify you toml config file to use the `ollama` provider.
-
+修改 toml 配置文件以使用 `ollama` 提供程序。
 ```toml
 # Model Configurations
 [models]

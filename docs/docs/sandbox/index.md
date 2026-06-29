@@ -2,39 +2,37 @@
 sidebar_position: 0
 title: Sandbox Overview
 ---
+# 沙盒概述
 
-# Sandbox Overview
+DB-GPT 使用沙箱让代理在隔离的运行时中执行代码和工具
+而不是直接在宿主环境中运行。
 
-DB-GPT uses a sandbox to let agents execute code and tools in an isolated runtime
-instead of running directly in the host environment.
+这对于座席工作流程很重要，因为座席通常需要做的不仅仅是
+文字中的原因。它可能需要运行代码、执行 shell 命令、安装
+依赖关系、生成文件并跨多个步骤保持执行状态。
 
-This matters for agent workflows because an agent often needs to do more than
-reason in text. It may need to run code, execute shell commands, install
-dependencies, generate files, and keep execution state across multiple steps.
+沙箱是执行边界，使这些操作更安全、更高效
+易于管理。
 
-The sandbox is the execution boundary that makes those actions safer and more
-manageable.
+## 什么是沙箱？
 
-## What is a sandbox?
+在 DB-GPT 中，沙箱是代理在执行任务时使用的隔离执行环境。
+需要执行代码、运行命令或操作文件作为任务的一部分。
 
-In DB-GPT, a sandbox is an isolated execution environment used by an agent when it
-needs to execute code, run commands, or manipulate files as part of a task.
+沙盒不是让代理直接在主机系统上运行，
+提供：
 
-Instead of letting the agent operate directly on the host system, the sandbox
-provides:
+- 进程隔离
+- 资源限制
+- 受控的工作目录
+- 可选的依赖安装
+- 会话生命周期管理
+- 推理与执行之间的清晰界限
 
-- process isolation
-- resource limits
-- controlled working directories
-- optional dependency installation
-- session lifecycle management
-- a clear boundary between reasoning and execution
+## 沙箱如何与代理一起工作
 
-## How the sandbox works with agents
-
-The agent decides **what** to do next. The sandbox executes **how** that action is
-run.
-
+代理决定下一步要做什么。沙箱执行该操作的**方式**
+跑。
 ```mermaid
 flowchart TB
     User["User / UI"] --> API["dbgpt-app API"]
@@ -58,156 +56,154 @@ flowchart TB
     Observation --> Agent
     Agent --> Result["Final answer / report / UI output"]
 ```
+## 为什么代理需要沙箱
 
-## Why agents need a sandbox
+可以在没有隔离的情况下执行代码的代理很难安全地运行
+真实环境。沙箱为 DB-GPT 提供了专用的运行时，用于执行以下操作：
+如：
 
-An agent that can execute code without isolation is difficult to operate safely in
-real environments. The sandbox gives DB-GPT a dedicated runtime for actions such
-as:
+- 代码执行
+- shell命令执行
+- 依赖安装
+- 文件创建和检索
+- 多步骤状态分析
 
-- code execution
-- shell command execution
-- dependency installation
-- file creation and retrieval
-- multi-step stateful analysis
+这对于数据分析、报告生成和工具驱动尤其重要
+代理必须将推理与实际执行相结合的工作流程。
 
-This is especially important for data analysis, report generation, and tool-driven
-workflows where the agent must combine reasoning with real execution.
+## DB-GPT当前的沙盒解决方案
 
-## DB-GPT's current sandbox solution
-
-DB-GPT's sandbox implementation lives in:
+DB-GPT 的沙箱实现位于：
 
 - `packages/dbgpt-sandbox/`
 
-The current design is a layered, extensible sandbox runtime with multiple backend
-options.
+当前的设计是一个分层的、可扩展的沙箱运行时，具有多个后端
+选项。
 
-### Runtime backends
+### 运行时后端
 
-The runtime factory automatically chooses the best available backend in this order:
+运行时工厂按以下顺序自动选择最佳可用后端：
 
-- Docker
-- Podman
-- Nerdctl
-- Local runtime
+- 码头工人
+- 波德曼
+- 内德特尔
+- 本地运行时
 
-Implementation anchor:
+实施锚：
 
 - `packages/dbgpt-sandbox/src/dbgpt_sandbox/sandbox/execution_layer/runtime_factory.py`
 
-This allows DB-GPT to prefer container isolation when available and fall back to a
-local execution mode for development or environments without container support.
+这使得 DB-GPT 在可用时更喜欢容器隔离，并回退到
+用于开发或没有容器支持的环境的本地执行模式。
 
-## Layered architecture in `dbgpt-sandbox`
+## `dbgpt-sandbox` 中的分层架构
 
-DB-GPT's sandbox is implemented as a small runtime system with several layers.
+DB-GPT 的沙箱被实现为一个具有多层的小型运行时系统。
 
-### 1. Execution layer
+### 1.执行层
 
-The execution layer provides the runtime implementations and the core abstractions.
+执行层提供运行时实现和核心抽象。
 
-- `base.py` defines shared runtime/session/result/config interfaces
-- `docker_runtime.py`, `podman_runtime.py`, `nerdctl_runtime.py`, `local_runtime.py`
-  implement concrete runtimes
-- `runtime_factory.py` selects the runtime backend
+- `base.py` 定义共享运行时/会话/结果/配置接口
+- `docker_runtime.py`、`podman_runtime.py`、`nerdctl_runtime.py`、`local_runtime.py`
+  实施具体的运行时
+- `runtime_factory.py` 选择运行时后端
 
-### 2. Control layer
+### 2.控制层
 
-The control layer manages task lifecycle and execution orchestration.
+控制层管理任务生命周期和执行编排。
 
-Implementation anchor:
+实施锚：
 
 - `packages/dbgpt-sandbox/src/dbgpt_sandbox/sandbox/control_layer/control_layer.py`
 
-This layer handles operations such as:
+该层处理以下操作：
 
-- connect
-- configure
-- execute
-- status
-- disconnect
-- get file
+- 连接
+- 配置
+- 执行
+- 状态
+- 断开连接
+- 获取文件
 
-It also manages session creation and session-scoped execution.
+它还管理会话创建和会话范围内的执行。
 
-### 3. User layer
+### 3.用户层
 
-The user layer exposes the sandbox service interface used by callers.
+用户层暴露调用者使用的沙箱服务接口。
 
-Implementation anchors:
+实施锚点：
 
 - `packages/dbgpt-sandbox/src/dbgpt_sandbox/sandbox/user_layer/service.py`
 - `packages/dbgpt-sandbox/src/dbgpt_sandbox/sandbox/user_layer/schemas.py`
 
-### 4. Display layer
+### 4.显示层
 
-The display layer packages outputs for runtime-specific display or file-oriented
-results.
+显示层将输出打包为特定于运行时的显示或面向文件的
+结果。
 
-Implementation anchor:
+实施锚：
 
 - `packages/dbgpt-sandbox/src/dbgpt_sandbox/sandbox/display_layer/display_layer.py`
 
-## Session model and stateful execution
+## 会话模型和有状态执行
 
-One important part of the DB-GPT sandbox design is that it supports **session-based
-stateful execution**.
+DB-GPT 沙箱设计的一个重要部分是它支持基于**会话的
+有状态执行**。
 
-That means:
+这意味着：
 
-- a sandbox session can be created once
-- multiple execution steps can run in the same session
-- installed dependencies can remain available in later steps
-- files produced in one step can be reused in the next step
+- 沙盒会话可以创建一次
+- 多个执行步骤可以在同一个会话中运行
+- 安装的依赖项可以在后续步骤中保持可用
+- 一个步骤中生成的文件可以在下一步中重复使用
 
-This is important for agent workflows where a task is solved through multiple
-reasoning and execution rounds rather than a single tool call.
+这对于代理工作流程非常重要，因为任务是通过多个解决方案解决的
+推理和执行轮次而不是单个工具调用。
 
-## Current integration in DB-GPT app
+## DB-GPT 应用程序中的当前集成
 
-Today, DB-GPT already uses sandbox execution in application-side agent tooling.
+如今，DB-GPT 已在应用程序端代理工具中使用沙箱执行。
 
-For example, the `shell_interpreter` tool in:
+例如，“shell_interpreter”工具：
 
 - `packages/dbgpt-app/src/dbgpt_app/openapi/api_v1/agentic_data_api.py`
 
-uses `dbgpt-sandbox` `LocalRuntime` to execute shell commands with:
+使用 `dbgpt-sandbox` `LocalRuntime` 来执行 shell 命令：
 
-- process isolation
-- memory limits
-- timeout limits
-- security validation
+- 进程隔离
+- 内存限制
+- 超时限制
+- 安全验证
 
-The current implementation there is **stateless per call** for shell execution: each
-tool call creates a temporary sandbox session and destroys it after completion.
+当前的实现对于 shell 执行来说**每次调用都是无状态**：每个
+工具调用创建一个临时沙箱会话并在完成后销毁它。
 
-So the repo currently contains both:
+因此，该存储库当前包含以下两个内容：
 
-- a more complete `dbgpt-sandbox` design for reusable sandbox sessions
-- a practical app-side integration already using sandboxed execution for tools
+- 更完整的“dbgpt-sandbox”设计，用于可重用的沙箱会话
+- 实用的应用程序端集成已经使用工具的沙盒执行
 
-## What DB-GPT supports today
+## DB-GPT 目前支持什么
 
-Based on the current `dbgpt-sandbox` implementation, DB-GPT is moving toward a
-general-purpose agent runtime that supports:
+基于当前的“dbgpt-sandbox”实现，DB-GPT 正在朝着
+通用代理运行时支持：
 
-- multi-runtime sandbox execution
-- safe code and shell execution
-- stateful sandbox sessions
-- dependency installation inside the sandbox
-- task lifecycle control
-- file retrieval from sandbox sessions
+- 多运行时沙箱执行
+- 安全代码和 shell 执行
+- 有状态的沙箱会话
+- 沙箱内的依赖安装
+- 任务生命周期控制
+- 从沙箱会话中检索文件
 
-This makes the sandbox suitable for agent scenarios such as:
+这使得沙箱适合代理场景，例如：
 
-- code agents
-- data analysis agents
-- report generation agents
-- browser/computer style execution runtimes in future extensions
+- 代码代理
+- 数据分析代理
+- 报告生成代理
+- 未来扩展中的浏览器/计算机风格执行运行时
 
-## High-level view of the current DB-GPT sandbox direction
-
+## 当前 DB-GPT 沙盒方向的高级视图
 ```mermaid
 flowchart TB
     Apps["Agent applications"] --> Access["Access layer"]
@@ -229,13 +225,12 @@ flowchart TB
     Runtime --> SessionMgmt
     Runtime --> Isolation
 ```
+该图是概念性的。它显示了沙箱作为专用沙箱的方向
+代理应用程序下的运行时层，而当前的存储库实现
+已经提供了执行、控制、会话和运行时选择基础
+在`dbgpt-sandbox`中。
 
-This diagram is conceptual. It shows the direction of the sandbox as a dedicated
-runtime layer under agent applications, while the current repo implementation
-already provides the execution, control, session, and runtime selection foundations
-in `dbgpt-sandbox`.
-
-## Key implementation anchors
+## 关键实现锚点
 
 - `packages/dbgpt-sandbox/README.md`
 - `packages/dbgpt-sandbox/src/docs/architecture.md`

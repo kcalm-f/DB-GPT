@@ -1,6 +1,6 @@
 import { ChatContext } from '@/app/chat-context';
 import { useSearchParams } from 'next/navigation';
-import { useContext, useEffect, useRef } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 const Libro: React.FC = () => {
@@ -10,15 +10,18 @@ const Libro: React.FC = () => {
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
 
   const id = searchParams?.get('id') || '';
+  const [libroServerOrigin, setLibroServerOrigin] = useState('');
 
   useEffect(() => {
+    setLibroServerOrigin(
+      `${window.location.protocol}//${window.location.hostname}:${process.env.NEXT_PUBLIC_LIBRO_SERVER_PORT || '5671'}`,
+    );
     console.log(window.location);
     // 监听语言切换事件
     const handleLanguageChange = (lng: string) => {
-      iframeRef.current?.contentWindow?.postMessage(
-        `lang:${lng}`,
-        `${window.location.protocol}//${window.location.hostname}:5671`,
-      );
+      if (libroServerOrigin) {
+        iframeRef.current?.contentWindow?.postMessage(`lang:${lng}`, libroServerOrigin);
+      }
     };
 
     // 注册监听器
@@ -28,22 +31,21 @@ const Libro: React.FC = () => {
     return () => {
       i18n.off('languageChanged', handleLanguageChange);
     };
-  }, []);
+  }, [i18n, libroServerOrigin]);
 
   useEffect(() => {
-    iframeRef.current?.contentWindow?.postMessage(
-      `theme:${mode}`,
-      `${window.location.protocol}//${window.location.hostname}:5671`,
-    );
+    iframeRef.current?.contentWindow?.postMessage(`theme:${mode}`, libroServerOrigin);
   }, [mode]);
 
   return (
     <>
-      <iframe
-        src={`${window.location.protocol}//${window.location.hostname}:5671/dbgpt?flow_uid=${id}`}
-        className='h-full'
-        ref={iframeRef}
-      ></iframe>
+      {libroServerOrigin && (
+        <iframe
+          src={`${libroServerOrigin}/dbgpt?flow_uid=${id}`}
+          className='h-full'
+          ref={iframeRef}
+        ></iframe>
+      )}
     </>
   );
 };

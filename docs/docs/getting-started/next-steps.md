@@ -1,72 +1,72 @@
 ---
 sidebar_position: 99
-title: Next Steps
-summary: "Where to go after the first successful DB-GPT setup"
+title: 下一步
+summary: "首次成功设置 DB-GPT 后的下一步指南"
 read_when:
-  - You already completed the quick start and want the next useful docs
-  - You are deciding whether to go deeper into apps, APIs, deployment, or operations
+  - 你已经完成了快速开始，想要查看更多有用的文档
+  - 你正在决定是深入了解应用、API、部署还是运维
 ---
 
-# Next Steps
+# 下一步
 
-You have the basics working. Use this page to jump to the next useful docs.
+你已经掌握了基础功能。使用本页跳转到下一个有用的文档。
 
-## Build applications
+## 构建应用
 
-| Goal | Resource |
+| 目标 | 资源 |
 |---|---|
-| Build a data analysis app | [App Development Guide](/docs/cookbook/app/data_analysis_app_develop) |
-| Create custom agents | [Agent Development](/docs/agents/introduction/) |
-| Build AWEL workflows in Python | [AWEL Tutorial](/docs/awel/tutorial) |
-| Use the visual AWEL editor | [AWEL Flow](/docs/getting-started/tools/awel-flow) |
+| 构建数据分析应用 | [应用开发指南](/docs/cookbook/app/data_analysis_app_develop) |
+| 创建自定义智能体 | [智能体开发](/docs/agents/introduction/) |
+| 使用 Python 构建 AWEL 工作流 | [AWEL 教程](/docs/awel/tutorial) |
+| 使用可视化 AWEL 编辑器 | [AWEL 工作流](/docs/getting-started/tools/awel-flow) |
 
-## Deepen your knowledge
+## 深入了解
 
-| Topic | Resource |
+| 主题 | 资源 |
 |---|---|
-| AWEL language deep dive | [AWEL Documentation](/docs/awel/) |
-| Agent modules (memory, planning, tools) | [Agent Modules](/docs/agents/modules/profile/) |
-| RAG advanced configuration | [RAG Tutorial](/docs/application/advanced_tutorial/rag) |
-| Multi-model management (SMMF) | [SMMF Guide](/docs/application/advanced_tutorial/smmf) |
-| Graph RAG | [Graph RAG Development](/docs/cookbook/rag/graph_rag_app_develop) |
+| AWEL 语言深入 | [AWEL 文档](/docs/awel/) |
+| 智能体模块（记忆、规划、工具） | [智能体模块](/docs/agents/modules/profile/) |
+| RAG 高级配置 | [RAG 教程](/docs/application/advanced_tutorial/rag) |
+| 多模型管理（SMMF） | [SMMF 指南](/docs/application/advanced_tutorial/smmf) |
+| 图 RAG | [图 RAG 开发](/docs/cookbook/rag/graph_rag_app_develop) |
 
-## Production deployment
+## 生产部署
 
-| Topic | Resource |
+| 主题 | 资源 |
 |---|---|
-| Docker deployment | [Docker Guide](/docs/getting-started/deploy/docker) |
-| Docker Compose | [Docker Compose Guide](/docs/getting-started/deploy/docker-compose) |
-| Cluster deployment | [Cluster Guide](/docs/getting-started/deploy/cluster) |
-| Observability & debugging | [Debugging Guide](/docs/application/advanced_tutorial/debugging) |
-| CLI reference | [CLI Guide](/docs/application/advanced_tutorial/cli) |
+| Docker 部署 | [Docker 指南](/docs/getting-started/deploy/docker) |
+| Docker Compose | [Docker Compose 指南](/docs/getting-started/deploy/docker-compose) |
+| 集群部署 | [集群指南](/docs/getting-started/deploy/cluster) |
+| 可观测性与调试 | [调试指南](/docs/application/advanced_tutorial/debugging) |
+| CLI 参考 | [CLI 指南](/docs/application/advanced_tutorial/cli) |
 
-## API integration
+## API 集成
 
-| Topic | Resource |
+| 主题 | 资源 |
 |---|---|
-| REST API overview | [API Introduction](/docs/api/introduction) |
-| Chat API | [Chat API](/docs/api/chat) |
-| App API | [App API](/docs/api/app) |
-| Knowledge API | [Knowledge API](/docs/api/knowledge) |
-| Flow API | [Flow API](/docs/api/flow) |
+| REST API 概述 | [API 简介](/docs/api/introduction) |
+| 聊天 API | [聊天 API](/docs/api/chat) |
+| 应用 API | [应用 API](/docs/api/app) |
+| 知识库 API | [知识库 API](/docs/api/knowledge) |
+| 工作流 API | [工作流 API](/docs/api/flow) |
 
-## Community & resources
+## 社区与资源
 
-| Resource | Link |
+| 资源 | 链接 |
 |---|---|
-| GitHub Repository | [eosphoros-ai/DB-GPT](https://github.com/eosphoros-ai/DB-GPT) |
-| Community Apps | [dbgpts](https://github.com/eosphoros-ai/dbgpts) |
-| GitHub Issues | [Report a bug](https://github.com/eosphoros-ai/DB-GPT/issues) |
-| Discussions | [GitHub Discussions](https://github.com/orgs/eosphoros-ai/discussions) |
-| Slack | [Join Slack](https://join.slack.com/t/slack-inu2564/shared_invite/zt-29rcnyw2b-N~ubOD9kFc7b7MDOAM1otA) |
+| GitHub 仓库 | [eosphoros-ai/DB-GPT](https://github.com/eosphoros-ai/DB-GPT) |
+| 社区应用 | [dbgpts](https://github.com/eosphoros-ai/dbgpts) |
+| GitHub Issues | [报告 Bug](https://github.com/eosphoros-ai/DB-GPT/issues) |
+| 讨论区 | [GitHub Discussions](https://github.com/orgs/eosphoros-ai/discussions) |
+| Slack | [加入 Slack](https://join.slack.com/t/slack-inu2564/shared_invite/zt-29rcnyw2b-N~ubOD9kFc7b7MDOAM1otA) |
 | Twitter/X | [@DBGPT_AI](https://x.com/DBGPT_AI) |
-| Paper | [DB-GPT Paper (arXiv)](https://arxiv.org/pdf/2312.17449.pdf) |
+| 论文 | [DB-GPT 论文 (arXiv)](https://arxiv.org/pdf/2312.17449.pdf) |
 | DeepWiki | [DB-GPT DeepWiki](https://deepwiki.com/eosphoros-ai/DB-GPT) |
 
-## FAQ
+## 常见问题
 
-Common questions organized by topic:
+按主题分类的常见问题：
 
-- [Installation FAQ](/docs/faq/install) — Setup and dependency issues
-- [LLM FAQ](/docs/faq/llm) — Model configuration and performance
-- [Knowledge Base FAQ](/docs/faq/kbqa) — RAG and document retrieval
+- [安装 FAQ](/docs/faq/install) — 设置和依赖问题
+- [大模型 FAQ](/docs/faq/llm) — 模型配置和性能
+- [知识库 FAQ](/docs/faq/kbqa) — RAG 和文档检索

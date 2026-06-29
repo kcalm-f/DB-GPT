@@ -1,13 +1,12 @@
-# csv-data-analysis
+# csv 数据分析
 
-## Overview
+## 概述
 
-`csv-data-analysis` is a built-in deep analysis skill for CSV, Excel, and TSV files.
+“csv-data-analysis”是针对 CSV、Excel 和 TSV 文件的内置深度分析技能。
 
-It combines statistical extraction, anomaly discovery, chart-ready structured data, and HTML report generation.
+它结合了统计提取、异常发现、图表就绪结构化数据和 HTML 报告生成。
 
-## Repo path
-
+## 仓库路径
 ```text
 skills/csv-data-analysis/
 ├── SKILL.md
@@ -18,42 +17,41 @@ skills/csv-data-analysis/
 └── templates/
     └── report_template.html
 ```
+## 何时使用
 
-## When to use it
+- 分析上传的 CSV 文件
+- 分析 Excel 工作簿
+- 计算统计数据并检测异常
+- 生成精美的交互式分析报告
 
-- analyze uploaded CSV files
-- analyze Excel workbooks
-- compute statistics and detect anomalies
-- generate polished interactive analysis reports
+## 核心工作流程
 
-## Core workflow
+1. 使用“execute_skill_script_file”运行“scripts/csv_analyzer.py”。
+2. 读取返回的统计摘要。
+3. 将“html_interpreter”与“csv-data-analysis/templates/report_template.html”结合使用。
+4. 仅填写所需的文本占位符。
+5.让后端自动注入图表标记数据。
 
-1. Run `scripts/csv_analyzer.py` with `execute_skill_script_file`.
-2. Read the returned statistical summary.
-3. Use `html_interpreter` with `csv-data-analysis/templates/report_template.html`.
-4. Fill the required textual placeholders only.
-5. Let the backend inject chart marker data automatically.
+## 重要资源
 
-## Important resources
-
-| Resource | Purpose |
+|资源 |目的|
 |---|---|
-| `scripts/csv_analyzer.py` | Extracts statistics, quality signals, and chart marker data |
-| `references/reference.md` | Supplemental usage guidance for the skill |
-| `templates/report_template.html` | Final interactive report template |
+| `scripts/csv_analyzer.py` |提取统计数据、质量信号和图表标记数据 |
+| `references/reference.md` |技能补充使用指南 |
+| `模板/report_template.html` |最终交互式报告模板 |
 
-## Output expectations
+## 输出期望
 
-This skill is designed to produce a report with:
+该技能旨在生成包含以下内容的报告：
 
-- executive summary
-- data quality review
-- distribution analysis
-- correlation analysis
-- categorical and structural analysis
-- anomaly overview
-- conclusions and recommendations
+- 执行摘要
+- 数据质量审查
+- 分布分析
+- 相关性分析
+- 分类和结构分析
+- 异常概述
+- 结论和建议
 
-## Notes
+## 注释
 
-The template is part of the skill contract. The agent should use the bundled HTML template instead of hand-writing report rendering logic.
+该模板是技能合同的一部分。代理应使用捆绑的 HTML 模板，而不是手写报告呈​​现逻辑。

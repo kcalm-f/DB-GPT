@@ -1,64 +1,64 @@
-# SMMF
+#SMMF
 
-The DB-GPT project provides service-oriented multi-model management capabilities. Developer who are interested in related capabilities can read the [SMMF](../../modules/smmf.md) module part. Here we focus on how to use multi-LLMs.
-
-
-Here we mainly introduce the usage through the web interface. For developer interested in the command line, you can refer to the [cluster deployment](../../installation/model_service/cluster.md) model. Open the DB-GPT-Web frontend service and click on `Model Management` to enter the multi-model management interface.
+DB-GPT项目提供面向服务的多模型管理能力。对相关功能感兴趣的开发者可以阅读[SMMF](../../modules/smmf.md)模块部分。这里我们重点讨论如何使用多LLM。
 
 
-## List Models
-By opening the model management interface, we can see the list of currently deployed models. The following is the list of models.
+这里主要介绍通过Web界面的使用方法。对命令行感兴趣的开发者可以参考【集群部署】(../../installation/model_service/cluster.md)模型。打开DB-GPT-Web前端服务，点击“模型管理”，进入多模型管理界面。
 
-<p align="left">
+
+## 列出型号
+打开模型管理界面，我们可以看到当前部署的模型列表。以下是型号列表。
+
+<p对齐=“左”>
   <img src={'/img/module/model_list.png'} width="720px"/>
 </p>
 
-## Use Models
-Once the models are deployed, you can switch and use the corresponding model on the multi-model interface.
+## 使用模型
+模型部署完成后，您可以在多模型界面切换使用对应的模型。
 
-<p align="left">
+<p对齐=“左”>
   <img src={'/img/module/model_use.png'} width="720px"/>
 </p>
 
-## Stop Models
-As shown in the figure below, click Model Management to enter the model list interface. Select a specific model and click the red `Stop Model` button to stop the model.
+## 停止模型
+如下图所示，点击模型管理，进入模型列表界面。选择特定模型，然后单击红色的“停止模型”按钮来停止模型。
 
-<p align="left">
+<p对齐=“左”>
   <img src={'/img/module/model_stop.png'} width="720px"/>
 </p>
 
-After the model is stopped, the display in the upper right corner will change.
+模型停止后，右上角的显示会发生变化。
 
-<p align="left">
+<p对齐=“左”>
   <img src={'/img/module/model_stopped.png'} width="720px"/>
 </p>
 
-## Model Deployment
+## 模型部署
 
- 1. Open the web page, click the `model management` button on the left to enter the model list page, click  `Create Model` in the upper left corner, and then select the name of the model you want to deploy in the pop-up dialog box. Here we choose `vicuna-7b-v1.5`, as shown in the figure.
+ 1.打开网页，点击左侧“模型管理”按钮，进入模型列表页面，点击左上角“创建模型”，然后在弹出的对话框中选择需要部署的模型名称。这里我们选择`vicuna-7b-v1.5`，如图。
 
-    <p align="left">
+    <p对齐=“左”>
     <img src={'/img/module/model_vicuna-7b-1.5.png'} width="720px"/>
-    </p>
+</p>
 
 
-2. Select the appropriate parameters according to the actual deployed model (if you are not sure, the default is enough), then click the `Submit` button at the bottom left of the dialog box, and wait until the model is deployed successfully.
+2.根据实际部署的模型选择合适的参数（如果不确定，默认即可），然后点击对话框左下角的“提交”按钮，等待模型部署成功。
 
-3. After the new model is deployed, you can see the newly deployed model on the model page, as shown in the figure
+3、新模型部署完成后，在模型页面可以看到新部署的模型，如图
 
-    <p align="left">
+    <p对齐=“左”>
     <img src={'/img/module/model_vicuna_deployed.png'} width="720px"/>
-    </p>
+</p>
 
-# Operations and Observability
+# 操作和可观察性
 
-Operations and observability are important components of a production system. In terms of operational capabilities, DB-GPT provides a command-line tool called dbgpt for operations and management, in addition to the common management functionalities available on the web interface. The dbgpt command-line tool offers the following functionalities:
+操作和可观察性是生产系统的重要组成部分。在操作能力方面，DB-GPT除了Web界面上提供的常用管理功能外，还提供了名为dbgpt的命令行工具来进行操作和管理。 dbgpt 命令行工具提供以下功能：
 
-- Starting and stopping various services
-- Knowledge base management (batch import, custom import, viewing, and deleting knowledge base documents)
-- Model management (viewing, starting, stopping models, and conducting dialogues for debugging)
-Observability tools (viewing and analyzing observability logs)
+- 启动和停止各种服务
+- 知识库管理（批量导入、自定义导入、查看、删除知识库文档）
+- 模型管理（查看、启动、停止模型以及进行调试对话）
+可观察性工具（查看和分析可观察性日志）
 
-We won't go into detail about the usage of the command-line tool here. You can use the `dbgpt --help` command to obtain specific usage documentation. Additionally, you can check the documentation for individual subcommands. For example, you can use `dbgpt start --help` to view the documentation for starting a service. For more information, please refer to the document provided below.
+这里我们不再详细介绍命令行工具的使用。您可以使用 dbgpt --help 命令来获取具体的使用文档。此外，您可以查看各个子命令的文档。例如，您可以使用“dbgpt start --help”来查看启动服务的文档。欲了解更多信息，请参阅下面提供的文档。
 
-- [Debugging](../advanced_tutorial/debugging.md)
+- [调试](../advanced_tutorial/debugging.md)

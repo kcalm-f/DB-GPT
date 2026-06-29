@@ -33,6 +33,26 @@ router = APIRouter()
 global_system_app: Optional[SystemApp] = None
 
 
+def _normalize_awel_metadata(data):
+    if hasattr(data, "to_dict"):
+        return _normalize_awel_metadata(data.to_dict())
+    if isinstance(data, dict):
+        return {key: _normalize_awel_metadata(value) for key, value in data.items()}
+    if isinstance(data, list):
+        return [_normalize_awel_metadata(item) for item in data]
+    if hasattr(data, "value"):
+        return data.value
+    if isinstance(data, str):
+        return str(data)
+    if isinstance(data, (int, float, bool)):
+        return data
+    return str(data) if data is not None else None
+
+
+def _normalize_awel_metadata_list(metadata_list):
+    return [_normalize_awel_metadata(metadata) for metadata in metadata_list]
+
+
 def get_service() -> Service:
     """Get the service instance"""
     return Service.get_instance(global_system_app)
@@ -297,7 +317,7 @@ async def get_nodes(
         user_name,
         sys_code,
     )
-    return Result.succ(metadata_list)
+    return Result.succ(_normalize_awel_metadata_list(metadata_list))
 
 
 @router.post("/nodes/refresh", dependencies=[Depends(check_api_key)])
@@ -319,7 +339,7 @@ async def refresh_nodes(refresh_request: RefreshNodeRequest):
         "http",
         global_system_app,
     )
-    return Result.succ(new_metadata)
+    return Result.succ(_normalize_awel_metadata(new_metadata))
 
 
 @router.post(

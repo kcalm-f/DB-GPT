@@ -1,33 +1,30 @@
-# RAG With AWEL
+# 抹布与 AWEL
 
-In this example, we will show how to use the AWEL library to create a RAG program.
+在此示例中，我们将展示如何使用 AWEL 库创建 RAG 程序。
 
-Now, let us create a python file `first_rag_with_awel.py`.
+现在，让我们创建一个 python 文件“first_rag_with_awel.py”。
 
-In this example, we will load your knowledge from a URL and store it in a vector store.
+在此示例中，我们将从 URL 加载您的知识并将其存储在矢量存储中。
 
-### Install Dependencies
+### 安装依赖项
 
-First, you need to install the `dbgpt` library.
-
+首先，您需要安装“dbgpt”库。
 ```bash
 pip install "dbgpt[agent,simple_framework, client]>=0.7.1" "dbgpt_ext>=0.7.1" -U
 ````
+### 准备嵌入模型
 
-### Prepare Embedding Model
-
-To store the knowledge in a vector store, we need an embedding model, DB-GPT supports 
-a lot of embedding models, here are some of them:
-
+为了将知识存储在向量存储中，我们需要一个嵌入模型，DB-GPT支持 
+有很多嵌入模型，以下是其中一些：
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 <Tabs
-  defaultValue="openai"
-  values={[
-    {label: 'Open AI(API)', value: 'openai'},
-    {label: 'text2vec(local)', value: 'text2vec'},
-    {label: 'Embedding API Server(cluster)', value: 'remote_embedding'},
+默认值=“openai”
+  值={[
+    {label: '开放AI(API)', value: 'openai'},
+    {标签：'text2vec（本地）'，值：'text2vec'}，
+    {label: 'Embedding API Server(集群)', value: 'remote_embedding'},
   ]}>
   <TabItem value="openai">
 ```python
@@ -47,11 +44,9 @@ embeddings = DefaultEmbeddingFactory.default("/data/models/text2vec-large-chines
   </TabItem>
 
   <TabItem value="remote_embedding">
-
-If you have deployed [DB-GPT cluster](/docs/installation/model_service/cluster) and 
-[API server](/docs/installation/advanced_usage/OpenAI_SDK_call)
-, you can connect to the API server to get the embeddings.
-
+如果您已部署[DB-GPT集群](/docs/installation/model_service/cluster)并且 
+[API服务器](/docs/installation/advanced_usage/OpenAI_SDK_call)
+，您可以连接到 API 服务器来获取嵌入。
 ```python
 from dbgpt.rag.embedding import DefaultEmbeddingFactory
 
@@ -63,12 +58,10 @@ embeddings = DefaultEmbeddingFactory.remote(
 ```
   </TabItem>
 </Tabs>
+### 加载知识并存储在向量存储中
 
-### Load Knowledge And Store In Vector Store
-
-Then we can create a DAG which loads the knowledge from a URL and stores it in a vector 
-store.
-
+然后我们可以创建一个 DAG，从 URL 加载知识并将其存储在向量中 
+商店。
 ```python
 import asyncio
 import shutil
@@ -102,11 +95,9 @@ with DAG("load_knowledge_dag") as knowledge_dag:
 chunks = asyncio.run(assembler_task.call("https://docs.dbgpt.site/docs/awel/"))
 print(f"Chunk length: {len(chunks)}")
 ```
+### 从矢量存储中检索知识
 
-### Retrieve Knowledge From Vector Store
-
-Then you can retrieve the knowledge from the vector store.
-
+然后您可以从矢量存储中检索知识。
 ```python
 
 from dbgpt.core.awel import MapOperator
@@ -123,27 +114,22 @@ with DAG("retriever_dag") as retriever_dag:
 chunks = asyncio.run(content_task.call("What is the AWEL?"))
 print(chunks)
 ```
+### 准备LLM
 
-### Prepare LLM
-
-To build a RAG program, we need a LLM, here are some of the LLMs that DB-GPT supports:
-
+要构建 RAG 程序，我们需要 LLM，以下是 DB-GPT 支持的一些 LLM：
 <Tabs
-  defaultValue="openai"
-  values={[
-    {label: 'Open AI(API)', value: 'openai'},
-    {label: 'YI(API)', value: 'yi_proxy'},
-    {label: 'API Server(cluster)', value: 'model_service'},
+默认值=“openai”
+  值={[
+    {label: '开放AI(API)', value: 'openai'},
+    {标签：'YI(API)'，值：'yi_proxy'}，
+    {标签：'API服务器（集群）'，值：'model_service'}，
   ]}>
   <TabItem value="openai">
-
-First, you should install the `openai` library. 
-
+首先，您应该安装“openai”库。
 ```bash
 pip install openai
 ```
-Then set your API key in the environment `OPENAI_API_KEY`.
-
+然后在环境“OPENAI_API_KEY”中设置您的 API 密钥。
 ```python
 from dbgpt.model.proxy import OpenAILLMClient
 
@@ -152,17 +138,13 @@ llm_client = OpenAILLMClient()
   </TabItem>
 
   <TabItem value="yi_proxy">
+您应该有一个 YI 帐户并从 YI 官方网站获取 API 密钥。
 
-You should have a YI account and get the API key from the YI official website.
-
-First, you should install the `openai` library.
-
+首先，您应该安装“openai”库。
 ```bash
 pip install openai
 ```
-
-Then set your API key in the environment variable `YI_API_KEY`.
-
+然后在环境变量“YI_API_KEY”中设置您的 API 密钥。
 ```python
 from dbgpt.model.proxy import YiLLMClient
 
@@ -171,12 +153,11 @@ llm_client = YiLLMClient()
   </TabItem>
 
   <TabItem value="model_service">
+如果您已部署[DB-GPT集群](/docs/installation/model_service/cluster)并且 
+[API服务器](/docs/installation/advanced_usage/OpenAI_SDK_call)
+，您可以连接API服务器来获取LLM模型。
 
-If you have deployed [DB-GPT cluster](/docs/installation/model_service/cluster) and 
-[API server](/docs/installation/advanced_usage/OpenAI_SDK_call)
-, you can connect to the API server to get the LLM model.
-
-The API is compatible with the OpenAI API, so you can use the OpenAILLMClient to 
+该API与OpenAI API兼容，因此您可以使用OpenAILLMClient 
 connect to the API server.
 
 First you should install the `openai` library.
@@ -191,12 +172,9 @@ llm_client = OpenAILLMClient(api_base="http://localhost:8100/api/v1/", api_key="
 ```
   </TabItem>
 </Tabs>
+### 创建 RAG 程序
 
-
-### Create RAG Program
-
-Lastly, we can create a RAG with the retrieved knowledge.
-
+最后，我们可以使用检索到的知识创建 RAG。
 ```python
 
 from dbgpt.core.awel import InputOperator, JoinOperator, InputSource
@@ -236,18 +214,15 @@ with DAG("llm_rag_dag") as rag_dag:
 
 print(asyncio.run(result_task.call("What is the AWEL?")))
 ```
-The output will be:
-
+输出将是：
 ```bash
 AWEL stands for Agentic Workflow Expression Language, which is a set of intelligent agent workflow expression language designed for large model application development. It simplifies the process by providing functionality and flexibility through its layered API design architecture, including the operator layer, AgentFrame layer, and DSL layer. Its goal is to allow developers to focus on business logic for LLMs applications without having to deal with intricate model and environment details.
 ```
+恭喜！您已使用 AWEL 创建了 RAG 程序。
 
-Congratulations! You have created a RAG program with AWEL.
+### 完整代码
 
-### Full Code
-
-And let's look the full code of `first_rag_with_awel.py`:
-
+让我们看一下“first_rag_with_awel.py”的完整代码：
 ```python
 import asyncio
 import shutil
@@ -326,30 +301,25 @@ with DAG("llm_rag_dag") as rag_dag:
 
 print(asyncio.run(result_task.call("What is the AWEL?")))
 ```
+### 可视化 DAG
 
-### Visualize DAGs
-
-And we can visualize the DAGs with the following code:
-
+我们可以使用以下代码可视化 DAG：
 ```python
 knowledge_dag.visualize_dag()
 rag_dag.visualize_dag()
 ```
-If you execute the code in Jupyter Notebook, you can see the DAGs in the notebook.
-
+如果您在 Jupyter Notebook 中执行代码，您可以在笔记本中看到 DAG。
 ```python
 display(knowledge_dag.show())
 display(rag_dag.show())
 ```
+‘knowledge_dag’的图表是：
 
-The graph of the `knowledge_dag` is:
-
-<p align="left">
+<p对齐=“左”>
   <img src={'/img/awel/cookbook/first_rag_knowledge_dag.png'} width="1000px"/>
 </p>
 
-And the graph of the `rag_dag` is:
-<p align="left">
+而 `rag_dag` 的图是：
+<p对齐=“左”>
   <img src={'/img/awel/cookbook/first_rag_rag_dag.png'} width="1000px"/>
 </p>
-

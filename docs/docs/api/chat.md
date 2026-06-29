@@ -1,19 +1,19 @@
-# Chat
+# 聊天
 
-Given a list of messages comprising a conversation, the model will return a response.
+给定一组构成对话的消息列表，模型将返回响应。
 
-# Create Chat Completion
+# 创建聊天补全
 
 ```python
 POST /api/v2/chat/completions
 ```
 
-### Examples
+### 示例
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-### Stream Chat Completion
+### 流式聊天补全
 
 
 <Tabs
@@ -89,7 +89,7 @@ for chunk in response:
 </Tabs>
 
 
-### Chat Completion Stream Response
+### 聊天补全流式响应
 ```commandline
 data: {"id": "chatcmpl-ba6fb52e-e5b2-11ee-b031-acde48001122", "model": "gpt-4o", "choices": [{"index": 0, "delta": {"role": "assistant", "content": "Hello"}}]}
 
@@ -112,7 +112,7 @@ data: {"id": "chatcmpl-ba6fb52e-e5b2-11ee-b031-acde48001122", "model": "gpt-4o",
 data: [DONE]
 ```
 
-### Chat Completion
+### 聊天补全
 <Tabs
   defaultValue="python"
   groupId="chat"
@@ -149,7 +149,7 @@ await client.aclose()
  </TabItem>
 </Tabs>
 
-### Chat Completion Response
+### 聊天补全响应
 ```json
 {
     "id": "a8321543-52e9-47a5-a0b6-3d997463f6a3",
@@ -176,145 +176,143 @@ await client.aclose()
 
 
 
-### Request body
+### 请求体
 ________
-<b>messages</b> <font color="gray"> string </font> <font color="red"> Required </font>
+<b>messages</b> <font color="gray"> string </font> <font color="red"> 必填 </font>
 
-A list of messages comprising the conversation so far. Example Python code.
+构成对话的消息列表。Python 代码示例。
 ________
-<b>model</b> <font color="gray"> string </font> <font color="red"> Required </font>
+<b>model</b> <font color="gray"> string </font> <font color="red"> 必填 </font>
 
-ID of the model to use. See the model endpoint compatibility table for details on which models work with the Chat API.
+要使用的模型 ID。有关哪些模型适用于聊天 API 的详细信息，请参阅模型端点兼容性表。
 ________
-<b>chat_mode</b> <font color="gray"> string </font> <font color="red"> Optional </font>
+<b>chat_mode</b> <font color="gray"> string </font> <font color="red"> 可选 </font>
 
-The DB-GPT chat mode, which can be one of the following: `chat_normal`, `chat_app`, `chat_knowledge`, `chat_flow`, default is `chat_normal`.
+DB-GPT 聊天模式，可以是以下值之一：`chat_normal`、`chat_app`、`chat_knowledge`、`chat_flow`，默认为 `chat_normal`。
 ________
-<b>chat_param</b> <font color="gray"> string </font> <font color="red"> Optional </font>
+<b>chat_param</b> <font color="gray"> string </font> <font color="red"> 可选 </font>
 
-The DB-GPT The chat param value of chat mode: `{app_id}`, `{space_id}`, `{flow_id}`, default is `None`.
+DB-GPT 聊天模式的参数值：`{app_id}`、`{space_id}`、`{flow_id}`，默认为 `None`。
 ________
-<b>max_new_tokens</b> <font color="gray"> integer </font> <font color="red"> Optional </font>
+<b>max_new_tokens</b> <font color="gray"> integer </font> <font color="red"> 可选 </font>
 
-The maximum number of tokens that can be generated in the chat completion.
+聊天补全中可生成的最大 token 数。
 
-The total length of input tokens and generated tokens is limited by the model's context length.
+输入 token 和生成 token 的总长度受模型上下文长度的限制。
 ________
-<b>stream</b> <font color="gray"> integer </font> <font color="red"> Optional </font>
+<b>stream</b> <font color="gray"> integer </font> <font color="red"> 可选 </font>
 
-If set, partial message deltas will be sent. 
-Tokens will be sent as data-only server-sent events as they become available, with the stream terminated by a `data: [DONE]`
+如果设置，将发送部分消息增量。
+Token 将在可用时以 data-only 的 server-sent events 方式发送，流以 `data: [DONE]` 终止。
 ________
-<b>temperature</b> <font color="gray"> integer </font> <font color="red"> Optional </font>
+<b>temperature</b> <font color="gray"> integer </font> <font color="red"> 可选 </font>
 
-What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic.
+使用的采样温度，介于 0 和 2 之间。较高的值（如 0.8）会使输出更随机，而较低的值（如 0.2）会使输出更集中和确定性更强。
 ________
-<b>conv_uid</b> <font color="gray"> string </font> <font color="red"> Optional </font>
+<b>conv_uid</b> <font color="gray"> string </font> <font color="red"> 可选 </font>
 
-The conversation id of the model inference, default is `None`
+模型推理的对话 ID，默认为 `None`。
 ________
-<b>span_id</b> <font color="gray"> string </font> <font color="red"> Optional </font>
+<b>span_id</b> <font color="gray"> string </font> <font color="red"> 可选 </font>
 
-The span id of the model inference, default is `None`
+模型推理的 span ID，默认为 `None`。
 ________
-<b>sys_code</b> <font color="gray"> string </font> <font color="red"> Optional </font>
+<b>sys_code</b> <font color="gray"> string </font> <font color="red"> 可选 </font>
 
-The system code, default is `None`
+系统代码，默认为 `None`。
 ________
-<b>user_name</b> <font color="gray"> string </font> <font color="red"> Optional </font>
+<b>user_name</b> <font color="gray"> string </font> <font color="red"> 可选 </font>
 
-The web server user name, default is `None`
+Web 服务器用户名，默认为 `None`。
 ________
 
 
-### Chat Stream Response Body
+### 聊天流式响应体
 ________
 <b>id</b> <font color="gray"> string </font>
 
-conv_uid of the convsersation.
+对话的 conv_uid。
 ________
 <b>model</b> <font color="gray"> string </font>
 
-The model used for the chat completion.
+用于聊天补全的模型。
 
 ________
 <b>created</b> <font color="gray"> string </font>
 
-The Unix timestamp (in seconds) of when the chat completion was created.
+聊天补全创建时的 Unix 时间戳（秒）。
 ________
 <b>choices</b> <font color="gray"> array </font>
 
-A list of chat completion choices. Can be more than one if n is greater than 1.
+聊天补全选项列表。如果 n 大于 1，则可能有多个。
 
   - <b>index</b> <font color="gray"> integer </font>
 
-    The index of the choice in the list of choices.
+    选项在选项列表中的索引。
   - <b>delta</b> <font color="gray"> object </font>
 
-    The chat completion delta.
+    聊天补全增量。
     - <b>role</b> <font color="gray"> string </font>
 
-      The role of the speaker. Can be `user` or `assistant`.
+      说话者的角色。可以是 `user` 或 `assistant`。
     - <b>content</b> <font color="gray"> string </font>
 
-      The content of the message.
+      消息内容。
     - <b>finish_reason</b> <font color="gray"> string </font>
     
-        The reason the chat completion finished. Can be `max_tokens` or `stop`.
+        聊天补全结束的原因。可以是 `max_tokens` 或 `stop`。
 ________
 
 
-### Chat Response Body
+### 聊天响应体
 ________
 <b>id</b> <font color="gray"> string </font>
 
-conv_uid of the convsersation.
+对话的 conv_uid。
 ________
 <b>model</b> <font color="gray"> string </font>
 
-The model used for the chat completion.
+用于聊天补全的模型。
 
 ________
 <b>created</b> <font color="gray"> string </font>
 
-The Unix timestamp (in seconds) of when the chat completion was created.
+聊天补全创建时的 Unix 时间戳（秒）。
 ________
 <b>object</b> <font color="gray"> string </font>
 
-The object type of the chat completion.
+聊天补全的对象类型。
 ________
 <b>choices</b> <font color="gray"> array </font>
 
-A list of chat completion choices. Can be more than one if n is greater than 1.
+聊天补全选项列表。如果 n 大于 1，则可能有多个。
 
   - <b>index</b> <font color="gray"> integer </font>
 
-    The index of the choice in the list of choices.
+    选项在选项列表中的索引。
 
   - <b>delta</b> <font color="gray"> object </font>
 
-    The chat completion delta.
+    聊天补全增量。
     - <b>role</b> <font color="gray"> string </font>
 
-      The role of the speaker. Can be `user` or `assistant`.
+      说话者的角色。可以是 `user` 或 `assistant`。
     - <b>content</b> <font color="gray"> string </font>
 
-      The content of the message.
+      消息内容。
     - <b>finish_reason</b> <font color="gray"> string </font>
     
-        The reason the chat completion finished. Can be `max_tokens` or `stop`.
+        聊天补全结束的原因。可以是 `max_tokens` 或 `stop`。
 ________
 <b>usage</b> <font color="gray"> object </font>
 
-    The usage statistics for the chat completion.
+    聊天补全的用量统计。
     - <b>prompt_tokens</b> <font color="gray"> integer </font>
 
-      The number of tokens in the prompt.
+      提示中的 token 数量。
     - <b>total_tokens</b> <font color="gray"> integer </font>
 
-      The total number of tokens in the chat completion.
+      聊天补全中的总 token 数量。
     - <b>completion_tokens</b> <font color="gray"> integer </font>
 
-      The number of tokens in the chat completion.
-
-
+      聊天补全中的 token 数量。

@@ -1,12 +1,11 @@
-# openGauss
+# 打开高斯
 
-openGauss is an open-source relational database supported by DB-GPT through the
-native connector in `dbgpt_ext.datasource.rdbms.conn_openGauss`.
+openGauss是一个开源关系数据库，通过DB-GPT支持
+`dbgpt_ext.datasource.rdbms.conn_openGauss` 中的本机连接器。
 
-### Install Dependencies
+### 安装依赖项
 
-openGauss uses the PostgreSQL-compatible driver path.
-
+openGauss 使用 PostgreSQL 兼容的驱动路径。
 ```bash
 uv sync --all-packages \
 --extra "base" \
@@ -15,27 +14,24 @@ uv sync --all-packages \
 --extra "storage_chromadb" \
 --extra "dbgpts"
 ```
+### 准备openGauss
 
-### Prepare openGauss
-
-Prepare an openGauss instance and start the DB-GPT webserver:
-
+准备一个 openGauss 实例并启动 DB-GPT Web 服务器：
 ```bash
 uv run dbgpt start webserver --config configs/dbgpt-proxy-openai.toml
 ```
+### openGauss 配置
 
-### openGauss Configuration
+使用数据源 UI 或配置字段：
 
-Use the datasource UI or configuration fields for:
+- 主机
+- 端口
+- 用户
+- 密码
+- 数据库
+- 模式
+- 驱动程序（`postgresql+psycopg2`）
 
-- host
-- port
-- user
-- password
-- database
-- schema
-- driver (`postgresql+psycopg2`)
-
-The openGauss connector is implemented in:
+openGauss 连接器的实现如下：
 
 - `packages/dbgpt-ext/src/dbgpt_ext/datasource/rdbms/conn_openGauss.py`

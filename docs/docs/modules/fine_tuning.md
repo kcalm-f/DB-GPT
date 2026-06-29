@@ -1,2 +1,2 @@
-# Fine-Tuning
-Text2SQL and Text2API(DSL) fine-tune to enhance  model performance.
+# 说明
+Text2SQL和Text2API(DSL)进行参数以增强模型性能。

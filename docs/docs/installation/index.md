@@ -6,36 +6,35 @@ read_when:
   - You want to decide which installation path fits your environment
   - You want the shortest route to a working DB-GPT setup
 ---
+# 安装概述
 
-# Install Overview
+DB-GPT 提供了三种推荐的安装路径。选择与您想要运行和管理项目的方式相匹配的一项。
 
-DB-GPT offers three recommended installation paths. Pick the one that matches how you want to run and manage the project.
+## 选择安装路径
 
-## Choose an installation path
-
-| Method | Best for | Scenario | What you get |
-|:-------|:---------|:---------|:-------------|
-| <span style={{whiteSpace: 'nowrap'}}>[Quick Install](/docs/installation/quick-install)</span> | Fastest first run on macOS / Linux | Quick launch the latest DB-GPT from source with automated environment setup and dependency installation | Quick install and start the latest source project with optional advanced config |
-| <span style={{whiteSpace: 'nowrap'}}>[CLI Install](/docs/getting-started/cli-quickstart)</span> | Users who prefer installing from PyPI | One-click start and try a stable DB-GPT release without worrying about project structure or config details | One-line installer, interactive setup wizard, profile management |
-| <span style={{whiteSpace: 'nowrap'}}>[Source Install](/docs/getting-started/deploy/source-code)</span> | Developers and custom deployments | You need to modify source code, debug internals, or integrate DB-GPT into a custom deployment pipeline | Full repo checkout, editable configs, maximum flexibility |
+|方法|最适合 |场景 |你得到什么 |
+|:--------|:---------|:---------|:-------------|
+| <span style={{whiteSpace: 'nowrap'}}>[快速安装](/docs/installation/quick-install)</span> |在 macOS / Linux 上首次运行速度最快 |通过自动化环境设置和依赖项安装，从源代码快速启动最新的 DB-GPT |使用可选的高级配置快速安装并启动最新的源项目 |
+| <span style={{whiteSpace: 'nowrap'}}>[CLI 安装](/docs/getting-started/cli-quickstart)</span> |喜欢从 PyPI 安装的用户 |一键启动并尝试稳定的 DB-GPT 版本，无需担心项目结构或配置细节 |一行安装程序、交互式安装向导、配置文件管理 |
+| <span style={{whiteSpace: 'nowrap'}}>[源安装](/docs/getting-started/deploy/source-code)</span> |开发人员和自定义部署 |您需要修改源代码、调试内部结构或将 DB-GPT 集成到自定义部署管道中 |完整的回购检查、可编辑的配置、最大的灵活性 |
 
 
-## When to choose each method
+## 何时选择每种方法
 
-### Quick Install
+### 快速安装
 
-For MacOS / Linux users — choose this if you want the fewest steps to install, quickly launch the latest DB-GPT from source with automated environment setup and dependency installation.
+对于 MacOS / Linux 用户 - 如果您想要最少的安装步骤，请选择此选项，通过自动化环境设置和依赖项安装从源快速启动最新的 DB-GPT。
 
-### CLI Install (Recommended)
+### CLI 安装（推荐）
 
-Choose this if you want to install DB-GPT directly from PyPI and use the `dbgpt` command to set up profiles interactively.
+如果您想直接从 PyPI 安装 DB-GPT 并使用“dbgpt”命令以交互方式设置配置文件，请选择此选项。
 
-### Source Install
+### 源安装
 
-Choose this if you want full access to the repository for development, debugging, or custom integrations.
+如果您希望完全访问存储库以进行开发、调试或自定义集成，请选择此选项。
 
-## Next steps
+## 后续步骤
 
-- [Quick Install](/docs/installation/quick-install)
-- [CLI Install](/docs/getting-started/cli-quickstart)
-- [Source Install](/docs/getting-started/deploy/source-code)
+- [快速安装](/docs/installation/quick-install)
+- [CLI 安装](/docs/getting-started/cli-quickstart)
+- [源安装](/docs/getting-started/deploy/source-code)

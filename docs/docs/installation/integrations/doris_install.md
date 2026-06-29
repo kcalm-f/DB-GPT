@@ -1,12 +1,11 @@
-# Apache Doris
+#阿帕奇·多丽丝
 
-Apache Doris is a real-time analytical data warehouse supported by DB-GPT through
-the native connector in `dbgpt_ext.datasource.rdbms.conn_doris`.
+Apache Doris 是一个由 DB-GPT 支持的实时分析数据仓库
+`dbgpt_ext.datasource.rdbms.conn_doris` 中的本机连接器。
 
-### Install Dependencies
+### 安装依赖项
 
-Doris uses the MySQL-compatible driver path.
-
+Doris 使用与 MySQL 兼容的驱动程序路径。
 ```bash
 uv sync --all-packages \
 --extra "base" \
@@ -15,26 +14,23 @@ uv sync --all-packages \
 --extra "storage_chromadb" \
 --extra "dbgpts"
 ```
+### 准备 Apache Doris
 
-### Prepare Apache Doris
-
-Prepare a Doris instance and start the DB-GPT webserver:
-
+准备 Doris 实例并启动 DB-GPT Web 服务器：
 ```bash
 uv run dbgpt start webserver --config configs/dbgpt-proxy-openai.toml
 ```
+### Apache Doris 配置
 
-### Apache Doris Configuration
+使用数据源 UI 或配置字段：
 
-Use the datasource UI or configuration fields for:
+- 主机
+- 端口
+- 用户
+- 密码
+- 数据库
+- 驱动程序（`mysql+pymysql`）
 
-- host
-- port
-- user
-- password
-- database
-- driver (`mysql+pymysql`)
-
-The Doris connector is implemented in:
+Doris 连接器的实现方式为：
 
 - `packages/dbgpt-ext/src/dbgpt_ext/datasource/rdbms/conn_doris.py`

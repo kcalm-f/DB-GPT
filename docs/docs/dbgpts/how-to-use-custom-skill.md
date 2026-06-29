@@ -1,55 +1,55 @@
-# Use Custom Skills
+# 使用自定义技能
 
-DB-GPT supports three ways to use custom skills: create from scratch with the built-in `skill-creator`, upload a zip package, or import via a GitHub link.
+DB-GPT 支持三种使用自定义技能的方式：使用内置的“技能创建器”从头开始创建、上传 zip 包或通过 GitHub 链接导入。
 
-## Option 1: Create with skill-creator
+## 选项 1：使用技能创建器创建
 
-`skill-creator` is the built-in meta-skill in DB-GPT, designed to help you create business-specific custom skills. Simply describe your requirements in a conversation, and `skill-creator` handles the entire process from design to packaging.
+“skill-creator”是 DB-GPT 中的内置元技能，旨在帮助您创建特定于业务的自定义技能。只需在对话中描述您的需求，“技能创造者”就会处理从设计到包装的整个过程。
 
-### Steps
+### 步骤
 
-1. Select the `skill-creator` skill in the DB-GPT chat interface.
-2. Describe the skill you want to create in natural language, for example: "Create a data analysis skill that reads CSV files and generates visual reports."
-3. `skill-creator` will automatically:
-   - Analyze your requirements and plan the skill structure
-   - Generate `SKILL.md` (including metadata and execution instructions)
-   - Create necessary scripts, reference docs, and asset files
-   - Validate and package into a distributable `.skill` file
+1. 在DB-GPT聊天界面中选择“技能创建者”技能。
+2. 用自然语言描述您想要创建的技能，例如：“创建读取 CSV 文件并生成可视化报告的数据分析技能”。
+3. `skill-creator` 将自动：
+   - 分析您的需求并规划技能结构
+   - 生成`SKILL.md`（包括元数据和执行指令）
+   - 创建必要的脚本、参考文档和资产文件
+   - 验证并打包成可分发的“.skill”文件
 
-![Create Skill with skill-creator](/img/skill/create_skill.jpg)
+![使用技能创建器创建技能](/img/skill/create_skill.jpg)
 
-For more details on `skill-creator`, see the [skill-creator documentation](./built-in-skills/skill-creator.md).
+有关“技能创建者”的更多详细信息，请参阅[技能创建者文档](./built-in-skills/skill-creator.md)。
 
-## Option 2: Upload a Zip Package
+## 选项 2：上传 Zip 包
 
-If you already have a packaged skill (`.zip` or `.skill` file), you can upload it directly through the DB-GPT Web UI.
+如果您已有打包的技能（“.zip”或“.skill”文件），则可以直接通过 DB-GPT Web UI 上传。
 
-### Steps
+### 步骤
 
-1. Navigate to the **Skills** page in DB-GPT.
+1. 导航到 DB-GPT 中的 **技能** 页面。
 
-![Skill list page](/img/skill/skill_list.png)
+![技能列表页面](/img/skill/skill_list.png)
 
-2. Click the upload button and select your local `.zip` or `.skill` file.
+2. 单击上传按钮并选择本地“.zip”或“.skill”文件。
 
-![Upload Skill](/img/skill/upload_skill.png)
+![上传技能](/img/skill/upload_skill.png)
 
-3. Once uploaded, the skill appears in the list and is ready to use in conversations.
+3. 上传后，该技能将显示在列表中并可以在对话中使用。
 
-## Option 3: Import via GitHub Link
+## 选项 3：通过 GitHub 链接导入
 
-DB-GPT supports importing skills directly from GitHub repositories — ideal for community or team-shared skills.
+DB-GPT 支持直接从 GitHub 存储库导入技能 - 非常适合社区或团队共享技能。
 
-### Steps
+### 步骤
 
-1. Navigate to the **Skills** page in DB-GPT.
-2. Click the GitHub import button and paste the repository URL of the skill.
+1. 导航到 DB-GPT 中的 **技能** 页面。
+2. 单击 GitHub 导入按钮并粘贴技能的存储库 URL。
 
-![Import Skill from GitHub](/img/skill/import_github_skill_.png)
+![从 GitHub 导入技能](/img/skill/import_github_skill_.png)
 
-3. The system automatically fetches the repository contents and completes the import. The skill is ready to use once imported.
+3. 系统自动提取存储库内容并完成导入。导入后该技能即可使用。
 
-## Related reading
+## 相关阅读
 
-- [skill-creator](./built-in-skills/skill-creator.md) — Learn about the full capabilities and resources of skill-creator
-- [Skills Overview](./introduction.md) — Understand skill definitions, structure, and how they work
+- [skill-creator](./built-in-skills/skill-creator.md) — 了解技能创建器的全部功能和资源
+- [技能概述](./introduction.md) — 了解技能定义、结构及其工作原理

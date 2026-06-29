@@ -1,15 +1,13 @@
-# Stand-alone Deployment
+# 单机部署
 
-## Preparation
+## 准备工作
 ```bash
 # download source code
 git clone https://github.com/eosphoros-ai/DB-GPT.git
 
 cd DB-GPT
 ```
-
-## Environment installation
-
+## 环境安装
 ```bash
 # create a virtual environment
 conda create -n dbgpt_env python=3.10
@@ -17,35 +15,28 @@ conda create -n dbgpt_env python=3.10
 # activate virtual environment
 conda activate dbgpt_env
 ```
-
-## Install dependencies
-
+## 安装依赖项
 ```bash
 pip install -e ".[default]"
 ```
+## 模型下载
 
-## Model download
+下载LLM和嵌入模型
 
-Download LLM and Embedding model
+:::信息说明
 
-:::info note
-
-⚠️ If there are no GPU resources, it is recommended to use the proxy model, such as OpenAI, Qwen, ERNIE Bot, etc.
+⚠️如果没有GPU资源，建议使用代理模型，如OpenAI、Qwen、ERNIE Bot等。
 :::
-
-
 ```bash
 mkdir models && cd models
 
 # download embedding model, eg: text2vec-large-chinese
 git clone https://huggingface.co/GanymedeNil/text2vec-large-chinese
 ```
+:::提示
 
-:::tip
-
-Set up proxy API and modify `.env`configuration
+设置代理API并修改`.env`配置
 :::
-
 ```bash
 #set LLM_MODEL TYPE
 LLM_MODEL=proxyllm
@@ -53,11 +44,9 @@ LLM_MODEL=proxyllm
 PROXY_API_KEY={your-openai-sk}
 PROXY_SERVER_URL=https://api.openai.com/v1/chat/completions
 ```
-
-:::info note
-⚠️ If you have GPU resources, you can use local models to deploy
+:::信息说明
+⚠️如果有GPU资源，可以使用本地模型来部署
 :::
-
 ```bash
 mkdir models && cd models
 
@@ -70,21 +59,19 @@ git clone https://huggingface.co/GanymedeNil/text2vec-large-chinese
 popd
 
 ```
-
-## Command line startup
-
+## 命令行启动
 ```bash
 LLM_MODEL=glm-4-9b-chat 
 dbgpt start webserver --port 6006
 ```
-By default, the `dbgpt start webserver command` will start the `webserver`, `model controller`, and `model worker` through a single Python process. In the above command, port `6006` is specified.
+默认情况下，“dbgpt start webserver 命令”将通过单个 Python 进程启动“webserver”、“modelcontroller”和“modelworker”。在上面的命令中，指定了端口“6006”。
 
 
 
-## View and verify model serving
+## 查看并验证模型服务
 
-:::tip
-view and display all model services
+:::提示
+查看并显示所有模型服务
 :::
 ```bash
 dbgpt model list 
@@ -100,17 +87,15 @@ dbgpt model list
 +-----------------+------------+------------+------+---------+---------+-----------------+----------------------------+
 
 ```
-Where `WorkerManager` is the management process of `Model Workers`
+其中`WorkerManager`是`Model Workers`的管理进程
 
-:::tip
-check and verify model serving
+:::提示
+检查并验证模型服务
 :::
 ```bash
 dbgpt model chat --model_name glm-4-9b-chat
 ```
-
-The above command will launch an interactive page that allows you to talk to the model through the terminal.
-
+上述命令将启动一个交互式页面，允许您通过终端与模型对话。
 ```bash
 Chatbot started with model glm-4-9b-chat. Type 'exit' to leave the chat.
 

@@ -1,69 +1,63 @@
-# Keyword Search RAG User Manual
+# 关键字搜索 RAG 用户手册
 
-In this example, we will show how to use the Full Text Search RAG framework in DB-GPT. Using traditional full-text search to implement RAG can, to some extent, alleviate the uncertainty and interpretability issues brought about by vector database retrieval.
+在此示例中，我们将展示如何在 DB-GPT 中使用全文搜索 RAG 框架。使用传统的全文检索来实现RAG可以在一定程度上缓解矢量数据库检索带来的不确定性和可解释性问题。
 
-You can refer to the python example file `DB-GPT/examples/rag/keyword_rag_example.py` in the source code. This example demonstrates how to load knowledge from a document and persist it in a full text store. Subsequently, it recalls knowledge relevant to your question by searching for keywords in the full text store.
+您可以参考源代码中的python示例文件“DB-GPT/examples/rag/keyword_rag_example.py”。此示例演示如何从文档加载知识并将其保留在全文存储中。随后，它通过在全文存储中搜索关键字来回忆与您的问题相关的知识。
 
-### The Constraints of Vector Retrieve 
-Vector Retrieve offers clear advantages, the technology does have some constraints:
-- Computationally Intensive - Generating vectors for entire corpora of documents and querying based on vector similarity requires significantly more processing power than keyword indexing and matching. Latency can be an issue if systems are not properly optimized.
-- Requires Massive Training Data - The semantic connections made by models like BERT rely on being trained on massive, diverse datasets over long periods. This data may not be readily available for specialized corpora, limiting the quality of vectors.
-- Less Effective for Precise Keyword Queries  - Vector search adds little benefit when queries contain clear, precise keywords and intent. Searching for "apple fruit" would likely return poorer results than just "apple" because the vector focuses on overall meaning more than keywords.
+### 向量检索的约束 
+Vector Retrieve 具有明显的优势，但该技术确实有一些限制：
+- 计算密集型 - 为整个文档语料库生成向量并基于向量相似性进行查询需要比关键字索引和匹配更多的处理能力。如果系统没有适当优化，延迟可能会成为一个问题。
+- 需要大量的训练数据 - BERT 等模型建立的语义连接依赖于长期对大量、多样化的数据集进行训练。这些数据可能不容易用于专门的语料库，从而限制了向量的质量。
+- 对于精确关键字查询效果较差 - 当查询包含清晰、精确的关键字和意图时，矢量搜索几乎没有什么好处。搜索“苹果水果”可能会返回比“苹果”更差的结果，因为向量更注重整体含义而不是关键字。
 
-### How to choose Between Vector Retrieve and Keyword Retrieve ?
-When is vector search preferable over keyword search, and vice versa? Here are some best practices on when to use each:
+###向量检索和关键词检索如何选择？
+什么时候向量搜索优于关键字搜索，反之亦然？以下是有关何时使用每种方法的一些最佳实践：
 
-When to Use Vector Search
+何时使用矢量搜索
 
-Early stage research when query intent is vague or broad
-Need to grasp concepts and subject matter more than keywords
-Exploring a topic with loose information needs
-User search queries are more conversational 
-The semantic capabilities of vector search allow it to shine for these use cases. It can point users in the right direction even with limited keywords or understanding of a topic.
+当查询意图模糊或广泛时的早期研究
+需要比关键词更多地掌握概念和主题
+探索信息需求松散的主题
+用户搜索查询更具对话性 
+矢量搜索的语义功能使其在这些用例中大放异彩。即使关键字或对主题的理解有限，它也可以为用户指明正确的方向。
 
-When to Use Keyword Search:
+何时使用关键字搜索：
 
-- Looking for something ultra-specific and already understand the topic
-- Research is narrowly focused with clear objectives
-- Queries contain unique proper nouns like brand names
-- Needs require fast results more than exhaustive relevancy 
-For precise or time-sensitive queries, keyword search will target the exact terms efficiently. Vector search may meander with unnecessary semantic expansion.
+- 寻找非常具体的内容并且已经了解该主题
+- 研究方向明确，目标明确
+- 查询包含独特的专有名词，例如品牌名称
+- 需求需要快速的结果，而不是详尽的相关性 
+对于精确或时间敏感的查询，关键字搜索将有效地定位准确的术语。向量搜索可能会因不必要的语义扩展而变得曲折。
 
-The search method should align with the user's intent and specificity needs. Vector search for exploration, keyword search for precision. With both available, users get the best of both worlds. 
+搜索方法应符合用户的意图和特殊需求。矢量搜索用于探索，关键字搜索用于精确。两者都可用，用户就可以两全其美。 
 
-### Install Dependencies
+### 安装依赖项
 
-First, you need to install the `dbgpt` library.
-
+首先，您需要安装“dbgpt”库。
 ```bash
 pip install "dbgpt[rag]>=0.5.8"
 ````
+### 准备全文搜索引擎
 
-### Prepare Full Text Search Engine
+“Elasticsearch”是 Elastic Stack 核心的分布式搜索和分析引擎。 Logstash 和 Beats 有助于收集、聚合和丰富您的数据并将其存储在 Elasticsearch 中。 Kibana 使您能够以交互方式探索、可视化和分享对数据的见解，并管理和监控堆栈。 Elasticsearch 是索引、搜索和分析魔法发生的地方。
+请参阅 https://www.elastic.co/guide/en/elasticsearch/reference/current/elasticsearch-intro.html
 
-`Elasticsearch` is the distributed search and analytics engine at the heart of the Elastic Stack. Logstash and Beats facilitate collecting, aggregating, and enriching your data and storing it in Elasticsearch. Kibana enables you to interactively explore, visualize, and share insights into your data and manage and monitor the stack. Elasticsearch is where the indexing, search, and analysis magic happens.
-refer https://www.elastic.co/guide/en/elasticsearch/reference/current/elasticsearch-intro.html
+安装 Elasticsearch 参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/install-elasticsearch.html
 
-Install Elasticsearch refer https://www.elastic.co/guide/en/elasticsearch/reference/current/install-elasticsearch.html
+### 关键字搜索配置
 
-### Keyword Search Configuration
-
-Set variables below in `.env` file, let DB-GPT know how to connect to Full Text Search Engine Storage.
-
+在`.env`文件中设置以下变量，让DB-GPT知道如何连接到全文搜索引擎存储。
 ```
 ELASTICSEARCH_URL=localhost
 ELASTICSEARCH_PORT=9200
 ELASTICSEARCH_USERNAME=elastic
 ELASTICSEARCH_PASSWORD=dbgpt
 ```
+### 加载到全文搜索引擎
 
+当使用Elaticsearch全文引擎作为底层知识存储平台时，需要构建文档倒排索引，以方便文档的归档和检索。  
 
-
-### Load into Full Text Search Engine
-
-When using a `Elaticsearch` full text engine as the underlying knowledge storage platform, it is necessary to build document inverted index to facilitate the archiving and retrieval of documents.  
-
-The following code demonstrates how to create a connection to the Elasticsearch search engine.
+以下代码演示了如何创建与 Elasticsearch 搜索引擎的连接。
 ```python
 from dbgpt_ext.storage.full_text.elasticsearch import ElasticDocumentConfig, \
     ElasticDocumentStore
@@ -79,12 +73,9 @@ def _create_es_connector():
 
     return ElasticDocumentStore(config)
 ```
+### 从全文搜索引擎检索关键字
 
-
-
-### Keyword Retrieve from Full Text Search Engine
-
-Keyword Retrieve is a simple and efficient way to retrieve relevant information from a large number of documents. It is based on the full-text search engine Elasticsearch. The user can input a query and retrieve the most relevant documents based on the query.
+关键词检索是一种从大量文档中检索相关信息的简单而有效的方法。它基于全文搜索引擎Elasticsearch。用户可以输入查询并基于查询检索最相关的文档。
 ```python
 import os
 
@@ -110,23 +101,19 @@ async def main():
     chunks = await retriever.aretrieve_with_scores("what is awel talk about", 0.3)
     print(f"keyword rag example results:{chunks}")
 ```
+### 通过关键字 RAG 聊天知识
+
+这里我们演示如何通过网页上的关键字RAG来实现聊天知识。
+
+首先，使用“全文”类型创建知识库。上传知识文档，等待切片完成。
 
 
-
-
-### Chat Knowledge via Keyword RAG
-
-Here we demonstrate how to achieve chat knowledge through Keyword RAG on web page.
-
-First, create a knowledge base using the `Full Text` type. Upload the knowledge documents and wait for the slicing to complete.
-
-
-<p align="left">
+<p对齐=“左”>
   <img src={'/img/chat_knowledge/keyword_rag/create_keyword_rag.jpg'} width="1000px"/>
 </p>
 
 
-Start chat to knowledge based on Keyword RAG.
-<p align="left">
+根据关键字 RAG 开始聊天知识。
+<p对齐=“左”>
   <img src={'/img/chat_knowledge/keyword_rag/keyword_search_chat.jpg'} width="1000px"/>
 </p>

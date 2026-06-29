@@ -1,9 +1,9 @@
-# Evaluation
+# 评估
 
-Get started with the Evaluation API
+开始使用评估 API
 
 
-### Create Evaluation
+### 创建评估
 
 ```python
 POST /api/v2/serve/evaluate/evaluation
@@ -56,9 +56,9 @@ from dbgpt.serve.evaluate.api.schemas import EvaluateServeRequest
 DBGPT_API_KEY = "dbgpt"
 client = Client(api_key=DBGPT_API_KEY)
 request = EvaluateServeRequest(
-    # The scene type of the evaluation, e.g. support app, recall
+    # 评估的场景类型，例如支持 app、recall
     scene_key="recall",
-    # e.g. app id(when scene_key is app), space id(when scene_key is recall)
+    # 例如 app id（当 scene_key 为 app 时），space id（当 scene_key 为 recall 时）
     scene_value="147",
     context={"top_k": 5},
     evaluate_metrics=[
@@ -80,10 +80,10 @@ data = await run_evaluation(client, request=request)
  </TabItem>
 </Tabs>
 
-#### Request body
-Request <a href="#the-evaluation-request">Evaluation Object</a>
+#### 请求体
+请求 <a href="#the-evaluation-object">评估对象</a>
 
-when scene_key is app, the request body should be like this:
+当 scene_key 为 app 时，请求体应如下所示：
 ```json
 
 {
@@ -99,7 +99,7 @@ when scene_key is app, the request body should be like this:
 }
 ```
 
-when scene_key is recall, the request body should be like this:
+当 scene_key 为 recall 时，请求体应如下所示：
 ```json
 
 {
@@ -114,92 +114,90 @@ when scene_key is recall, the request body should be like this:
 }
 ```
 
-#### Response body
-Return <a href="#the-evaluation-object">Evaluation Object</a> List 
+#### 响应体
+返回 <a href="#the-evaluation-object">评估对象</a> 列表 
 
 
-### The Evaluation Request Object
+### 评估请求对象
 
 ________
-<b>scene_key</b> <font color="gray"> string </font> <font color="red"> Required </font>
+<b>scene_key</b> <font color="gray"> string </font> <font color="red"> 必填 </font>
 
-The scene type of the evaluation, e.g. support app, recall
-
---------
-<b>scene_value</b> <font color="gray"> string </font> <font color="red"> Required </font>
-
-The scene value of the evaluation, e.g. app id(when scene_key is app), space id(when scene_key is recall)
+评估的场景类型，例如支持 app、recall
 
 --------
-<b>context</b> <font color="gray"> object </font> <font color="red"> Required </font>
+<b>scene_value</b> <font color="gray"> string </font> <font color="red"> 必填 </font>
 
-The context of the evaluation
-- top_k <font color="gray"> int </font> <font color="red"> Required </font>
-- prompt <font color="gray"> string </font> prompt code
-- model <font color="gray"> string </font> llm model name
+评估的场景值，例如 app id（当 scene_key 为 app 时），space id（当 scene_key 为 recall 时）
 
 --------
-evaluate_metrics <font color="gray"> array </font> <font color="red"> Required </font>
+<b>context</b> <font color="gray"> object </font> <font color="red"> 必填 </font>
 
-The evaluate metrics of the evaluation, 
-e.g. 
-- <b>AnswerRelevancyMetric</b>: the answer relevancy metric(when scene_key is app)
-- <b>RetrieverHitRateMetric</b>: Hit rate calculates the fraction of queries where the correct answer is found
-    within the top-k retrieved documents. In simpler terms, it’s about how often our
-    system gets it right within the top few guesses. (when scene_key is recall)
-- <b>RetrieverMRRMetric</b>: For each query, MRR evaluates the system’s accuracy by looking at the rank of the
-    highest-placed relevant document. Specifically, it’s the average of the reciprocals
-    of these ranks across all the queries. So, if the first relevant document is the
-    top result, the reciprocal rank is 1; if it’s second, the reciprocal rank is 1/2,
-    and so on. (when scene_key is recall)
-- <b>RetrieverSimilarityMetric</b>: Embedding Similarity Metric (when scene_key is recall)
+评估的上下文
+- top_k <font color="gray"> int </font> <font color="red"> 必填 </font>
+- prompt <font color="gray"> string </font> 提示词代码
+- model <font color="gray"> string </font> 大模型名称
 
 --------
-datasets <font color="gray"> array </font> <font color="red"> Required </font>
+evaluate_metrics <font color="gray"> array </font> <font color="red"> 必填 </font>
+
+评估的评估指标，
+例如：
+- <b>AnswerRelevancyMetric</b>：答案相关性指标（当 scene_key 为 app 时）
+- <b>RetrieverHitRateMetric</b>：命中率计算在 top-k 检索文档中找到正确答案的查询比例。
+    简单来说，就是系统在前几个猜测中答对的频率。（当 scene_key 为 recall 时）
+- <b>RetrieverMRRMetric</b>：对于每个查询，MRR 通过查看排名最高的相关文档来评估系统的准确性。
+    具体来说，它是所有查询中这些排名的倒数的平均值。
+    因此，如果第一个相关文档是顶部结果，倒数排名为 1；如果是第二名，倒数排名为 1/2，
+    依此类推。（当 scene_key 为 recall 时）
+- <b>RetrieverSimilarityMetric</b>：嵌入相似度指标（当 scene_key 为 recall 时）
+
+--------
+datasets <font color="gray"> array </font> <font color="red"> 必填 </font>
 
 
-The datasets of the evaluation
+评估的数据集
 
 
 --------
 
 
-### The Evaluation Result
+### 评估结果
 
 ________
 <b>prediction</b> <font color="gray">string</font>
 
-The prediction result
+预测结果
 ________
 <b>contexts</b> <font color="gray">string</font>
 
-The contexts of RAG Retrieve chunk
+RAG 检索块上下文
 ________
 <b>score</b> <font color="gray">float</font>
 
-The score of the prediction
+预测得分
 ________
 <b>passing</b> <font color="gray">bool</font>
 
-The passing of the prediction
+预测是否通过
 ________
 <b>metric_name</b> <font color="gray">string</font>
 
-The metric name of the evaluation
+评估指标名称
 ________
 <b>prediction_cost</b> <font color="gray">int</font>
 
-The prediction cost of the evaluation
+评估的预测开销
 ________
 <b>query</b> <font color="gray">string</font>
 
-The query of the evaluation
+评估的查询
 ________
 <b>raw_dataset</b> <font color="gray">object</font>
 
-The raw dataset of the evaluation
+评估的原始数据集
 ________
 <b>feedback</b> <font color="gray">string</font>
 
-The feedback of the llm evaluation
+大模型评估的反馈
 ________

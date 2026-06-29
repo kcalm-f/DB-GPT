@@ -6,27 +6,25 @@ read_when:
   - You want to add tools or external integrations to DB-GPT
   - You want to understand the difference between MCP, dbgpts, and AWEL Flow
 ---
+# 工具和插件
 
-# Tools & Plugins
+使用外部工具、社区包和可视化工作流程构建来扩展 DB-GPT。
 
-Extend DB-GPT with external tools, community packages, and visual workflow building.
+- [MCP 协议](/docs/getting-started/tools/mcp) — 将外部工具和服务连接到代理
+- [dbgpts Ecosystem](/docs/getting-started/tools/dbgpts) — 安装社区应用程序、操作员、工作流程和代理
+- [AWEL Flow](/docs/getting-started/tools/awel-flow) — 在 Web UI 中直观地构建工作流程
 
-- [MCP Protocol](/docs/getting-started/tools/mcp) — connect external tools and services to agents
-- [dbgpts Ecosystem](/docs/getting-started/tools/dbgpts) — install community apps, operators, workflows, and agents
-- [AWEL Flow](/docs/getting-started/tools/awel-flow) — build workflows visually in the Web UI
+## 概述
 
-## Overview
+DB-GPT 支持三种主要的扩展机制：
 
-DB-GPT supports three main extension mechanisms:
-
-| Mechanism | What it does | When to use |
+|机制|它有什么作用 |何时使用 |
 |---|---|---|
-| **MCP Protocol** | Connects external tools (APIs, services) to agents | Need agents to call external services |
-| **dbgpts** | Install pre-built apps, operators, and workflows | Want ready-made components |
-| **AWEL Flow** | Visually compose AI pipelines | Need custom workflows without writing code |
+| **MCP 协议** |将外部工具（API、服务）连接到代理 |需要代理调用外部服务|
+| **dbgpts** |安装预构建的应用程序、操作员和工作流程 |想要现成的组件 |
+| **AWEL 流程** |可视化地构建 AI 管道 |需要自定义工作流程而无需编写代码 |
 
-## How tools work with agents
-
+## 工具如何与代理配合使用
 ```mermaid
 graph LR
   User[User] --> Agent[Agent]
@@ -37,18 +35,17 @@ graph LR
   Tools --> KB[Knowledge Base]
   Tools --> API[External APIs]
 ```
+DB-GPT 中的代理可以使用工具来：
 
-Agents in DB-GPT can use tools to:
+1. **访问数据**——查询数据库、搜索知识库
+2. **调用API**——通过MCP与外部服务交互
+3. **执行代码**——在沙盒环境中运行Python代码
+4. **管理文件**——读取、写入和处理文件
 
-1. **Access data** — Query databases, search knowledge bases
-2. **Call APIs** — Interact with external services via MCP
-3. **Execute code** — Run Python code in sandboxed environments
-4. **Manage files** — Read, write, and process files
+## 快速链接
 
-## Quick links
-
-| Topic | Link |
+|主题 |链接 |
 |---|---|
-| AWEL concepts | [AWEL](/docs/getting-started/concepts/awel) |
-| Agent framework | [Agents](/docs/getting-started/concepts/agents) |
-| Agent development | [Development Guide](/docs/agents/introduction/tools) |
+| AWEL 概念 | [AWEL](/docs/getting-started/concepts/awel) |
+|代理框架| [代理](/docs/getting-started/concepts/agents) |
+|代理开发| [开发指南](/docs/agents/introduction/tools) |

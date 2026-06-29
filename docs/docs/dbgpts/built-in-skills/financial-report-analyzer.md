@@ -1,13 +1,12 @@
-# financial-report-analyzer
+# 财务报告分析器
 
-## Overview
+## 概述
 
-`financial-report-analyzer` is a built-in skill for deep analysis of listed-company financial reports such as annual and quarterly reports.
+“财报分析器”是对上市公司年报、季报等财务报告进行深度分析的内置技能。
 
-It extracts structured financial data, computes ratios, generates charts, and renders a report-ready financial analysis page.
+它提取结构化财务数据、计算比率、生成图表并呈现可立即报告的财务分析页面。
 
-## Repo path
-
+## 仓库路径
 ```text
 skills/financial-report-analyzer/
 ├── SKILL.md
@@ -23,41 +22,40 @@ skills/financial-report-analyzer/
     ├── report_template.html
     └── report_template.md
 ```
+## 何时使用
 
-## When to use it
+- 分析年度或季度报告
+- 提取核心财务指标
+- 计算盈利能力和偿付能力指标
+- 生成财务图表
+- 制作专业的 HTML 财务报告
 
-- analyze annual or quarterly reports
-- extract core financial indicators
-- calculate profitability and solvency metrics
-- generate financial charts
-- produce a professional HTML financial report
+## 核心工作流程
 
-## Core workflow
+1. 运行“extract_financials.py”来构建源数据。
+2. 运行“calculate_ratios.py”计算财务指标。
+3. 运行“generate_charts.py”以创建报告视觉效果。
+4. 写出该技能所需的叙述分析部分。
+5. 使用“html_interpreter”和捆绑模板渲染最终输出。
 
-1. Run `extract_financials.py` to structure source data.
-2. Run `calculate_ratios.py` to compute financial indicators.
-3. Run `generate_charts.py` to create report visuals.
-4. Write the skill's required narrative analysis sections.
-5. Render the final output with `html_interpreter` and the bundled template.
+## 重要资源
 
-## Important resources
-
-| Resource | Purpose |
+|资源 |目的|
 |---|---|
-| `scripts/extract_financials.py` | Pulls core financial values from report files |
-| `scripts/calculate_ratios.py` | Computes key ratio fields for templating |
-| `scripts/generate_charts.py` | Generates chart assets used in the report |
-| `references/financial_metrics.md` | Defines the financial metrics and formulas |
-| `references/analysis_framework.md` | Defines the analysis structure and interpretation logic |
-| `templates/report_template.html` | Final HTML delivery template |
+| `scripts/extract_financials.py` |从报告文件中提取核心财务价值 |
+| `scripts/calculate_ratios.py` |计算模板的关键比率字段 |
+| `脚本/generate_charts.py` |生成报告中使用的图表资源 |
+| `references/financial_metrics.md` |定义财务指标和公式 |
+| `references/analysis_framework.md` |定义分析结构和解释逻辑 |
+| `模板/report_template.html` |最终 HTML 交付模板 |
 
-## Output expectations
+## 输出期望
 
-This skill is optimized for structured reporting across:
+该技能针对以下方面的结构化报告进行了优化：
 
-- profitability
-- solvency and risk
-- operating efficiency
-- cash flow and earnings quality
-- advantages and risks
-- overall assessment
+- 盈利能力
+- 偿付能力和风险
+- 运营效率
+- 现金流和盈利质量
+- 优势和风险
+- 总体评估

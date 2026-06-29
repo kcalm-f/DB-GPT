@@ -1,18 +1,18 @@
-# Knowledge
+# 知识库
 
-Get started with the Knowledge API
+开始使用知识库 API
 
-# Chat Knowledge Space
+# 聊天知识空间
 
 ```python
 POST /api/v2/chat/completions
 ```
-### Examples
+### 示例
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-### Chat Knowledge
+### 聊天知识
 
 
 <Tabs
@@ -95,7 +95,7 @@ for chunk in response:
  </TabItem>
 </Tabs>
 
-#### Chat Completion Response
+#### 聊天补全响应
 ```json
 {
     "id": "acb050ab-eb2c-4754-97e4-6f3b94b7dac2",
@@ -120,7 +120,7 @@ for chunk in response:
 }
 ```
 
-#### Chat Completion Stream Response
+#### 聊天补全流式响应
 ```commandline
 data: {"id": "chatcmpl-86f60a0c-e686-11ee-9322-acde48001122", "model": "gpt-4o", "choices": [{"index": 0, "delta": {"role": "assistant", "content": "AW"}}]}
 
@@ -348,7 +348,7 @@ data: {"id": "chatcmpl-86f60a0c-e686-11ee-9322-acde48001122", "model": "gpt-4o",
 
 data: [DONE]
 ```
-### Create Knowledge Space
+### 创建知识空间
 
 ```python
 POST /api/v2/serve/knowledge/spaces
@@ -399,34 +399,34 @@ res = await create_space(client, SpaceModel(
  </TabItem>
 </Tabs>
 
-#### Request body
+#### 请求体
 
 ________
-<b>name</b> <font color="gray"> string </font> <font color="red"> Required </font>
+<b>name</b> <font color="gray"> string </font> <font color="red"> 必填 </font>
 
-knowledge space name
+知识空间名称
 ________
-<b>vector_type</b> <font color="gray"> string </font> <font color="red"> Required </font>
+<b>vector_type</b> <font color="gray"> string </font> <font color="red"> 必填 </font>
 
-vector db type, `Chroma`, `Milvus`, default is `Chroma`
+向量数据库类型，`Chroma`、`Milvus`，默认为 `Chroma`
 ________
-<b>desc</b> <font color="gray"> string </font> <font color="red"> Optional </font>
+<b>desc</b> <font color="gray"> string </font> <font color="red"> 可选 </font>
 
-description of the knowledge space
+知识空间描述
 ________
-<b>owner</b> <font color="gray"> integer </font> <font color="red"> Optional </font>
+<b>owner</b> <font color="gray"> integer </font> <font color="red"> 可选 </font>
 
-The owner of the knowledge space
+知识空间所有者
 ________
-<b>context</b> <font color="gray"> integer </font> <font color="red"> Optional </font>
+<b>context</b> <font color="gray"> integer </font> <font color="red"> 可选 </font>
 
-The context of the knowledge space argument
+知识空间参数上下文
 ________
 
-#### Response body
-Return <a href="#the-space-object">Space Object</a>
+#### 响应体
+返回 <a href="#the-space-object">空间对象</a>
 
-### Update Knowledge Space
+### 更新知识空间
 
 ```python
 PUT /api/v2/serve/knowledge/spaces
@@ -476,38 +476,38 @@ res = await update_space(client, SpaceModel(
  </TabItem>
 </Tabs>
 
-#### Request body
+#### 请求体
 
 ________
-<b>id</b> <font color="gray"> string </font> <font color="red"> Required </font>
+<b>id</b> <font color="gray"> string </font> <font color="red"> 必填 </font>
 
-knowledge space id
+知识空间 ID
 ________
-<b>name</b> <font color="gray"> string </font> <font color="red"> Required </font>
+<b>name</b> <font color="gray"> string </font> <font color="red"> 必填 </font>
 
-knowledge space name
+知识空间名称
 ________
-<b>vector_type</b> <font color="gray"> string </font> <font color="red"> Optional </font>
+<b>vector_type</b> <font color="gray"> string </font> <font color="red"> 可选 </font>
 
-vector db type, `Chroma`, `Milvus`, default is `Chroma`
+向量数据库类型，`Chroma`、`Milvus`，默认为 `Chroma`
 ________
-<b>desc</b> <font color="gray"> string </font> <font color="red"> Optional </font>
+<b>desc</b> <font color="gray"> string </font> <font color="red"> 可选 </font>
 
-description of the knowledge space
+知识空间描述
 ________
-<b>owner</b> <font color="gray"> integer </font> <font color="red"> Optional </font>
+<b>owner</b> <font color="gray"> integer </font> <font color="red"> 可选 </font>
 
-The owner of the knowledge space
+知识空间所有者
 ________
-<b>context</b> <font color="gray"> integer </font> <font color="red"> Optional </font>
+<b>context</b> <font color="gray"> integer </font> <font color="red"> 可选 </font>
 
-The context of the knowledge space argument
+知识空间参数上下文
 ________
 
-#### Response body
-Return <a href="#the-space-object">Space Object</a>
+#### 响应体
+返回 <a href="#the-space-object">空间对象</a>
 
-### Delete Knowledge Space
+### 删除知识空间
 
 ```python
 DELETE /api/v2/serve/knowledge/spaces
@@ -554,17 +554,17 @@ res = await delete_space(client=client, space_id=space_id)
  </TabItem>
 </Tabs>
 
-#### Delete Parameters
+#### 删除参数
 ________
-<b>id</b> <font color="gray"> string </font> <font color="red"> Required </font>
+<b>id</b> <font color="gray"> string </font> <font color="red"> 必填 </font>
 
-knowledge space id
+知识空间 ID
 ________
 
-#### Response body
-Return <a href="#the-space-object">Space Object</a>
+#### 响应体
+返回 <a href="#the-space-object">空间对象</a>
 
-### Get Knowledge Space
+### 获取知识空间
 
 ```python
 GET /api/v2/serve/knowledge/spaces/{space_id}
@@ -606,17 +606,17 @@ res = await get_space(client=client, space_id=space_id)
  </TabItem>
 </Tabs>
 
-#### Query Parameters
+#### 查询参数
 ________
-<b>id</b> <font color="gray"> string </font> <font color="red"> Required </font>
+<b>id</b> <font color="gray"> string </font> <font color="red"> 必填 </font>
 
-knowledge space id
+知识空间 ID
 ________
 
-#### Response body
-Return <a href="#the-space-object">Space Object</a>
+#### 响应体
+返回 <a href="#the-space-object">空间对象</a>
 
-### List Knowledge Space
+### 知识空间列表
 
 ```python
 GET /api/v2/serve/knowledge/spaces
@@ -658,33 +658,33 @@ res = await list_space(client=client)
  </TabItem>
 </Tabs>
 
-#### Response body
-Return <a href="#the-space-object">Space Object</a> List
+#### 响应体
+返回 <a href="#the-space-object">空间对象</a> 列表
 
-### The Space Object
+### 空间对象
 
 ________
 <b>id</b> <font color="gray"> string </font>
 
-space id
+空间 ID
 ________
 <b>name</b> <font color="gray"> string </font>
 
-knowledge space name
+知识空间名称
 ________
 <b>vector_type</b> <font color="gray"> string </font> 
 
-vector db type, `Chroma`, `Milvus`, default is `Chroma`
+向量数据库类型，`Chroma`、`Milvus`，默认为 `Chroma`
 ________
-<b>desc</b> <font color="gray"> string </font> <font color="red"> Optional </font>
+<b>desc</b> <font color="gray"> string </font> <font color="red"> 可选 </font>
 
-description of the knowledge space
+知识空间描述
 ________
-<b>owner</b> <font color="gray"> integer </font> <font color="red"> Optional </font>
+<b>owner</b> <font color="gray"> integer </font> <font color="red"> 可选 </font>
 
-The owner of the knowledge space
+知识空间所有者
 ________
-<b>context</b> <font color="gray"> integer </font> <font color="red"> Optional </font>
+<b>context</b> <font color="gray"> integer </font> <font color="red"> 可选 </font>
 
-The context of the knowledge space argument
+知识空间参数上下文
 ________

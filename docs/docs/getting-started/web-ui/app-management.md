@@ -2,93 +2,91 @@
 sidebar_position: 4
 title: App Management
 ---
+# 应用程序管理
 
-# App Management
+在 DB-GPT 中创建、配置和管理 AI 应用程序。应用程序将法学硕士、工具、知识库和工作流程结合到可重复使用的配置中。
 
-Create, configure, and manage AI applications in DB-GPT. Apps combine LLMs, tools, knowledge bases, and workflows into reusable configurations.
+## 应用程序类型
 
-## App types
-
-| Type | Description |
+|类型 |描述 |
 |---|---|
-| **Native App** | Built-in applications included with DB-GPT |
-| **Community App** | Apps from the dbgpts community repository |
-| **Custom App** | Your own applications built with agents and AWEL |
+| **本机应用程序** | DB-GPT 附带的内置应用程序 |
+| **社区应用程序** | dbgpts 社区存储库中的应用程序 |
+| **自定义应用程序** |使用代理和 AWEL 构建您自己的应用程序 |
 
-## Browsing apps
+## 浏览应用程序
 
-### App Store
+### 应用商店
 
-1. Click **Apps** in the sidebar
-2. Browse available applications
-3. Click an app to see its details, including description, required resources, and configuration
+1. 单击侧边栏中的**应用程序**
+2. 浏览可用的应用程序
+3. 单击应用程序可查看其详细信息，包括描述、所需资源和配置
 
-### Installed apps
+### 已安装的应用程序
 
-The **My Apps** tab shows applications you have installed or created.
+**我的应用程序**选项卡显示您已安装或创建的应用程序。
 
-## Creating an app
+## 创建一个应用程序
 
-### Step 1 — Define the app
+### 第 1 步 — 定义应用程序
 
-1. Navigate to **Apps** → **Create**
-2. Fill in:
-   - **Name** — Display name for the app
-   - **Description** — What the app does
-   - **Language** — Natural language for prompts (e.g., English, Chinese)
+1. 导航至 **应用程序** → **创建**
+2、填写：
+   - **名称** — 应用程序的显示名称
+   - **描述** — 应用程序的用途
+   - **语言** — 提示的自然语言（例如英语、中文）
 
-### Step 2 — Configure resources
+### 步骤 2 — 配置资源
 
-Add resources the app needs:
+添加应用程序所需的资源：
 
-- **LLM** — Select the language model
-- **Knowledge Base** — Attach one or more knowledge bases for RAG
-- **Database** — Connect data sources for Text2SQL
-- **Tools** — Add external tools (MCP tools, custom functions)
+- **LLM** — 选择语言模型
+- **知识库** — 附加 RAG 的一个或多个知识库
+- **数据库** — 连接 Text2SQL 的数据源
+- **工具** — 添加外部工具（MCP 工具、自定义功能）
 
-### Step 3 — Set up agents
+### 第 3 步 — 设置代理
 
-For multi-agent applications:
+对于多代理应用程序：
 
-1. Choose an agent team mode:
-   - **Single Agent** — One agent handles all tasks
-   - **Auto-Plan** — Agents collaborate with automatic task planning
-   - **Sequential** — Agents execute in a fixed order
+1.选择代理组队模式：
+   - **单一代理** — 一个代理处理所有任务
+   - **自动计划** — 代理通过自动任务规划进行协作
+   - **顺序** — 代理按固定顺序执行
 
-2. Configure each agent:
-   - **Role** — Agent's persona and expertise
-   - **Prompt** — System instructions
-   - **Resources** — Which tools and data the agent can access
+2. 配置每个代理：
+   - **角色** — 代理的角色和专业知识
+   - **提示** — 系统指令
+   - **资源** — 代理可以访问哪些工具和数据
 
-### Step 4 — Test and deploy
+### 步骤 4 — 测试和部署
 
-1. Click **Save** to save the configuration
-2. Use **Test** to try the app in a sandbox
-3. The app appears in your **My Apps** list for use
+1.点击**保存**保存配置
+2. 使用 **Test** 在沙箱中尝试该应用程序
+3. 该应用程序出现在您的**我的应用程序**列表中以供使用
 
-## Managing apps
+## 管理应用程序
 
-| Action | How |
+|行动|如何|
 |---|---|
-| **Edit** | Click the edit icon on any app card |
-| **Delete** | Click the delete icon (only for custom apps) |
-| **Share** | Export app configuration for sharing |
-| **Duplicate** | Create a copy of an existing app as a starting point |
+| **编辑** |单击任何应用程序卡上的编辑图标 |
+| **删除** |单击删除图标（仅适用于自定义应用程序）|
+| **分享** |导出应用程序配置以进行共享 |
+| **重复** |创建现有应用程序的副本作为起点 |
 
-## AWEL Flow integration
+## AWEL 流集成
 
-Apps can use AWEL workflows as their execution engine:
+应用程序可以使用 AWEL 工作流程作为其执行引擎：
 
-1. Create a workflow in the **Flow** editor
-2. When creating an app, select the AWEL flow as the app's backend
-3. The app UI automatically maps to the flow's inputs and outputs
+1. 在 **Flow** 编辑器中创建工作流
+2. 创建应用程序时，选择AWEL流程作为应用程序的后端
+3.应用程序UI自动映射到流程的输入和输出
 
-See [AWEL Flow](/docs/getting-started/tools/awel-flow) for details on building workflows.
+有关构建工作流程的详细信息，请参阅 [AWEL Flow](/docs/getting-started/tools/awel-flow)。
 
-## Community apps (dbgpts)
+## 社区应用程序 (dbgpts)
 
-Install community-contributed apps using the `dbgpts` CLI:
-
+使用“dbgpts” CLI 安装社区贡献的应用程序：
 ```bash
 # List available apps
 dbgpts list-remote
@@ -96,16 +94,15 @@ dbgpts list-remote
 # Install an app
 dbgpts install <app-name>
 ```
-
-:::info
-Community apps are maintained in the [dbgpts repository](https://github.com/eosphoros-ai/dbgpts). See [dbgpts](/docs/getting-started/tools/dbgpts) for more details.
+:::信息
+社区应用程序在 [dbgpts 存储库](https://github.com/eosphoros-ai/dbgpts) 中维护。有关更多详细信息，请参阅 [dbgpts](/docs/getting-started/tools/dbgpts)。
 :::
 
-## Next steps
+## 后续步骤
 
-| Topic | Link |
+|主题 |链接 |
 |---|---|
-| Build workflows | [AWEL Flow](/docs/getting-started/tools/awel-flow) |
-| Explore agents | [Agents Concept](/docs/getting-started/concepts/agents) |
-| Community apps | [dbgpts](/docs/getting-started/tools/dbgpts) |
-| App development guide | [App Development](/docs/cookbook/app/data_analysis_app_develop) |
+|构建工作流程 | [AWEL Flow](/docs/getting-started/tools/awel-flow) |
+|探索代理| [代理概念](/docs/getting-started/concepts/agents) |
+|社区应用 | [dbgpts](/docs/getting-started/tools/dbgpts) |
+|应用开发指南 | [应用程序开发](/docs/cookbook/app/data_analysis_app_develop) |

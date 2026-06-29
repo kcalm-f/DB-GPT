@@ -1,45 +1,45 @@
 ---
 sidebar_position: 2
-title: Getting Started
-summary: "Shortest path from clone to a working DB-GPT chat"
+title: 快速开始
+summary: "从克隆到运行 DB-GPT 聊天的最短路径"
 read_when:
-  - You want the first successful DB-GPT run with the least setup
-  - You need a concrete first-run checklist and quick verification
+  - 你想要以最少的设置完成第一次成功的 DB-GPT 运行
+  - 你需要一个具体的首次运行检查清单和快速验证
 ---
 
-# Getting Started
+# 快速开始
 
-Goal: go from zero to a first working chat with minimal setup.
+目标：从零开始，用最少的设置完成第一次聊天。
 
-:::info Fastest path
-Use an **API proxy** (OpenAI or DeepSeek) — no GPU required. You will have a working DB-GPT chat in under 5 minutes.
+:::info 最快路径
+使用 **API 代理**（OpenAI 或 DeepSeek）— 无需 GPU。你将在 5 分钟内拥有一个可用的 DB-GPT 聊天。
 :::
 
-## What you need
+## 你需要准备
 
-* Python 3.10 or newer
-* uv package manager
+* Python 3.10 或更新版本
+* uv 包管理器
 
 :::tip
-Check your versions with `python --version` and `uv --version`. Full requirements: [Prerequisites](/docs/getting-started/prerequisites).
+使用 `python --version` 和 `uv --version` 检查你的版本。完整要求：[先决条件](/docs/getting-started/prerequisites)。
 :::
 
-## Quick setup
+## 快速设置
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-### Step 1 — Clone the repository
+### 第 1 步 — 克隆仓库
 
 ```bash
 git clone https://github.com/eosphoros-ai/DB-GPT.git
 cd DB-GPT
 ```
 
-### Step 2 — Install dependencies
+### 第 2 步 — 安装依赖
 
 <Tabs>
-  <TabItem value="openai" label="OpenAI (proxy)" default>
+  <TabItem value="openai" label="OpenAI (代理)" default>
 
 ```bash
 uv sync --all-packages \
@@ -51,7 +51,7 @@ uv sync --all-packages \
 ```
 
   </TabItem>
-  <TabItem value="deepseek" label="DeepSeek (proxy)">
+  <TabItem value="deepseek" label="DeepSeek (代理)">
 
 ```bash
 uv sync --all-packages \
@@ -63,7 +63,7 @@ uv sync --all-packages \
 ```
 
   </TabItem>
-  <TabItem value="ollama" label="Ollama (local)">
+  <TabItem value="ollama" label="Ollama (本地)">
 
 ```bash
 uv sync --all-packages \
@@ -77,37 +77,37 @@ uv sync --all-packages \
   </TabItem>
 </Tabs>
 
-### Step 3 — Configure your model
+### 第 3 步 — 配置模型
 
 <Tabs>
   <TabItem value="openai" label="OpenAI" default>
 
-Edit `configs/dbgpt-proxy-openai.toml` and set your API key:
+编辑 `configs/dbgpt-proxy-openai.toml` 并设置你的 API 密钥：
 
 ```toml
 [models]
 [[models.llms]]
 name = "chatgpt_proxyllm"
 provider = "proxy/openai"
-api_key = "your-openai-api-key"    # <-- replace this
+api_key = "your-openai-api-key"    # <-- 替换为你的密钥
 
 [[models.embeddings]]
 name = "text-embedding-3-small"
 provider = "proxy/openai"
-api_key = "your-openai-api-key"    # <-- replace this
+api_key = "your-openai-api-key"    # <-- 替换为你的密钥
 ```
 
   </TabItem>
   <TabItem value="deepseek" label="DeepSeek">
 
-Edit `configs/dbgpt-proxy-deepseek.toml` and set your API key:
+编辑 `configs/dbgpt-proxy-deepseek.toml` 并设置你的 API 密钥：
 
 ```toml
 [models]
 [[models.llms]]
 name = "deepseek-reasoner"
 provider = "proxy/deepseek"
-api_key = "your-deepseek-api-key"  # <-- replace this
+api_key = "your-deepseek-api-key"  # <-- 替换为你的密钥
 
 [[models.embeddings]]
 name = "BAAI/bge-large-zh-v1.5"
@@ -115,13 +115,13 @@ provider = "hf"
 ```
 
 :::info
-The default embedding model is `BAAI/bge-large-zh-v1.5`. If using a HuggingFace embedding, also add `--extra "hf"` and `--extra "cpu"` to the install command.
+默认的嵌入模型是 `BAAI/bge-large-zh-v1.5`。如果使用 HuggingFace 嵌入，还需在安装命令中添加 `--extra "hf"` 和 `--extra "cpu"`。
 :::
 
   </TabItem>
   <TabItem value="ollama" label="Ollama">
 
-Make sure [Ollama](https://ollama.ai) is running, then edit `configs/dbgpt-proxy-ollama.toml`:
+确保 [Ollama](https://ollama.ai) 正在运行，然后编辑 `configs/dbgpt-proxy-ollama.toml`：
 
 ```toml
 [models]
@@ -139,7 +139,7 @@ api_base = "http://localhost:11434"
   </TabItem>
 </Tabs>
 
-### Step 4 — Start the server
+### 第 4 步 — 启动服务器
 
 <Tabs>
   <TabItem value="openai" label="OpenAI" default>
@@ -165,76 +165,76 @@ uv run dbgpt start webserver --config configs/dbgpt-proxy-ollama.toml
   </TabItem>
 </Tabs>
 
-### Step 5 — Open the Web UI
+### 第 5 步 — 打开 Web UI
 
-Open your browser and visit **[http://localhost:5670](http://localhost:5670)**.
+打开浏览器访问 **[http://localhost:5670](http://localhost:5670)**。
 
-:::tip Verify it works
-If the Web UI loads and you can start a chat conversation, your DB-GPT is ready for use.
+:::tip 验证是否成功
+如果 Web UI 加载成功并且你可以开始聊天对话，说明你的 DB-GPT 已准备就绪。
 :::
 
-## Verify
+## 验证
 
-- The webserver is running
-- Your model config loads without errors
-- The Web UI opens at `http://localhost:5670`
-- SQLite is available as the default metadata store
+- Web 服务器正在运行
+- 你的模型配置加载无错误
+- Web UI 在 `http://localhost:5670` 打开
+- SQLite 作为默认元数据存储可用
 
-## Common first-run issues
+## 常见首次运行问题
 
 - **`uv: command not found`**
-  - Install uv first: [Prerequisites](/docs/getting-started/prerequisites)
-- **Model key/auth errors**
-  - Re-check the provider config under `configs/`
-  - Start here: [Model Providers](/docs/getting-started/providers/)
-- **Web UI does not load**
-  - Confirm the server is listening on port `5670`
-  - Check the server logs in the terminal where you started DB-GPT
-- **Local model does not respond**
-  - Confirm Ollama or your local inference backend is already running
+  - 先安装 uv：[先决条件](/docs/getting-started/prerequisites)
+- **模型密钥/认证错误**
+  - 重新检查 `configs/` 下的提供商配置
+  - 从这里开始：[模型提供商](/docs/getting-started/providers/)
+- **Web UI 无法加载**
+  - 确认服务器正在监听 `5670` 端口
+  - 检查启动 DB-GPT 的终端中的服务器日志
+- **本地模型无响应**
+  - 确认 Ollama 或你的本地推理后端已在运行
 
-## If you need more
+## 如需更多
 
-- **Run the web front-end separately**
+- **单独运行 Web 前端**
 
   ```bash
   cd web && npm install
   cp .env.template .env
-  # Edit .env — set API_BASE_URL=http://localhost:5670
+  # 编辑 .env — 设置 API_BASE_URL=http://localhost:5670
   npm run dev
   ```
 
-  Then open [http://localhost:3000](http://localhost:3000).
+  然后打开 [http://localhost:3000](http://localhost:3000)。
 
-- **Use the install helper**
+- **使用安装助手**
 
   ```bash
   uv run install_help.py install-cmd --interactive
   uv run install_help.py list
   ```
 
-- **Use a different database**
-  - Default is SQLite
-  - For MySQL, PostgreSQL, and others, see [Data Sources](/docs/getting-started/concepts/data-sources)
+- **使用不同的数据库**
+  - 默认为 SQLite
+  - 如需 MySQL、PostgreSQL 等，请参阅[数据源](/docs/getting-started/concepts/data-sources)
 
-- **Useful environment variables**
-  - `UV_INDEX_URL` — PyPI mirror URL
-  - `OPENAI_API_KEY` — alternative to storing the key in TOML
-  - `CUDA_VISIBLE_DEVICES` — GPU device selection
-  - Full reference: [Config Reference](/docs/config/config-reference)
+- **有用的环境变量**
+  - `UV_INDEX_URL` — PyPI 镜像地址
+  - `OPENAI_API_KEY` — 替代在 TOML 中存储密钥的方式
+  - `CUDA_VISIBLE_DEVICES` — GPU 设备选择
+  - 完整参考：[配置参考](/docs/config/config-reference)
 
-## Go deeper
+## 深入了解
 
-| Topic | Link |
+| 主题 | 链接 |
 |---|---|
-| Full architecture overview | [Architecture](/docs/getting-started/concepts/architecture) |
-| Connect more model providers | [Model Providers](/docs/getting-started/providers/) |
-| Docker deployment | [Docker](/docs/getting-started/deploy/docker) |
-| Knowledge base setup | [Knowledge Base](/docs/getting-started/web-ui/knowledge-base) |
+| 完整架构概述 | [架构](/docs/getting-started/concepts/architecture) |
+| 连接更多模型提供商 | [模型提供商](/docs/getting-started/providers/) |
+| Docker 部署 | [Docker](/docs/getting-started/deploy/docker) |
+| 知识库设置 | [知识库](/docs/getting-started/web-ui/knowledge-base) |
 
-## Next steps
+## 下一步
 
-* Configure model providers: [Model Providers](/docs/getting-started/providers/)
-* Deploy with Docker: [Docker Deployment](/docs/getting-started/deploy/docker)
-* Explore the Web UI: [Web UI Guide](/docs/getting-started/web-ui/)
-* Build your first AWEL workflow: [AWEL Quickstart](/docs/awel/cookbook/quickstart_basic_awel_workflow)
+* 配置模型提供商：[模型提供商](/docs/getting-started/providers/)
+* 使用 Docker 部署：[Docker 部署](/docs/getting-started/deploy/docker)
+* 探索 Web UI：[Web UI 指南](/docs/getting-started/web-ui/)
+* 构建你的第一个 AWEL 工作流：[AWEL 快速开始](/docs/awel/cookbook/quickstart_basic_awel_workflow)

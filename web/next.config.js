@@ -16,10 +16,25 @@ const nextConfig = {
     GET_USER_URL: process.env.GET_USER_URL,
     LOGIN_URL: process.env.LOGIN_URL,
     LOGOUT_URL: process.env.LOGOUT_URL,
+    NEXT_PUBLIC_LIBRO_SERVER_PORT:
+      process.env.NEXT_PUBLIC_LIBRO_SERVER_PORT || process.env.LIBRO_SERVER_PORT || "5671",
   },
   trailingSlash: true,
   images: { unoptimized: true },
   skipTrailingSlashRedirect: true,
+  async headers() {
+    return [
+      {
+        source: "/:path*",
+        headers: [
+          {
+            key: "X-Content-Type-Options",
+            value: "nosniff",
+          },
+        ],
+      },
+    ];
+  },
   webpack: (config, { isServer }) => {
     config.resolve.fallback = { fs: false };
     if (!isServer) {

@@ -161,8 +161,8 @@ class ConnectorManager(BaseComponent):
             support_type_params.append(
                 ResourceParameters(
                     name=db_type.value(),
-                    label=label,
-                    description=description,
+                    label=str(label),
+                    description=str(description),
                     parameters=parameters,
                 )
             )

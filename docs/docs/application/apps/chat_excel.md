@@ -1,45 +1,45 @@
-# Chat Excel
+# 聊天 Excel
 
-Chat Excel means that you can interpret and analyze Excel data through natural language dialogue.
+聊天Excel意味着您可以通过自然语言对话来解释和分析Excel数据。
 
 
-<p align="left">
+<p对齐=“左”>
   <img src={'/img/chat_excel/excel.png'} width="720px" />
 </p>
 
 
-## Steps
+## 步骤
 
-The steps to use Chat Excel are relatively simple and are mainly divided into the following steps:
-- 1.Select Chat Excel dialogue app
-- 2.Upload Excel document
-- 3.Start chat
+Chat Excel的使用步骤比较简单，主要分为以下步骤：
+- 1.选择Chat Excel对话应用程序
+- 2.上传Excel文档
+- 3.开始聊天
 
-### Select `Chat Excel` 
+### 选择“聊天 Excel” 
 
-<p align="center">
+<p对齐=“中心”>
   <img src={'/img/app/chat_excel_v0.6.jpg'} width="800px" />
 </p>
 
-### Upload Excel document
+### 上传Excel文档
 
-<p align="center">
+<p对齐=“中心”>
   <img src={'/img/app/chat_excel_upload_succ_v0.6.jpg'} width="800px" />
 </p>
 
 
-:::info note
+:::信息说明
 
-⚠️ the Excel file format is converted to `.csv` format
+⚠️ Excel 文件格式转换为 `.csv` 格式
 :::
 
 
-After the upload is successful, the content will be summarized by default and some questioning strategies will be recommended.
+上传成功后，会默认总结内容，并推荐一些提问策略。
 
-### Start chat
+### 开始聊天
 
-You can then start a conversation based on the uploaded file.
+然后，您可以根据上传的文件开始对话。
 
-<p align="center">
+<p对齐=“中心”>
   <img src={'/img/app/chat_excel_upload_v0.6.jpg'} width="800px" />
 </p>

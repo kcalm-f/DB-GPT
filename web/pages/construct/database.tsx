@@ -59,9 +59,13 @@ function Database() {
       .map(item => {
         const db_type = item?.name as DBType;
         const mapper = dbMapper[db_type];
+        const backendDescription = /[\u4e00-\u9fa5]/.test(item.description || '') ? item.description : undefined;
 
         return {
           ...mapper,
+          label: item.label || mapper.label,
+          desc: backendDescription || mapper.desc,
+          description: backendDescription || mapper.desc,
           value: db_type,
           isFileDb: true,
           parameters: item.parameters,

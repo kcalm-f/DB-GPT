@@ -1,42 +1,42 @@
-# DB-GPT Integrations
+# DB-GPT 集成
 
-DB-GPT integrates with many datasources and rag storage providers.
+DB-GPT 与许多数据源和碎布存储提供商集成。
 
-Integration Packages
-
-
-
-# Datasource Providers
-
-| Provider    | Supported | Install Packages                |
-|-------------|-----------|---------------------------------|
-| MySQL       | ✅       | --extra datasource_mysql        |
-| OceanBase   | ✅       |                                 |
-| ClickHouse  | ✅       | --extra datasource_clickhouse   |
-| Hive        | ✅       | --extra datasource_hive         |
-| MSSQL       | ✅       | --extra datasource_mssql        |
-| PostgreSQL  | ✅       | --extra datasource_postgres     |
-| ApacheDoris | ✅       |                                 |
-| StarRocks   | ✅       |                                 |
-| Spark       | ✅       | --extra datasource_spark        |
-| Oracle      | ✅       | --extra datasource_oracle       |
-| Gaussdb     | ✅       | --extra datasource_postgres     |
-| openGauss   | ✅       | --extra datasource_postgres     |
+集成包
 
 
-# RAG Storage Providers
 
-| Provider    | Supported | Install Packages               |
-|-------------|-----------|--------------------------------|
-| Chroma      | ✅         | --extra storage_chroma         |       
-| Milvus      | ✅         | --extra storage_milvus         |       
-| Elasticsearch | ✅         | --extra storage_elasticsearch   |        
-| OceanBase   | ✅         | --extra storage_obvector      |
+# 数据源提供者
+
+|供应商|支持 |安装包 |
+|------------------------|------------------------|--------------------------------|
+| MySQL | ✅ | --额外的数据源_mysql |
+| OceanBase | ✅ |                                 |
+|点击屋 | ✅ | --额外的datasource_clickhouse |
+|蜂巢 | ✅ | --额外的数据源_hive |
+|微软SQL | ✅ | --额外的数据源_mssql |
+| PostgreSQL | ✅ | --额外的datasource_postgres |
+|阿帕奇多丽丝 | ✅ |                                 |
+|星石 | ✅ |                                 |
+|火花| ✅ | --额外的数据源_spark |
+|甲骨文 | ✅ | --额外的数据源_oracle |
+|高斯数据库 | ✅ | --额外的datasource_postgres |
+|开放高斯 | ✅ | --额外的datasource_postgres |
 
 
-# Graph RAG Storage Providers
+# RAG 存储提供商
 
-| Provider | Supported | Install Packages |
-|----------|----------|------------------|
-| TuGraph  | ✅        | --extra graph_rag|
-| Neo4j    | ✅         |                  |
+|供应商|支持 |安装包 |
+|------------------------|------------------------|--------------------------------|
+|色度 | ✅ | --额外存储色度|       
+|米尔维斯 | ✅ | --额外存储_milvus |       
+|弹性搜索 | ✅ | --额外存储_elasticsearch |        
+| OceanBase | ✅ | --额外的存储观察向量|
+
+
+# Graph RAG 存储提供商
+
+|供应商|支持 |安装包 |
+|----------|----------|--------------------|
+|图图 | ✅ | --额外的graph_rag|
+| Neo4j | ✅ |                  |

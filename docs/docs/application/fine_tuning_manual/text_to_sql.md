@@ -1,20 +1,19 @@
-# Text2SQL Fine-Tuning
-We have split the Text2SQL-related fine-tuning code into the `DB-GPT-Hub `sub-project, and you can also view the source code directly.
+# Text2SQL 微调
+我们将Text2SQL相关的微调代码拆分到了`DB-GPT-Hub`子项目中，大家也可以直接查看源码。
 
-## Fine-tune pipeline
+## 微调管道
 
-Text2SQL pipeline mainly includes the following processes:
-- [Build environment](#build-environment)
-- [Data processing](#data-processing)
-- [Model train](#model-train)
-- [Model merge](#model-merge)
-- [Model predict](#model-predict)
-- [Model evaluation](#model-evaluation)
+Text2SQL管道主要包括以下流程：
+- [构建环境](#build-environment)
+- [数据处理](#data-processing)
+- [模型火车](#model-train)
+- [模型合并](#model-merge)
+- [模型预测](#model-predict)
+- [模型评估](#model-evaluation)
 
 
-## Build environment
-We recommend using the conda virtual environment to build a Text2SQL fine-tuning environment
-
+## 搭建环境
+我们推荐使用conda虚拟环境搭建Text2SQL微调环境
 ```python
 git clone https://github.com/eosphoros-ai/DB-GPT-Hub.git
 cd DB-GPT-Hub
@@ -23,31 +22,28 @@ conda activate dbgpt_hub
 conda install -c conda-forge poetry>=1.4.0
 poetry install
 ```
-
-The current project supports multiple LLMs and can be downloaded on demand. In this tutorial, we use `CodeLlama-13b-Instruct-hf` as the base model. The model can be downloaded from platforms such as [HuggingFace](https://huggingface.co/) and [Modelscope](https://modelscope.cn/models). Taking HuggingFace as an example, the download command is:
+目前项目支持多个LLM，可以按需下载。在本教程中，我们使用“CodeLlama-13b-Instruct-hf”作为基础模型。该模型可以在[HuggingFace](https://huggingface.co/)和[Modelscope](https://modelscope.cn/models)等平台下载。以HuggingFace为例，下载命令为：
 ```python
 cd Your_model_dir
 git lfs install
 git clone git@hf.co:codellama/CodeLlama-13b-Instruct-hf
 ```
+## 数据处理
 
-## Data processing
+### 数据收集
+本教程的案例数据主要以`Spider`数据集为例：
+- 简介：`Spider`数据集被业界公认为最难的大规模跨域评估列表。它包含 10,181 个自然语言问题和 5,693 个 SQL 语句，涉及 138 个不同领域的 200 多个数据库。
+- 下载：[download](https://drive.google.com/uc?export=download&id=1TqleXec_OykOYFREKKtschzY29dUcVAQ)数据集到项目目录，位于`dbgpt_hub/data/spider`。
 
-### Data collection
-The case data of this tutorial mainly uses the `Spider` dataset as an example:
-- introduction:  the `Spider` dataset is recognized as the most difficult large-scale cross-domain evaluation list in the industry. It contains 10,181 natural language questions and 5,693 SQL statements, involving more than 200 databases in 138 different fields.
-- download: [download](https://drive.google.com/uc?export=download&id=1TqleXec_OykOYFREKKtschzY29dUcVAQ) the data set to the project directory, which is located in `dbgpt_hub/data/spider`.
+### 数据处理
+项目采用信息匹配生成方式进行数据准备，即“SQL+Repository”结合表信息的生成方式。这种方法结合数据表信息，可以更好地理解数据表的结构和关系，更好地生成满足需求的SQL。
 
-### Data processing
-The project uses the information matching generation method for data preparation, that is, the `SQL + Repository` generation method that combines table information. This method combines the data table information to better understand the structure and relationship of the data table, and to better generate SQL that meets the needs.
-
-The project has encapsulated the relevant processing code in the corresponding script. You can directly run the script command with one click. The generated training sets `example_text2sql_train.json` and `example_text2sql_dev.json` will be obtained in the `dbgpt_hub/data/` directory.
-
+项目已经将相关处理代码封装在相应的脚本中。您可以直接一键运行脚本命令。生成的训练集“example_text2sql_train.json”和“example_text2sql_dev.json”将在“dbgpt_hub/data/”目录中获取。
 ```python
 # Generate train data and dev(eval) data
 sh dbgpt_hub/scripts/gen_train_eval_data.sh
 ```
-There are `8659` items in the training set and `1034` items in the dev set. The generated training set data format is as follows:
+训练集中有“8659”个项目，开发集中有“1034”个项目。生成的训练集数据格式如下：
 ```json
 {
   "db_id": "department_management",
@@ -57,35 +53,32 @@ There are `8659` items in the training set and `1034` items in the dev set. The 
   "history": []
 }
 ```
+在`dbgpt_hub/data/dataset_info.json`中配置训练数据文件。 json 文件中对应键的值默认为“example_text2sql”。该值就是后续训练脚本train_sft中参数`--dataset`需要传入的值。 json 中的 `file_name` 值为训练集的文件名。
 
-Configure the training data file in `dbgpt_hub/data/dataset_info.json`. The value of the corresponding key in the json file defaults to `example_text2sql`. This value is the value that needs to be passed in for the parameter `--dataset` in the subsequent training script train_sft. The `file_name` in json The value is the file name of the training set.
 
+### 代码解释
+数据处理的核心代码主要在`dbgpt_hub/data_process/sql_data_process.py`中。核心处理类是`ProcessSqlData()`，核心处理函数是`decode_json_file()`。
 
-### Code interpretation
-The core code of data processing is mainly in `dbgpt_hub/data_process/sql_data_process.py`. The core processing class is `ProcessSqlData()`, and the core processing function is `decode_json_file()`.
-
-`decode_json_file()` first processes the table information in the `Spider` data into a dictionary format. The `key` and `value` are respectively the `db_id` and the `table` and `column` information corresponding to the `db_id` into the required format, for example:
+`decode_json_file()` 首先将 `Spider` 数据中的表信息处理成字典格式。其中 key 和 value 分别是 db_id 以及 db_id 对应的表和列信息转换成要求的格式，例如：
 ```json
 {
   "department_management": department_management contains tables such as department, head, management. Table department has columns such as Department_ID, Name, Creation, Ranking, Budget_in_Billions, Num_Employees. Department_ID is the primary key.\nTable head has columns such as head_ID, name, born_state, age. head_ID is the primary key.\nTable management has columns such as department_ID, head_ID, temporary_acting. department_ID is the primary key.\nThe head_ID of management is the foreign key of head_ID of head.\nThe department_ID of management is the foreign key of Department_ID of department.
 }
 ```
-Then fill the `{}` part of `INSTRUCTION_PROMPT` in the config file with the above text to form the final instruction. `INSTRUCTION_PROMPT` is as follows:
+然后用上述文本填充配置文件中“INSTRUCTION_PROMPT”的“{}”部分，形成最终的指令。 `INSTRUCTION_PROMPT` 如下：
 ```json
 INSTRUCTION_PROMPT = "I want you to act as a SQL terminal in front of an example database, you need only to return the sql command to me.Below is an instruction that describes a task, Write a response that appropriately completes the request.\n ##Instruction:\n{}\n"
 ```
+最后将训练集和验证集中每个“db_id”对应的问题和查询处理成模型SFT训练所需的格式，即上面数据处理代码执行部分所示的数据格式。
 
-Finally, the question and query corresponding to each `db_id`in the training set and validation set are processed into the format required for model SFT training, that is, the data format shown in the execution part of the data processing code above.
 
-
-:::info note
-If you want to collect more data for training yourself, you can use the relevant code of this project to process it according to the above logic.
+:::信息说明
+如果你想收集更多的数据来训练自己，可以使用本项目的相关代码按照上面的逻辑进行处理。
 :::
 
 
-## Model train
-For the sake of simplicity, this reproduction tutorial uses LoRA fine-tuning to run directly as an example, but project fine-tuning can support not only `LoRA` but also `QLoRA` and [deepspeed](https://github.com/microsoft/DeepSpeed) acceleration. The detailed parameters of the training script `dbgpt_hub/scripts/train_sft.sh` are as follows:
-
+## 火车模型
+为了简单起见，本复现教程以LoRA微调直接运行为例，但项目微调不仅可以支持`LoRA`，还可以支持`QLoRA`和[deepspeed](https://github.com/microsoft/DeepSpeed)加速。训练脚本`dbgpt_hub/scripts/train_sft.sh`详细参数如下：
 ```json
 CUDA_VISIBLE_DEVICES=0 python dbgpt_hub/train/sft_train.py \
     --model_name_or_path Your_download_CodeLlama-13b-Instruct-hf_path \
@@ -111,41 +104,39 @@ CUDA_VISIBLE_DEVICES=0 python dbgpt_hub/train/sft_train.py \
     --plot_loss \
     --bf16
 ```
+train_sft.sh中关键参数及含义介绍：
+- `model_name_or_path` ：所使用的 LLM 模型的路径。
+- `dataset`：值为训练数据集的配置名称，对应`dbgpt_hub/data/dataset_info.json`中的外键值，如`example_text2sql`。
+- `max_source_length`：输入模型的文本长度。本教程的效果参数为‘2048’，这是经过多次实验和分析后的最佳长度。
+- `max_target_length`：输出模型的sql内容长度，设置为`512`。
+- `template`：项目设置中不同模型微调的lora部分。对于 Llama2 系列型号，设置为“llama2”。
+- `lora_target`：LoRA微调时网络参数变化部分。
+- `finetuning_type`：微调类型，值为`[ptuning, lora, freeze, full]`等。
+- `lora_rank`：LoRA 微调中的排名大小。
+- `lora_alpha`：LoRA 微调中的比例因子。
+- `output_dir`：SFT微调时Peft模块输出的路径。默认设置位于“dbgpt_hub/output/adapter/”路径下。
+- `per_device_train_batch_size`：每个 GPU 上的训练样本批次。如果计算资源支持的话可以设置大一些。默认值为“1”。
+- `gradient_accumulation_steps`：梯度更新的累计步数值。
+- `lr_scheduler_type`：学习率类型。
+- `logging_steps`：日志保存的步骤间隔。
+- `save_steps`：模型保存的ckpt的步长值。
+- `num_train_epochs`：训练数据的纪元数。
+- `learning_rate`：学习率，推荐学习率为`2e-4`。
 
-Introduction to key parameters and meanings in train_sft.sh:
-- `model_name_or_path` : Path to the LLM model used.
-- `dataset`: The value is the configuration name of the training data set, corresponding to the outer key value in `dbgpt_hub/data/dataset_info.json`, such as `example_text2sql`.
-- `max_source_length`: Enter the text length of the model. The effect parameter of this tutorial is `2048`, which is the optimal length after multiple experiments and analysis.
-- `max_target_length`: The sql content length of the output model, set to `512`.
-- `template`: The lora part of different model fine-tuning in the project settings. For the Llama2 series models, it is set to `llama2`.
-- `lora_target`: The network parameter changing part during LoRA fine-tuning.
-- `finetuning_type`: Finetuning type, the value is `[ptuning, lora, freeze, full]`, etc.
-- `lora_rank`: Rank size in LoRA fine-tuning.
-- `lora_alpha`: scaling factor in LoRA fine-tuning.
-- `output_dir`: The path output by the Peft module during SFT fine-tuning. The default setting is under the `dbgpt_hub/output/adapter/` path.
-- `per_device_train_batch_size`: The batch of training samples on each GPU. If the computing resources support it, it can be set to larger. The default is `1`.
-- `gradient_accumulation_steps`: The accumulated steps value of gradient update.
-- `lr_scheduler_type`: learning rate type.
-- `logging_steps`: steps interval for log saving.
-- `save_steps`: The steps size value of ckpt saved by the model.
-- `num_train_epochs`: The number of epochs of training data.
-- `learning_rate`: learning rate, the recommended learning rate is `2e-4`.
+如果要基于`QLoRA`进行训练，可以在脚本中添加参数 quantization_bit 来指示是否进行量化。该值为“[4或8]”以启用量化。
+如果想对不同的LLM进行微调，可以参考项目的README.md中的相关内容更改不同模型对应的关键参数lora_target和template。
 
-If you want to train based on `QLoRA`, you can add the parameter quantization_bit to the script to indicate whether to quantize. The value is `[4 or 8]` to enable quantization.
-If you want to fine-tune different LLMs, the key parameters `lora_target` and `template` corresponding to different models can be changed by referring to the relevant content in the project's `README.md`.
-
-## Model merge
+## 模型合并
 
 
-## Model predict
-After the model training is completed, to predict the trained model, you can directly run `predict_sft.sh` in the project script directory.
+## 模型预测
+模型训练完成后，要对训练好的模型进行预测，可以直接运行项目脚本目录下的“predict_sft.sh”。
 
-Prediction run command:
+预测运行命令：
 ```python
 sh ./dbgpt_hub/scripts/predict_sft.sh
 ```
-
-In the project directory `./dbgpt_hub/output/pred/`, this file path is the location of the default output of the model prediction results (if it does not exist, it needs to be created). The detailed parameters in `predict_sft.sh` for this tutorial are as follows:
+在项目目录`./dbgpt_hub/output/pred/`中，该文件路径是模型预测结果默认输出的位置（如果不存在，需要创建）。本教程的`predict_sft.sh`中的详细参数如下：
 ```python
 
 echo " predict Start time: $(date)"
@@ -159,35 +150,30 @@ CUDA_VISIBLE_DEVICES=0 python dbgpt_hub/predict/predict.py \
 
 echo "predict End time: $(date)"
 ```
-The value of the parameter `--predicted_out_filename` is the file name of the result predicted by the model, and the results can be found in the `dbgpt_hub/output/pred` directory.
+参数`--predicted_out_filename`的值为模型预测结果的文件名，结果可以在`dbgpt_hub/output/pred`目录中找到。
 
 
-## Model evaluation
-For the evaluation of the model's effect on the dataset, the default is on the `Spider` dataset. Run the following command:
-
+## 模型评估
+为了评估模型对数据集的影响，默认是在“Spider”数据集上。运行以下命令：
 ```python
 python dbgpt_hub/eval/evaluation.py --plug_value --input  Your_model_pred.sql
 ```
-
-The results generated by large models have a certain degree of randomness because they are closely related to parameters such as `temperature` (can be adjusted in `GeneratingArguments` in `/dbgpt_hub/configs/model_args.py`). By default, the execution accuracy of our multiple evaluations is `0.789` and above. We have placed some of the experimental and evaluation results in the project `docs/eval_llm_result.md` for reference only.
-
-
-`DB-GPT-Hub` uses `LoRA` to fine-tune the weight file on `Spider`'s training set based on the LLM of `CodeLlama-13b-Instruct-hf`. The weight file has been released. Currently, it has achieved an execution accuracy of about `0.789` on the `Spider`'s evaluation set. The weight file `CodeLlama-13b-sql-lora` is available on [HuggingFace](https://huggingface.co/eosphoros).
+大型模型生成的结果具有一定的随机性，因为它们与“温度”等参数密切相关（可以在“/dbgpt_hub/configs/model_args.py”中的“GenerateArguments”中调整）。默认情况下，我们多次评估的执行精度为“0.789”及以上。我们将一些实验和评估结果放在项目“docs/eval_llm_result.md”中，仅供参考。
 
 
-## Appendix
-The experimental environment of this article is based on a graphics card server with `A100 (40G)`, and the total training time is about 12 hours. If your machine resources are insufficient, you can give priority to reducing the value of the parameter `gradient_accumulation_steps`. In addition, you can consider using `QLoRA` to fine-tune (add `--quantization_bit 4` to the training script `dbgpt_hub/scripts/train_sft.sh`). From our experience, `QLoRA` At `8` epochs, the results are not much different from the `LoRA` fine-tuning results.
-
-# test
+“DB-GPT-Hub”使用“LoRA”根据“CodeLlama-13b-Instruct-hf”的LLM在“Spider”训练集上微调权重文件。权重文件已发布。目前，它在“Spider”的评估集上实现了约“0.789”的执行精度。权重文件“CodeLlama-13b-sql-lora”可在 [HuggingFace](https://huggingface.co/eosphoros) 上找到。
 
 
-The output is as follows:
+## 附录
+本文的实验环境基于‘A100(40G)’的显卡服务器，总训练时间约为12小时。如果您的机器资源不足，可以优先减小参数“gradient_accumulation_steps”的值。另外，可以考虑使用`QLoRA`进行微调（在训练脚本`dbgpt_hub/scripts/train_sft.sh`中添加`--quantization_bit 4`）。根据我们的经验，“QLoRA”在“8”epoch 时，结果与“LoRA”微调结果没有太大区别。
+
+# 测试
 
 
+输出如下：
 ```python
 dbgpt trace --help
 ```
-
-:::info note
+:::信息说明
 
 :::

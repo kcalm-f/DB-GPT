@@ -1,160 +1,159 @@
-# Data App Develop Guide
+# 数据应用开发指南
 
-In this document, we will guide you through the process of developing a data analysis app using DB-GPT.
+在本文档中，我们将指导您完成使用 DB-GPT 开发数据分析应用程序的过程。
 
-# Target
+# 目标
 
-In this case, our goal is to build a data assistant application that includes the following capabilities:
-1. Intelligent question and answer based on the documents.
-2. Conduct data dialogue based on database.
-3. Internet search based on tool usage.
+在本例中，我们的目标是构建一个包含以下功能的数据助手应用程序：
+1、基于文档的智能问答。
+2、基于数据库进行数据对话。
+3.基于工具使用的互联网搜索。
 
-These three capabilities can be utilized within a single conversation based on the intent recognition ability provided by DB-GPT. The data assistant will match appropriate sub-agent applications to answer questions in corresponding domains based on the user's inquiries.
+基于 DB-GPT 提供的意图识别能力，这三种功能可以在单个对话中使用。数据助手会根据用户的询问，匹配合适的子代理应用，回答相应领域的问题。
 
-:::tip
-Note: This case is mainly for demonstration purposes of application building, and actual applications in production environments still need further optimization.
+:::提示
+注：本案例主要用于应用搭建演示，生产环境的实际应用还需要进一步优化。
 :::
 
-# Prepare
+# 准备
 
-Before starting to build the application, you first need to complete the installation and deployment of the project. For relevant tutorials, please refer to the [deployment documentation](../../installation/sourcecode.md).
+在开始构建应用程序之前，首先需要完成项目的安装和部署。相关教程请参考【部署文档】(../../installation/sourcecode.md)。
 
-# Sub-Data App Construction
+# 子数据App构建
 
-First, we need to create three sub-intelligent applications separately, and then use the intent recognition capability provided by AppLink to integrate the intelligent applications into a unified intelligent entity and unify the dialogue interaction entrance.
+首先，我们需要分别创建三个子智能应用，然后利用AppLink提供的意图识别能力，将智能应用整合为一个统一的智能实体，并统一对话交互入口。
 
 
-## 1. Building a question answering assistant based on RAG
+## 1.基于RAG构建问答助手
 
-We use the agent module provided by DB-GPT to build a RAG-based question-answering assistant. DB-GPT has some built-in agents, such as
+我们使用DB-GPT提供的代理模块构建一个基于RAG的问答助手。 DB-GPT有一些内置的代理，例如
 
-- Intent Recognition Expert Agent
-- CodeEnginner Agent
-- Report Generator Agent
-- Data Scientist Agent
-- Document Summarizer Agent
-- ToolExpert Agent
+- 意图识别专家代理
+- CodeEnginner 代理
+- 报告生成器代理
+- 数据科学家代理
+- 文档摘要代理
+- ToolExpert代理
 - ...
 
-In this case, intelligent question answering mainly relies on the domain knowledge base and document summarization agent (Summarizer), so we first need to build the domain knowledge base. The process is as follows:
+这种情况下，智能问答主要依赖于领域知识库和文档摘要代理（Summarizer），因此我们首先需要构建领域知识库。流程如下：
 
-1. Domain Knowledge Cleaning and Organization
-2. Upload to DB-GPT Knowledge
-3. Create Knowledge-Based Data App
-4. Chat with KBQA
+1. 领域知识清理与组织
+2.上传DB-GPT知识
+3. 创建基于知识的数据应用程序
+4. 与 KBQA 聊天
 
-### Domain Knowledge Cleaning and Organization
-The organization and processing of domain knowledge is a very important task and has a very important impact on the final effect. You need to organize and clean up the files according to your actual application. In this example, we use the default PDF for uploading. We prepare the official DB-GPT document as demonstration material.
+### 领域知识清理和组织
+领域知识的组织和处理是一项非常重要的工作，对最终的效果有着非常重要的影响。您需要根据您的实际应用来整理和清理文件。在本例中，我们使用默认的 PDF 进行上传。我们准备了官方的DB-GPT文档作为演示材料。
 
-### Create a knowledge base
+### 创建知识库
 
-On the product interface, select the knowledge base, click [Create Knowledge], and fill in the corresponding parameters. We provide multiple storage types. 1. Embedding vector 2. Knowledge graph 3. Full text. In this example, we use the Embedding solution for construction.
+在产品界面，选择知识库，点击【创建知识】，填写相应参数。我们提供多种存储类型。 1. 嵌入向量 2. 知识图 3. 全文。在本例中，我们使用Embedding方案进行构建。
 
-<p align="center">
+<p对齐=“中心”>
   <img src={'/img/cookbook/knowledge_base.png'} width="800" />
 </p>
 
 
-After filling in the corresponding parameters, click [Next] to select the document type and upload the document.
+填写相应参数后，点击【下一步】选择文档类型并上传文档。
 
-<p align="center">
+<p对齐=“中心”>
   <img src={'/img/cookbook/knowledge_base_upload.png'} width="800" />
 </p>
 
 
-Select the appropriate slicing method and wait for the document to be uploaded. At this point, our knowledge base has been built and we can proceed with the subsequent intelligent question and answer application
+选择合适的切片方式，等待文档上传。至此，我们的知识库已经搭建完毕，可以进行后续的智能问答应用了
 
-<p align="center">
+<p对齐=“中心”>
   <img src={'/img/cookbook/knowledge_base_success.png'} width="800" />
 </p>
 
-### Create a KBQA App
+### 创建 KBQA 应用程序
 
-Select [Application Management] -> [Create Application], and select Single Agent Mode in the pop-up dialog box.
+选择【应用管理】->【创建应用】，在弹出的对话框中选择单代理模式。
 
-<p align="center">
+<p对齐=“中心”>
   <img src={'/img/cookbook/app_create_with_agent.png'} width="800" />
 </p>
 
-Click [OK], in the pop-up dialog box
-1. Select the Summarizer agent
-2. The prompt word is empty by default. If you need to modify it, you can customize the prompt first. For a tutorial on prompt definition, see the documentation.
-3. Model strategy: Supports multiple model strategies. If there are multiple models, they can be configured according to priority.
-4. Add resources: In this case, we rely on the previously created knowledge base, so select the resource type [knowledge] and the parameter is the name of the knowledge base just created.
-5. Add a recommended question, [Whether it takes effect] to control the effectiveness of the recommended question.
+点击【确定】，在弹出的对话框中
+1. 选择Summarizer代理
+2. 提示词默认为空。如果需要修改，可以先自定义提示。有关提示定义的教程，请参阅文档。
+3.模型策略：支持多种模型策略。如果有多个型号，可以按照优先级进行配置。
+4、添加资源：本例依赖的是之前创建的知识库，所以选择资源类型【知识】，参数为刚刚创建的知识库名称。
+5.新增推荐问题，【是否生效】控制推荐问题的有效性。
 
-<p align="center">
+<p对齐=“中心”>
   <img src={'/img/cookbook/qa_app_build_parameters.png'} width="800" />
 </p>
 
-Click [Save] to complete the creation of the smart application.
+点击【保存】即可完成智能应用的创建。
 
-### Start Chat
+### 开始聊天
 
-<p align="center">
+<p对齐=“中心”>
   <img src={'/img/cookbook/qa_app_chat.png'} width="800" />
 </p>
 
-:::tip
-Note:  The agent application shown in this tutorial is built based on the Summarizer agent. The Summarizer agent is a built-in agent of DB-GPT. See the [source code](https://github.com/eosphoros-ai/DB-GPT/blob/main/dbgpt/agent/expand/summary_assistant_agent.py) for the relevant code implementation. In actual use, the relevant code can be further modified according to specific scenarios. Customization and optimization. Or customize the agent based on this case
+:::提示
+注意：本教程中显示的代理应用程序是基于 Summarizer 代理构建的。 Summarizer 代理是 DB-GPT 的内置代理。相关代码实现请参见【源码】(https://github.com/eosphoros-ai/DB-GPT/blob/main/dbgpt/agent/expand/summary_assistant_agent.py)。实际使用中，可以根据具体场景进一步修改相关代码。定制和优化。或者根据这个案例定制代理
 :::
 
-## Data ChatBot Assistant
+## 数据聊天机器人助手
 
-In the same way, a data dialogue assistant can be built based on similar ideas. The data dialogue assistant can conduct simple data dialogue based on a database and draw corresponding charts. It mainly includes the following steps:
+同理，基于类似的思路也可以构建一个数据对话助手。数据对话助手可以基于数据库进行简单的数据对话，并绘制相应的图表。主要包括以下步骤：
 
-1. Data Preparation
-2. Create Datasource
-3. Create Data Chat App
-4. Chat
+1. 数据准备
+2. 创建数据源
+3. 创建数据聊天应用程序
+4. 聊天
 
-### Data Preparation 
+### 数据准备 
 
-For data preparation, please refer to the [data preparation](https://github.com/eosphoros-ai/DB-GPT/blob/main/docker/examples/dashboard/test_case_mysql_data.py) section in the document.
+数据准备请参考文档中的【数据准备】(https://github.com/eosphoros-ai/DB-GPT/blob/main/docker/examples/dashboard/test_case_mysql_data.py)部分。
 
-### Create Datasource 
+### 创建数据源 
 
-After preparing the data, you need to add the database to the data source for subsequent use. Select [Application Management] -> [Database] -> [Add Data Source]
+准备好数据后，需要将数据库添加到数据源中，以供后续使用。选择【应用管理】->【数据库】->【添加数据源】
 
-<p align="center">
+<p对齐=“中心”>
   <img src={'/img/cookbook/datasource.png'} width="800" />
 </p>
 
-### Create Data Chat App
+### 创建数据聊天应用程序
 
-As shown in the figure below, select [Application Management] -> [Application] -> [Create Application], select a single agent application, fill in the corresponding parameters, and click OK.
+如下图所示，选择【应用管理】->【应用】->【创建应用】，选择单个代理应用，填写相应参数，点击确定。
 
-<p align="center">
+<p对齐=“中心”>
   <img src={'/img/cookbook/data_app_create.png'} width="800" />
 </p>
 
-Select the corresponding parameters in turn:
-- Agent: Select the `DataScientist` agent
-- Prompt: The default is empty. For customization, please refer to the Prompt management tutorial.
-- Model strategy: The priority strategy is selected here. You can use the `proxyllm` and `tongyi_proxyllm` models according to the priority.
-- Available resources: Select the database type as the resource type, and select the database we added before as the parameter.
-- Recommended questions: Default questions can be set based on data conditions.
+依次选择对应的参数：
+- 代理：选择“DataScientist”代理
+- 提示：默认为空。如需自定义，请参考提示管理教程。
+- 模型策略：此处选择优先策略。您可以根据优先级使用“proxyllm”和“tongyi_proxyllm”模型。
+- 可用资源：资源类型选择数据库类型，参数选择我们之前添加的数据库。
+- 推荐问题：可根据数据情况设置默认问题。
 
-<p align="center">
+<p对齐=“中心”>
   <img src={'/img/cookbook/data_app_build_parameters.png'} width="800" />
 </p>
 
-### Start Chat
+### 开始聊天
 
-Click to start the conversation and enter the corresponding questions for data Q&A.
+点击开始对话，输入相应问题进行数据问答。
 
-<p align="center">
+<p对齐=“中心”>
   <img src={'/img/cookbook/data_app_chat.png'} width="800" />
 </p>
 
-## Search Assistant
+## 搜索助手
 
-The weather assistant needs to call the search engine to query relevant information, so the Tool call needs to be designed, and the construction process is relatively complicated. In order to simplify application creation, we have built the relevant capabilities into an AWEL workflow, which can be installed and used directly.
+天气助手需要调用搜索引擎查询相关信息，因此需要设计Tool调用，构建过程相对复杂。为了简化应用程序的创建，我们将相关功能内置到了AWEL工作流程中，可以直接安装使用。
 
-### AWEL workflow install
+### AWEL 工作流程安装
 
-First execute the command `dbgpt app list-remote` to view all AWEL sample processes in the remote warehouse. `awel-flow-web-info-search` provides the ability to search the Internet.
-
+首先执行命令`dbgpt app list-remote`可以查看远程仓库中所有AWEL示例进程。 `awel-flow-web-info-search` 提供了搜索互联网的能力。
 ```
 dbgpt app list-remote
 
@@ -179,9 +178,7 @@ dbgpt app list-remote
 └──────────────────┴───────────┴────────────────────────────────────┘
 
 ```
-
-Execute the `dbgpt app install awel-flow-web-info-search` command to install it locally.
-
+执行“dbgpt app install awel-flow-web-info-search”命令在本地安装。
 ```
 dbgpt app install awel-flow-web-info-search
 
@@ -191,72 +188,69 @@ dbgpt app install awel-flow-web-info-search
   Installed dbgpts at ~/.dbgpts/packages/ae442685cde998fe51eb565a23180544/awel-flow-web-info-search.
   dbgpts 'awel-flow-web-info-search' installed successfully.
 ```
+刷新界面。在AWEL工作流程界面中，可以看到对应的工作流程已经安装完毕。
 
-Refresh the interface. In the AWEL workflow interface, you can see that the corresponding workflow has been installed.
-
-<p align="center">
+<p对齐=“中心”>
   <img src={'/img/cookbook/awel_web_search.png'} width="800" />
 </p>
 
-Click on the AWEL workflow and we can see the content inside. Here is a brief explanation.
+点击AWEL工作流程，我们可以看到里面的内容。这是一个简短的解释。
 
-1. Agent Resource: The resource that the agent depends on, in this case baidu_search
-2. ToolExpert: Tool expert, used to implement tool invocation.
-3. Summarizer agent: used to summarize the query results.
+1、代理资源：代理所依赖的资源，本例为baidu_search
+2. ToolExpert：工具专家，用于实现工具调用。
+3. Summarizer代理：用于汇总查询结果。
 
-To summarize: This AWEL workflow uses two agents, ToolExpert and Summarizer. ToolExpert relies on the built-in tool baidu_search. Summarizer further summarizes the results of the tool expert's execution and generates the final answer.
+总结一下：此 AWEL 工作流程使用两个代理：ToolExpert 和 Summarizer。 ToolExpert依赖于内置工具baidu_search。 Summarizer进一步总结工具专家执行的结果并生成最终答案。
 
-<p align="center">
+<p对齐=“中心”>
   <img src={'/img/cookbook/awel_web_search_tool.png'} width="800" />
 </p>
 
-### Create a search assistant
+### 创建搜索助手
 
-At the same time, [Create Application] -> [Task Flow Orchestration Mode]
+同时，【创建应用】->【任务流编排模式】
 
-<p align="center">
+<p对齐=“中心”>
   <img src={'/img/cookbook/search_app.png'} width="800" />
 </p>
 
-Select the corresponding workflow, add recommended questions, and click Save.
+选择对应的工作流程，添加推荐问题，然后单击“保存”。
 
-<p align="center">
+<p对齐=“中心”>
   <img src={'/img/cookbook/search_app_build.png'} width="800" />
 </p>
 
-### Chat
-<p align="center">
+### 聊天
+<p对齐=“中心”>
   <img src={'/img/cookbook/search_app_chat.png'} width="800" />
 </p>
 
 
 # Unified intelligent application construction
 
-According to the above process, we have created intelligent applications for each sub-scenario, but in actual applications. We need to complete all questions and answers at one entrance, so we need to integrate agents from these sub-fields. Unify the interaction portal through AppLink and intent recognition capabilities.
+根据以上流程，我们为每个子场景创建了智能应用，但在实际应用中。我们需要在一个入口完成所有的问答，所以我们需要整合这些子领域的代理。通过 AppLink 和意图识别功能统一交互门户。
 
-In order to implement problem routing, a core capability is intent recognition and classification. In order to make application construction more flexible in design, we provide intent recognition and classification capabilities based on knowledge base and Agent. And supports customization based on AWEL.
+为了实现问题路由，一个核心能力是意图识别和分类。为了让应用构建在设计上更加灵活，我们提供了基于知识库和Agent的意图识别和分类能力。 And supports customization based on AWEL.
 
 
 
 ### Intent knowledge base construction
 
-To implement intent classification and route user questions to corresponding intelligent applications, we first need to define and describe the capabilities of each application. Here we build it through a knowledge base. The following is a simple intent definition document used to describe the capabilities of each intelligent application. There are four main types of information that need to be filled in
+为了实现意图分类并将用户问题路由到相应的智能应用程序，我们首先需要定义和描述每个应用程序的功能。 Here we build it through a knowledge base.下面是一个简单的意图定义文档，用于描述各个智能应用的能力。需要填写的信息主要有四类
 
 
-1. Intent: Intent type
+1.意图：意图类型
 
-2. App Code: Can be copied in the application interface.
+2. App Code：可在应用界面复制。
 
-<p align="center">
+<p对齐=“中心”>
   <img src={'/img/cookbook/app_code.png'} width="800" />
 </p>
 
-3. Describe: Describe the capabilities of the agent.
+3. 描述：描述代理的功能。
 
 
-4. Slots: Slot information, used to represent the parameters that the agent relies on in actual question and answer, such as [time] and [location] information required in weather queries.
-
-
+4. Slots：Slot信息，用于表示Agent在实际问答中所依赖的参数，例如天气查询中需要的【时间】和【地点】信息。
 ```
 #######################
 Intent:DB答疑 App Code:a41d0274-8ac4-11ef-8735-3ea07eeef889 Describe: 所有DB领域相关知识的咨询答疑，包含了日常DBA的FAQ问题数据、OceanBase(OB)的官方文档手册，操作手册、问题排查手册、日常疑难问题的知识总结、可以进行专业的DBA领域知识答疑。 只要和DB相关的不属于其他应用负责范畴的都可以使用我来回答 问题范例: 1.怎么查看OB抖动？ 2.DMS权限如何申请 3.如何确认xxxxx 类型:知识库咨询
@@ -268,24 +262,22 @@ Intent:天气检索助手 App Code:f93610cc-8acc-11ef-8735-3ea07eeef889 Describe
 时间: 要获取的天气信息的时间，如果没有明确提到，使用当前时间
 
 ```
+### 创建意图分类知识库
 
-### Create an intent classification knowledge base
+如下图所示，创建意图分类知识库。
 
-As shown in the figure below, create an intent classification knowledge base.
-
-<p align="center">
+<p对齐=“中心”>
   <img src={'/img/cookbook/app_intent_knowledge.png'} width="800" />
 </p>
 
-It should be noted that the delimiter needs to be separated by our custom delimiter, that is, # in the document.
+需要注意的是，分隔符需要用我们自定义的分隔符来分隔，即文档中的#。
 
-<p align="center">
+<p对齐=“中心”>
   <img src={'/img/cookbook/chunk_sep.png'} width="800" />
 </p>
 
-### AWEL workflow installation editor
-Again, to simplify usage. We have written the corresponding AWEL workflow for intent recognition and can be installed and used directly.
-
+### AWEL工作流程安装编辑器
+再次，为了简化使用。我们已经编写了相应的意图识别AWEL工作流程，可以直接安装使用。
 ```
 dbgpt app install db-expert-assisant
 
@@ -294,50 +286,42 @@ Successfully installed db-expert-assisant-0.1.0
 Installed dbgpts at ~/.dbgpts/packages/ae442685cde998fe51eb565a23180544/db-expert-assisant.
 dbgpts 'db-expert-assisant' installed successfully.
 ```
+打开前端界面。在AWEL工作流程界面中，我们可以看到db_expert_assisant。为了方便我们后续的编辑，我们复制一个流程进行编辑。点击右上角【复制】，自定义名称和描述，完成复制。
 
-Open the front-end interface. In the AWEL workflow interface, we can see db_expert_assisant. In order to facilitate our subsequent editing, we copy a process for editing. Click [Copy] in the upper right corner, customize the name and description, and complete the copy.
-
-<p align="center">
+<p对齐=“中心”>
   <img src={'/img/cookbook/awel_db_expert.png'} width="800" />
 </p>
 
-We open the copied AWEL process, here we name it `db_expert_assistant_v1`, and open the workflow. We can see the following orchestration process. Similarly, the following agents are used in this workflow
+我们打开复制的AWEL流程，这里我们将其命名为“db_expert_assistant_v1”，并打开工作流程。我们可以看到下面的编排流程。同样，此工作流程中使用以下代理
 
 
-1. `Intent Recognition Expert`: Intent recognition expert is specially used for intent recognition. It relies on a knowledge base resource, that is, the knowledge base resource for intent recognition we defined earlier.
+1.“意图识别专家”：意图识别专家专门用于意图识别。它依赖于一个知识库资源，也就是我们前面定义的意图识别的知识库资源。
 
-2. `AppLauncher`: used to call experts in each field.
+2. `AppLauncher`：用于调用各个领域的专家。
 
-3. `Summarizer`: Summarizes the entire question and answer. If there is no routing in all scenarios, a default answer will be given based on the database knowledge base.
+3. `Summarizer`：总结整个问题和答案。如果所有场景都没有路由，则会根据数据库知识库给出默认答案。
 
-<p align="center">
+<p对齐=“中心”>
   <img src={'/img/cookbook/awel_expert_v1.png'} width="800" />
 </p>
 
-### Application creation
+### 应用程序创建
 
-Create an application and select the task flow orchestration mode.
+创建应用并选择任务流编排模式。
 
 
-<p align="center">
+<p对齐=“中心”>
   <img src={'/img/cookbook/data_app_build.png'} width="800" />
 </p>
 
-Click OK, select the workflow, enter the recommended questions, and save.
+单击“确定”，选择工作流程，输入推荐问题，然后保存。
 
-<p align="center">
+<p对齐=“中心”>
   <img src={'/img/cookbook/data_app_awel.png'} width="800" />
 </p>
 
 
-### Chat 
-<p align="center">
+### 聊天 
+<p对齐=“中心”>
   <img src={'/img/cookbook/data_expert_chat.png'} width="800" />
 </p>
-
-
-
-
-
-
-

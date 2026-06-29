@@ -1,16 +1,14 @@
 ---
 title: Context Management
 ---
+#代理上下文管理
 
-# Agent Context Management
+代理上下文管理将长期运行的ReAct对话保留在
+模型上下文窗口而不会丢失任务的工作状态。它跟踪
+在每个模型调用之前使用令牌，发出实时上下文状态事件，并应用
+当谈话变得太大时，逐渐加强紧凑性。
 
-Agent context management keeps long-running ReAct conversations inside the
-model context window without losing the working state of the task. It tracks
-token usage before each model call, emits live context status events, and applies
-progressively stronger compaction when the conversation grows too large.
-
-## Overview
-
+# #概述
 ```text
 User task
    |
@@ -77,9 +75,7 @@ keep system prompt + last 2 ReAct rounds
    v
 Retry the model call once with the compacted messages
 ```
-
-Tool results are preserved through a separate snapshot path:
-
+工具结果通过单独的快照路径保存：
 ```text
 Action succeeds
    |
@@ -100,36 +96,32 @@ Observation: short or compacted observation
 Layer 1 / Layer 2 can shrink prompt text
 without deleting the original tool result file
 ```
+# #代币预算
 
-## Token Budget
+上下文管理器在之前计算当前“AgentMessage”列表中的令牌
+模型调用。Counting使用“ProxyTokenizerWrapper”与活动
+“model_name”。如果令牌生成器无法对内容进行计数， DB-GPT将回退到
+每个令牌四个字符的粗略估计。
 
-The context manager counts the tokens in the current `AgentMessage` list before
-the model call. Counting uses `ProxyTokenizerWrapper` with the active
-`model_name`. If the tokenizer cannot count the content, DB-GPT falls back to a
-rough estimate of four characters per token.
-
-The usable context window is:
-
+可用的上下文窗口是：
 ```text
 effective_budget = max_context_tokens - reserved_tokens
 ```
+`reserved_tokens`为模型响应保留空间，因此提示不填充
+整个模型窗口。
 
-`reserved_tokens` keeps space for the model response so the prompt does not fill
-the entire model window.
+# #状态和阈值
 
-## States And Thresholds
-
-| State | Default trigger | Meaning |
+|状态|默认触发器|含义|
 | --- | --- | --- |
-| `normal` | `< 70%` | No compaction. |
-| `warning` | `>= 70%` | Start lightweight compaction. |
-| `error` | `>= 90%` | Use LLM-based summary compaction when needed. |
-| `critical` | `>= 95%` | Same as error, but reported as a more urgent state. |
-| `overflow` | `>= 100%` | Prompt is over the effective budget. |
+| `normal` | `< 70%` |无压实。|
+| `warning` | `> = 70%` |开始轻量级压实。|
+| `error` | `> = 90%` |需要时使用基于LLM的汇总压缩。|
+| `critical` | `> = 95%` |与错误相同，但报告为更紧急的状态。|
+| `overflow` | `> = 100%` |提示超出有效预算。|
 
-After every count and every compaction layer, the backend emits a
-`context.status` event with:
-
+在每次计数和每次压缩层之后，后端将发出
+`context.status`事件：
 ```json
 {
   "type": "context.status",
@@ -140,140 +132,129 @@ After every count and every compaction layer, the backend emits a
   "compact_layer": null
 }
 ```
+UI将其呈现为紧凑的上下文窗口指示器。
 
-The UI renders this as a compact context-window indicator.
+# #压实层
 
-## Compaction Layers
+# # #第1层：观察微压实
 
-### Layer 1: Observation Micro-Compaction
+第1层是最轻的压实。 它只会缩短旧的「观察：」消息
+从工具调用。最近的轮次被完全保留。
 
-Layer 1 is the lightest compaction. It only shortens old `Observation:` messages
-from tool calls. Recent rounds are preserved in full.
+规则：
 
-Rules:
-
-- Triggered when usage reaches `warning_threshold`.
-- A round is considered old when it is older than
+-当使用量达到“warning_threshold”时触发。
+-当一个回合的时间超过
   `max_observation_age_rounds`.
-- Old observations are truncated to `truncated_observation_max_chars`.
-- If the observation has a snapshot path, the compacted message keeps a pointer
-  to the full detail.
+-旧观测值被截断为“truncated_observation_max_chars”。
+-如果观察结果有快照路径，则压缩后的消息会保留一个指针
+  到完整的细节。
 
-This layer is cheap and deterministic. It does not call the LLM.
+这一层既便宜又具有确定性。 它不叫法学硕士。
 
-### Layer 2: Session Memory Compaction
+# # #第2层：会话内存压缩
 
-Layer 2 removes old complete ReAct rounds from the prompt. It relies on the
-task-progress summary already injected into the system prompt, so the agent still
-knows what has been completed.
+第2层从提示符中删除旧的完整ReAct轮次。 它依赖于
+task-progress摘要已经注入到系统提示符中，因此代理仍然
+知道完成了什么。
 
-Rules:
+规则：
 
-- Triggered when the prompt is still at or above `warning_threshold` after Layer
+-当图层后提示仍等于或高于“warning_threshold”时触发
   1.
-- Always keeps at least `min_keep_recent_rounds`.
-- Also keeps enough recent content to satisfy `min_keep_tokens`.
-- Drops complete old rounds rather than arbitrary individual messages.
+-始终保持至少`min_keep_recent_rounds`。
+-还保留了足够的最新内容，以满足“min_keep_tokens”。
+-丢弃完成旧回合而不是任意单个消息。
 
-This layer is also deterministic and does not call the LLM.
+该层也是确定性的，不称为LLM。
 
-### Layer 3: Full Context Compression
+# # #第3层：全上下文压缩
+第3层将旧的对话轮次总结为结构化的上下文摘要
+与法学硕士一起，然后保留该摘要加上最近几轮。
 
-Layer 3 summarizes old conversation rounds into a structured context summary
-with the LLM, then keeps that summary plus the recent rounds.
+规则：
 
-Rules:
-
-- Triggered when usage is at or above `error_threshold`.
-- Keeps the last `min_keep_recent_rounds` unchanged.
-- Summarizes older messages into one synthetic summary message.
-- The summary prompt asks the model to preserve exact task state, paths, values,
-  variable names, errors, and next steps.
-- If summarization fails repeatedly, a circuit breaker stops retrying after
+-使用率等于或高于“ERROR_THRESHOLD”时触发。
+-保持最后的`min_keep_recent_rounds`不变。
+-将较早的消息汇总为一条综合摘要消息。
+-摘要提示要求模型保留准确的任务状态、路径、值，
+  变量名称、错误和后续步骤。
+-如果汇总反复失败，断路器将在
   `max_compact_failures`.
 
-This layer is more expensive, but it preserves more semantic continuity than
-simply dropping old messages.
+这一层更昂贵，但它保留了更多的语义连续性，而不是
+简单地丢弃旧消息。
 
-### Layer 4: Reactive Compaction
+# # #第4层：反应式压实
 
-Layer 4 is an emergency path. It is not triggered by the normal budget state
-machine. Instead, it runs when the model call fails with a context overflow
-error such as `context_too_long`, `context_length_exceeded`, or
-`maximum context length`.
+第4层是紧急通道。 它不是由正常预算状态触发的
+而是在模型调用因上下文溢出而失败时运行
+错误，如“context_too_long”、“context_length_exceeded”或
+`最大上下文长度`。
 
-Rules:
+规则：
 
-- Keeps system messages.
-- Keeps only the last two ReAct rounds.
-- Relies on the task-progress summary in the system prompt to preserve task
-  continuity.
-- Retries the model call once with the compacted messages.
+-保留系统消息。
+-仅保留最后两轮ReAct。
+-依靠系统提示中的任务进度摘要来保留任务
+  连续性。
+-使用压缩的消息重试模型调用一次。
 
-This layer is intentionally aggressive because it is only used after the model
-has already rejected the prompt.
+此层是有意攻击性的，因为它仅在模型之后使用
+已经拒绝了提示。
+# #工具结果快照
 
-## Tool Result Snapshots
+工具观测值可能很大： SQL结果表、生成的代码输出、
+解释器日志、文件路径、报告元数据和中间计算值
+可能会很快主宰提示。 DB-GPT通过分离来保持提示紧凑
+必须保留在模型上下文中的文本中的完整操作详细信息。
 
-Tool observations can be large: SQL result tables, generated code output,
-interpreter logs, file paths, report metadata, and intermediate computed values
-may quickly dominate the prompt. DB-GPT keeps the prompt compact by separating
-the full operation detail from the text that must stay in the model context.
-
-When an action succeeds, the agent writes a JSON snapshot for the full operation.
-The snapshot includes:
-
-- `step`
+当操作成功时，代理会为完整操作写入JSON快照。
+快照包括：
+- `STEP`
 - `action`
 - `phase`
 - `action_intention`
-- `action_reason`
-- `thought`
+- “action_reason”
+- `THOUGHT`
 - `action_input`
-- `observation`
-- `timestamp`
+- “观察”
+- `时间戳`
 - `conv_id`
 
-By default, snapshots are written under:
-
+默认情况下，快照写入：
 ```text
 $DBGPT_HOME/workspace/op_snapshots/<conv_id>/
 ```
+如果设置了“AgentContext.output_dir” ， DB-GPT将使用该目录。
 
-If `AgentContext.output_dir` is set, DB-GPT uses that directory instead.
-
-Each snapshot file is named by step and action:
-
+每个快照文件都按步骤和操作命名：
 ```text
 step_003_sql_query.json
 step_006_code_interpreter.json
 ```
-
-The snapshot path is attached to the in-memory `AgentMemoryFragment` and also
-recorded in the task-progress metadata. When the agent later rebuilds memories
-into prompt messages, it appends a lightweight reference:
-
+快照路径附加到内存中的“AgentMemoryFragment” ，并且
+记录在任务进度元数据中。 当客服代表稍后重建记忆时
+在提示消息中，它附加了一个轻量级引用：
 ```text
 Observation: <observation text>
 [Full detail available at: /path/to/step_003_sql_query.json]
 ```
+这在压实过程中很重要：
 
-This matters during compaction:
+-第1层可能会截断旧的“Observation:”文本，但会保留快照
+  参考（如有）。
+-第2层可能会从提示中删除旧的ReAct轮次，但任务进度仍然
+  将快照文件名记录为引用。
+-第3层总结旧消息，而原始工具结果保持开启状态
+  用于精确恢复的磁盘。
 
-- Layer 1 may truncate old `Observation:` text, but it preserves the snapshot
-  reference when available.
-- Layer 2 may remove old ReAct rounds from the prompt, but task progress still
-  records the snapshot filename as a reference.
-- Layer 3 summarizes old messages, while the original tool result remains on
-  disk for exact recovery.
+换句话说，压缩减少了提示有效载荷；它不必
+精确工具输出的唯一位置。
 
-In other words, compaction reduces the prompt payload; it does not have to be
-the only place where exact tool output lives.
+# #配置
 
-## Configuration
-
-Agent context management can be configured in the application TOML file:
-
+可以在应用程序TOML文件中配置代理上下文管理：
 ```toml
 [service.web.agent_context]
 # Non-positive values fall back to the default context budget.
@@ -288,10 +269,8 @@ truncated_observation_max_chars = 200
 min_keep_tokens = 10000
 max_compact_failures = 3
 ```
-
-For stable behavior, set `context_length` on each LLM deployment when you want
-the model metadata to reflect the real provider window:
-
+为了稳定行为，在需要时在每个LLM部署上设置`context_length`
+反映真实提供者窗口的模型元数据：
 ```toml
 [[models.llms]]
 name = "Qwen/Qwen2.5-Coder-32B-Instruct"
@@ -299,16 +278,17 @@ provider = "proxy/siliconflow"
 api_key = "${env:SILICONFLOW_API_KEY}"
 context_length = 32768
 ```
+通过这种设置，切换模型也会切换有效的上下文预算。
 
-With this setup, switching models also switches the effective context budget.
+## 设计笔记
 
-## Design Notes
+- 第 1 层和第 2 层是确定性的且成本低廉。他们之前是首选
+  任何法学硕士总结。
+- 仅当上下文接近故障时，第 3 层才使用 LLM。
+- 第 4 层是模型端上下文溢出错误的最后手段重试路径。
+- 前端独立于正常聊天接收“context.status”事件
 
-- Layer 1 and Layer 2 are deterministic and cheap. They are preferred before
-  any LLM summarization.
-- Layer 3 uses the LLM only when the context is close to failure.
-- Layer 4 is a last-resort retry path for model-side context overflow errors.
-- The frontend receives `context.status` events independently from normal chat
-  text, so UI indicators can update without polluting the conversation.
-- Compaction is progressive: after each layer, DB-GPT recounts tokens and stops
-  escalating if the prompt returns to a safe state.
+文本，因此UI指标可以在不污染对话的情况下进行更新。
+
+-压缩是渐进的：在每一层之后，DB-GPT重新计数令牌并停止
+  如果提示返回到安全状态，则升级。

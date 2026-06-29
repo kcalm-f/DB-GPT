@@ -2,28 +2,26 @@
 sidebar_position: 2
 title: Scheduled Tasks
 ---
+# 计划任务
 
-# Scheduled Tasks
+**计划任务**将一次性对话变成一项重复性工作。运行一次数据分析，将其保存为任务，DB-GPT 会按 cron 计划重播整个 ReAct Agent 流程 - 每次都会生成一份新报告。
 
-**Scheduled Tasks** turn a one-off conversation into a recurring job. Run a data analysis once, save it as a task, and DB-GPT replays the whole ReAct Agent flow on a cron schedule — generating a fresh report every time.
+每次运行都会产生一个全新的对话，您可以稍后重播，因此您始终可以了解生成内容和生成时间的完整历史记录。
 
-Every run produces a brand-new conversation you can replay later, so you always have a full history of what was generated and when.
-
-:::info Built-in, zero config
-The scheduler runs inside the webserver process and starts automatically. No extra service to deploy.
+:::info 内置，零配置
+调度程序在 Web 服务器进程内运行并自动启动。无需部署额外的服务。
 :::
 
-## Highlights
+## 亮点
 
-- **Save any conversation** — Freeze a finished conversation (question + model + selected skill / connectors) into a repeatable task.
-- **Flexible scheduling** — Pick a preset (Hourly / Daily / Weekly / Monthly) or write a custom cron expression, with a live "next run" preview.
-- **Automatic replay** — At each cron tick the agent re-runs the full flow and writes the result to history.
-- **Execution history** — Every run records its status, duration, and a result summary.
-- **Replay without re-running** — Open any past run to view its conversation snapshot — pure read, zero LLM calls.
-- **Restart self-healing** — Enabled tasks are reloaded into the scheduler when the process restarts.
+- **保存任何对话** — 将已完成的对话（问题+模型+选定的技能/连接器）冻结为可重复的任务。
+- **灵活的计划** — 选择预设（每小时/每日/每周/每月）或编写自定义 cron 表达式，并提供实时“下一次运行”预览。
+- **自动重播** — 在每个 cron 滴答处，代理重新运行完整流程并将结果写入历史记录。
+- **执行历史记录** — 每次运行都会记录其状态、持续时间和结果摘要。
+- **重播而不重新运行** — 打开任何过去的运行以查看其对话快照 — 纯读取，零 LLM 调用。
+- **重新启动自我修复** — 当进程重新启动时，启用的任务将重新加载到调度程序中。
 
-## How it works
-
+## 它是如何工作的
 ```mermaid
 graph TB
   Conv[Finished conversation] -->|Save as task| Task[Scheduled Task<br/>cron + snapshot]
@@ -34,69 +32,68 @@ graph TB
   NewConv --> History[Run history]
   History -.View.-> Replay[Read-only replay]
 ```
+## 将对话保存为任务
 
-## Saving a conversation as a task
+对话生成报告后，从主页打开**另存为计划任务**。
 
-After a conversation has produced a report, open **Save as Scheduled Task** from the home page.
-
-<p align="center">
+<p对齐=“中心”>
   <img src={'/img/schedule/save_schedule_task.png'} width="800px" />
 </p>
 
-| Field | Description |
+|领域 |描述 |
 | --- | --- |
-| **Task name** | Required. A name for the task. |
-| **Description** | Optional. A note about what the task does. |
-| **Frequency** | `Hourly` / `Daily` / `Weekly` / `Monthly`, or `Custom` for a raw cron expression. |
-| **Cron expression** | Shown live as you adjust the frequency (e.g. `0 9 * * *`). |
+| **任务名称** |必需的。任务的名称。 |
+| **描述** |选修的。 A note about what the task does. |
+| **频率** |原始 cron 表达式的“每小时”/“每日”/“每周”/“每月”或“自定义”。 |
+| **Cron 表达式** |当您调整频率时实时显示（例如“0 9 * * *”）。 |
 
-The **"Will reuse this conversation environment (read-only)"** section shows the frozen context — the model and the original question — that each run will replay. Click **Save & enable** to create the task and schedule it.
+The **"Will reuse this conversation environment (read-only)"** section shows the frozen context — the model and the original question — that each run will replay.单击“**保存并启用**”以创建任务并安排它。
 
-## Managing tasks
+## 管理任务
 
-The **Scheduled Tasks** page lists every task with its status, cron expression, next run time, and creator. Use the search box and the **All / Enabled / Paused** tabs to filter, and the **Enable** toggle to pause or resume a task.
+**计划任务**页面列出了每个任务及其状态、cron 表达式、下次运行时间和创建者。使用搜索框和**全部/已启用/已暂停**选项卡进行过滤，并使用**启用**切换来暂停或恢复任务。
 
-<p align="center">
+<p对齐=“中心”>
   <img src={'/img/schedule/schedule_task_list.png'} width="800px" />
 </p>
 
-| Column | Description |
+|专栏 |描述 |
 | --- | --- |
-| **Task name** | Name and description. |
-| **Status** | `Enabled` or `Paused`. |
-| **Cron expression** | The active schedule. |
-| **Next run** | When the task will fire next. |
-| **Creator** | Who created the task. |
-| **Enable** | Toggle to pause / resume. |
-| **Actions** | Edit or delete. |
+| **任务名称** |名称和描述。 |
+| **状态** | “已启用”或“已暂停”。 |
+| **Cron 表达式** |活动时间表。 |
+| **下次运行** |下次任务何时触发。 |
+| **创作者** |谁创建了任务。 |
+| **启用** |切换暂停/恢复。 |
+| **行动** |编辑或删除。 |
 
-## Task detail & execution history
+## 任务详细信息和执行历史记录
 
-Open a task to see its full configuration and run history.
+打开任务以查看其完整配置和运行历史记录。
 
-<p align="center">
+<p对齐=“中心”>
   <img src={'/img/schedule/schedule_task_info.png'} width="800px" />
 </p>
 
-- **Basic info** — status, cron expression, next run, creator, created time.
-- **Task environment (read-only)** — the original question, model, and database that every run replays.
-- **Execution history** — the most recent runs, each with status (`Success` / `Failed` / `Timeout` / `Running`), start time, duration, and a result summary.
+- **基本信息** — 状态、cron 表达式、下次运行、创建者、创建时间。
+- **任务环境（只读）** — 每次运行都会重播的原始问题、模型和数据库。
+- **执行历史记录** — 最近的运行，每个运行都有状态（“成功”/“失败”/“超时”/“正在运行”）、开始时间、持续时间和结果摘要。
 
-Click **View** on any run to jump to the home page and **replay that run's conversation** — the full step stream and report are restored from history with no LLM calls. A banner at the top reminds you the conversation was generated by a scheduled task, with a link back to the task detail.
+单击任何运行上的 **查看** 即可跳转到主页并**重播该运行的对话** - 完整的步骤流和报告从历史记录中恢复，无需 LLM 调用。顶部的横幅提醒您对话是由计划任务生成的，并带有返回任务详细信息的链接。
 
-## How it runs
+## 它是如何运行的
 
-1. The in-process scheduler holds one job per enabled task, keyed by its cron expression.
-2. When a job fires, the runner starts a **new conversation** and replays the saved request against the agent.
-3. The run is recorded with its status, a summary, and the new conversation id used for replay.
-4. Runs are independent — a failure is logged against that run and the task simply waits for the next tick.
+1. 进程内调度程序为每个已启用的任务保留一个作业，由其 cron 表达式控制。
+2. 当作业触发时，运行程序将启动 **新对话** 并针对代理重播保存的请求。
+3. 记录运行及其状态、摘要以及用于重播的新对话 ID。
+4. 运行是独立的——针对该运行记录失败，并且任务只是等待下一个滴答。
 
-:::tip Replay is read-only
-"View" loads a past run's stored conversation from the database. It never re-executes the agent, so it's instant and free.
+:::tip 重播是只读的
+“查看”从数据库加载过去运行的存储对话。它永远不会重新执行代理，因此它是即时且免费的。
 :::
 
-## Notes & limitations
+## 注意事项和限制
 
-- Tasks do not retry on failure — a failed or timed-out run is recorded and the task waits for the next scheduled time.
-- Each run has a hard execution timeout to guard against runaway agents.
-- In this release tasks are shared across users (the creator is shown for auditing); per-user isolation and notifications are planned for later.
+- 任务不会在失败时重试 - 记录失败或超时的运行，并且任务等待下一个计划时间。
+- 每次运行都有严格的执行超时，以防止代理失控。
+- 在此版本中，任务在用户之间共享（显示创建者以供审核）；每个用户的隔离和通知计划稍后进行。

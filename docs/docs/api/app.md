@@ -1,18 +1,18 @@
-# App
+# 应用
 
-Get started with the App API
+开始使用应用 API
 
-# Chat App
+# 聊天应用
 
 ```python
 POST /api/v2/chat/completions
 ```
-### Examples
+### 示例
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-### Stream Chat App
+### 流式聊天应用
 
 
 <Tabs
@@ -61,13 +61,13 @@ async for data in client.chat_stream(
  </TabItem>
 </Tabs>
 
-### Chat Completion Stream Response
+### 聊天补全流式响应
 ```commandline
 data: {"id": "109bfc28-fe87-452c-8e1f-d4fe43283b7d", "created": 1710919480, "model": "gpt-4o", "choices": [{"index": 0, "delta": {"role": "assistant", "content": "```agent-plans\n[{\"name\": \"Introduce Awel\", \"num\": 2, \"status\": \"complete\", \"agent\": \"Human\", \"markdown\": \"```agent-messages\\n[{\\\"sender\\\": \\\"Summarizer\\\", \\\"receiver\\\": \\\"Human\\\", \\\"model\\\": \\\"gpt-4o\\\", \\\"markdown\\\": \\\"Agentic Workflow Expression Language (AWEL) is a specialized language designed for developing large model applications with intelligent agent workflows. It offers flexibility and functionality, allowing developers to focus on business logic for LLMs applications without getting bogged down in model and environment details. AWEL uses a layered API design architecture, making it easier to work with. You can find examples and source code to get started with AWEL, and it supports various operators and environments. AWEL is a powerful tool for building native data applications through workflows and agents.\"}]\n```"}}]}
 
 data: [DONE]
 ```
-### Get App
+### 获取应用
 
 ```python
 GET /api/v2/serve/apps/{app_id}
@@ -110,17 +110,17 @@ res = await get_app(client=client, app_id=app_id)
 </Tabs>
 
 
-#### Query Parameters
+#### 查询参数
 ________
-<b>app_id</b> <font color="gray"> string </font> <font color="red"> Required </font>
+<b>app_id</b> <font color="gray"> string </font> <font color="red"> 必填 </font>
 
-app id
+应用 ID
 ________
 
-#### Response body
-Return <a href="#the-app-object">App Object</a>
+#### 响应体
+返回 <a href="#the-app-object">应用对象</a>
 
-### List App
+### 应用列表
 
 ```python
 GET /api/v2/serve/apps
@@ -161,104 +161,104 @@ res = await list_app(client=client)
  </TabItem>
 </Tabs>
 
-#### Response body
-Return <a href="#the-app-object">App Object</a> List
+#### 响应体
+返回 <a href="#the-app-object">应用对象</a> 列表
 
-### The App Model
+### 应用模型
 ________
 <b>app_code</b> <font color="gray"> string </font>
 
-unique app id
+唯一应用 ID
 ________
 <b>app_name</b> <font color="gray"> string </font>
 
-app name
+应用名称
 ________
 
 <b>app_describe</b> <font color="gray"> string </font>
 
-app describe
+应用描述
 ________
 <b>team_mode</b> <font color="gray"> string </font>
 
-team mode
+团队模式
 ________
 <b>language</b> <font color="gray"> string </font>
 
-language
+语言
 ________
 <b>team_context</b> <font color="gray"> string </font>
 
-team context
+团队上下文
 ________
 <b>user_code</b> <font color="gray"> string </font>
 
-user code
+用户代码
 ________
 <b>sys_code</b> <font color="gray"> string </font>
 
-sys code
+系统代码
 ________
 <b>is_collected</b> <font color="gray"> string </font>
 
-is collected
+是否已收藏
 ________
 <b>icon</b> <font color="gray"> string </font>
 
-icon
+图标
 ________
 <b>created_at</b> <font color="gray"> string </font>
 
-created at
+创建时间
 ________
 <b>updated_at</b> <font color="gray"> string </font>
 
-updated at
+更新时间
 ________
 <b>details</b> <font color="gray"> string </font>
 
-app details List[AppDetailModel]
+应用详情列表 List[AppDetailModel]
 ________
 
-### The App Detail Model
+### 应用详情模型
 ________
 <b>app_code</b> <font color="gray"> string </font>
 
-app code
+应用代码
 ________
 <b>app_name</b> <font color="gray"> string </font>
 
-app name
+应用名称
 ________
 <b>agent_name</b> <font color="gray"> string </font>
 
-agent name
+智能体名称
 ________
 <b>node_id</b> <font color="gray"> string </font>
 
-node id
+节点 ID
 ________
 <b>resources</b> <font color="gray"> string </font>
 
-resources
+资源
 ________
 <b>prompt_template</b> <font color="gray"> string </font>
 
-prompt template
+提示词模板
 ________
 <b>llm_strategy</b> <font color="gray"> string </font>
 
-llm strategy
+大模型策略
 ________
 <b>llm_strategy_value</b> <font color="gray"> string </font>
 
-llm strategy value
+大模型策略值
 ________
 <b>created_at</b> <font color="gray"> string </font>
 
-created at
+创建时间
 ________
 <b>updated_at</b> <font color="gray"> string </font>
 
-updated at
+更新时间
 ________

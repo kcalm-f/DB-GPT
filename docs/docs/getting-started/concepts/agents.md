@@ -2,13 +2,11 @@
 sidebar_position: 2
 title: Agents
 ---
+# 代理框架
 
-# Agent Framework
+DB-GPT 提供了一个**数据驱动的多代理框架**，用于构建自主人工智能代理，这些代理可以协作、使用工具、访问数据库并在对话中维护内存。
 
-DB-GPT provides a **data-driven multi-agent framework** for building autonomous AI agents that can collaborate, use tools, access databases, and maintain memory across conversations.
-
-## Agent architecture
-
+## 代理架构
 ```mermaid
 flowchart TB
     subgraph Agent["ConversableAgent"]
@@ -25,51 +23,49 @@ flowchart TB
     Agent --> DB["Databases"]
     Agent --> KB["Knowledge Base"]
 ```
+DB-GPT 中的每个代理都是围绕五个核心模块构建的：
 
-Every agent in DB-GPT is built around five core modules:
-
-| Module | Purpose |
+|模块|目的|
 |---|---|
-| **Profile** | Defines the agent's role, name, goal, and constraints |
-| **Memory** | Stores conversation history and learned information |
-| **Planning** | Decomposes complex tasks into executable steps |
-| **Action** | Executes tools, queries, and other operations |
-| **Resource** | Provides access to tools, databases, knowledge bases |
+| **简介** |定义代理的角色、名称、目标和约束 |
+| **内存** |存储对话历史记录和学到的信息 |
+| **规划** |将复杂的任务分解为可执行的步骤 |
+| **行动** |执行工具、查询和其他操作 |
+| **资源** |提供对工具、数据库、知识库的访问 |
 
-## Key concepts
+## 关键概念
 
-### ConversableAgent
+### 对话代理
 
-The base class for all agents. It implements the conversation loop: receive message, think (plan), act, respond.
+所有代理的基类。它实现对话循环：接收消息、思考（计划）、行动、响应。
 
-### Multi-agent collaboration
+### 多代理协作
 
-Multiple agents can work together on complex tasks:
+多个代理可以一起完成复杂的任务：
 
-- **Sequential** — Agents pass results to each other in order
-- **Parallel** — Multiple agents work on sub-tasks simultaneously
-- **Manager-Worker** — A planning agent delegates to specialist agents
+- **顺序** — 代理按顺序相互传递结果
+- **并行** — 多个代理同时处理子任务
+- **经理-工人** — 规划代理人委托给专业代理人
 
-### Memory types
+### 内存类型
 
-| Memory Type | Scope | Persistence |
+|内存类型 |范围 |坚持|
 |---|---|---|
-| **Sensory** | Current message | None |
-| **Short-term** | Current conversation | Session |
-| **Long-term** | Across conversations | Database |
-| **Hybrid** | Combines all three | Mixed |
+| **感官** |当前留言 |无 |
+| **短期** |当前对话 |会议|
+| **长期** |跨对话|数据库|
+| **混合** |结合所有三个 |混合|
 
-### Built-in agent types
+### 内置代理类型
 
-DB-GPT includes several pre-built agents:
+DB-GPT 包括几个预构建的代理：
 
-- **Data Analysis Agent** — Analyzes data, generates SQL, creates charts
-- **Summary Agent** — Summarizes long documents and conversations
-- **Code Agent** — Generates and executes code
-- **Chat Agent** — General-purpose conversational agent
+- **数据分析代理** — 分析数据、生成 SQL、创建图表
+- **Summary Agent** — 总结长文档和对话
+- **代码代理** — 生成并执行代码
+- **聊天代理** — 通用对话代理
 
-## Quick example
-
+## 简单示例
 ```python
 from dbgpt.agent import ConversableAgent, AgentContext
 
@@ -84,10 +80,9 @@ agent = ConversableAgent(
 # Start a conversation
 result = await agent.a_send("Analyze the sales trends for Q4 2024")
 ```
+## 接下来是什么
 
-## What's next
-
-- [Agent Introduction](/docs/agents/introduction/) — Detailed agent framework guide
-- [Custom Agents](/docs/agents/introduction/custom_agents) — Build your own agents
-- [Agent Tools](/docs/agents/introduction/tools) — Connect agents to tools
-- [Agent Planning](/docs/agents/introduction/planning) — Task decomposition strategies
+- [Agent介绍](/docs/agents/introduction/) — 详细的Agent框架指南
+- [自定义代理](/docs/agents/introduction/custom_agents) — 构建您自己的代理
+- [代理工具](/docs/agents/introduction/tools) — 将代理连接到工具
+- [Agent Planning](/docs/agents/introduction/planning) — 任务分解策略

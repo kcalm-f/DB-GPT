@@ -1,10 +1,9 @@
-# Multi-Round Chat with LLMs
+# 与法学硕士的多轮聊天
 
-In this example, we will show how to use the AWEL library to create a multi-round chat 
-with a LLM. 
+在本例中，我们将展示如何使用 AWEL 库创建多轮聊天 
+拥有法学硕士学位。 
 
-Create a python file `multi_round_chat_with_llm.py` and write the following content:
-
+创建一个python文件`multi_round_chat_with_llm.py`并写入以下内容：
 ```python
 import asyncio
 from dbgpt.core.awel import DAG, MapOperator, BaseOperator
@@ -69,15 +68,11 @@ async def main(task: BaseOperator):
 
 asyncio.run(main(out_parse_task))
 ```
-
-Then run the file with the following command:
-
+然后使用以下命令运行该文件：
 ```bash
 python multi_round_chat_with_llm.py
 ```
-
-And you will see the following output:
-
+您将看到以下输出：
 ```plaintext
 First round
 User: Who is elon musk?

@@ -1,35 +1,32 @@
-# agent-browser
+# 代理浏览器
 
-## Overview
+## 概述
 
-`agent-browser` is a built-in browser automation skill for deterministic, agent-friendly web interaction.
+“代理浏览器”是一种内置的浏览器自动化技能，用于确定性、代理友好的 Web 交互。
 
-Unlike screenshot-first browser flows, it relies on accessibility-tree snapshots and ref-based element selection.
+与屏幕截图优先的浏览器流程不同，它依赖于可访问性树快照和基于引用的元素选择。
 
-## Repo path
-
+## 仓库路径
 ```text
 skills/agent-browser/
 └── SKILL.md
 ```
+## 何时使用
 
-## When to use it
+- 多步骤浏览器工作流程
+- 复杂的单页应用程序
+- 确定性元素目标
+- 重复自动化的隔离会话
 
-- multi-step browser workflows
-- complex single-page applications
-- deterministic element targeting
-- isolated sessions for repeated automation
+## 核心工作流程
 
-## Core workflow
+1. 打开目标页面。
+2. 使用交互式参考捕获快照。
+3. 读取返回的JSON结构。
+4. 使用诸如“@e2”之类的引用与元素进行交互。
+5. 导航或 DOM 更改后重新快照。
 
-1. Open the target page.
-2. Capture a snapshot with interactive refs.
-3. Read the returned JSON structure.
-4. Interact with elements using refs such as `@e2`.
-5. Re-snapshot after navigation or DOM changes.
-
-## Typical commands
-
+## 典型命令
 ```bash
 agent-browser open https://example.com
 agent-browser snapshot -i --json
@@ -37,18 +34,17 @@ agent-browser click @e2
 agent-browser fill @e3 "text"
 agent-browser wait --load networkidle
 ```
+## 该技能记录了什么
 
-## What this skill documents
+由于该技能是 CLI 驱动的，因此其价值主要在“SKILL.md”中：
 
-Because this skill is CLI-driven, its value is primarily in `SKILL.md`:
+- 导航模式
+- 快照策略
+- 基于参考的交互
+- 等待模式
+- 多会话使用
+- 状态保存和恢复
 
-- navigation patterns
-- snapshot strategy
-- ref-based interactions
-- wait patterns
-- multi-session usage
-- state save and restore
+## 为什么这很重要
 
-## Why it matters
-
-This is the built-in skill to use when an agent needs reliable web automation without depending on fragile visual selectors.
+当代理需要可靠的网络自动化而不依赖于脆弱的视觉选择器时，这是可以使用的内置技能。

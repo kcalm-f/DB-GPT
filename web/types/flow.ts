@@ -97,8 +97,10 @@ export type IFlowNodeInput = {
   type_name: string;
   type_cls: string;
   label: string;
+  original_label?: string;
   name: string;
   description: string;
+  original_description?: string;
   id: string;
   optional?: boolean | undefined;
   value: any;

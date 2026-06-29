@@ -1,58 +1,58 @@
-# How to Use Skill
+# 如何使用技能
 
-## Basic usage flow
+## 基本使用流程
 
-In practice, using a skill usually follows this pattern:
+在实践中，技能的使用通常遵循以下模式：
 
-1. Identify the right skill for the task.
-2. Load the skill instructions.
-3. Follow the skill-defined workflow.
-4. Use the required built-in tools.
-5. Return the final result or render the final report.
+1. 确定适合任务的技能。
+2.加载技能说明。
+3. 遵循技能定义的工作流程。
+4. 使用所需的内置工具。
+5. 返回最终结果或呈现最终报告。
 
-## Common tool flow
+## 常用工具流程
 
-Depending on the skill, the execution path often looks like this:
+根据技能的不同，执行路径通常如下所示：
 
-- `load_skill` → load the skill instructions
-- `sql_query` → retrieve structured data if needed
-- `code_interpreter` → compute metrics, transform data, generate charts
-- `shell_interpreter` → run shell commands when required
-- `html_interpreter` → render the final HTML report or page
+- `load_skill` → 加载技能指令
+- `sql_query` → 如果需要检索结构化数据
+- `code_interpreter` → 计算指标、转换数据、生成图表
+- `shell_interpreter` → 在需要时运行 shell 命令
+- `html_interpreter` → 渲染最终的 HTML 报告或页面
 
-## Example scenarios
+## 示例场景
 
-### Financial report analysis
+### 财务报告分析
 
-The agent can:
+代理人可以：
 
-1. load the financial-report skill
-2. execute the required data extraction and analysis steps
-3. generate charts and metrics
-4. use `html_interpreter` to render the final report
+1.加载财务报告技巧
+2.执行所需的数据提取和分析步骤
+3. 生成图表和指标
+4.使用`html_interpreter`渲染最终报告
 
-![Financial Report Analysis Skill Example](/img/skill/use_financial_report_analysis_skill.png)
+![财务报告分析技巧示例](/img/skill/use_financial_report_analysis_skill.png)
 
-### CSV / Excel analysis
+### CSV/Excel 分析
 
-The agent can:
+代理人可以：
 
-1. load a data analysis skill
-2. inspect the uploaded file
-3. use Python analysis to calculate metrics and visualize results
-4. render the output as a report if needed
+1.加载数据分析技能
+2.检查上传的文件
+3.使用Python分析计算指标并可视化结果
+4. 如果需要，将输出呈现为报告
 
-![CSV Data Analysis Skill Example](/img/skill/use_csv_data_skill.png)
+![CSV数据分析技能示例](/img/skill/use_csv_data_skill.png)
 
-## Good practices
+## 良好实践
 
-- use skills when the workflow should be repeatable
-- follow the skill instructions strictly
-- prefer the tools required by the skill over ad-hoc alternatives
-- use `html_interpreter` for final report rendering when the skill produces a webpage or report
+- 当工作流程应该可重复时使用技巧
+- 严格遵循技能说明
+- 更喜欢技能所需的工具而不是临时替代品
+- 当技能生成网页或报告时，使用“html_interpreter”进行最终报告渲染
 
-## Related reading
+## 相关阅读
 
-- [dbgpts Introduction](./introduction.md)
-- [Tools Overview](../agents/introduction/tools.md)
-- [Built-in tools](../agents/modules/resource/tools.md)
+- [dbgpts简介](./introduction.md)
+- [工具概述](../agents/introduction/tools.md)
+- [内置工具](../agents/modules/resource/tools.md)

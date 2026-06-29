@@ -1,11 +1,10 @@
-# BM25 RAG
+# BM25 拉格
 
-In this example, we will show how to use the Elasticsearch as in DB-GPT RAG Storage. Using a Elasticsearch database to implement RAG can, to some extent, alleviate the uncertainty and interpretability issues brought about by Elasticsearch database retrieval.
+在此示例中，我们将展示如何在 DB-GPT RAG 存储中使用 Elasticsearch。使用Elasticsearch数据库实现RAG可以在一定程度上缓解Elasticsearch数据库检索带来的不确定性和可解释性问题。
 
-### Install Dependencies
+### 安装依赖项
 
-First, you need to install the `dbgpt elasticsearch storage` library.
-
+首先，您需要安装“dbgpt elasticsearch storage”库。
 ```bash
 uv sync --all-packages --frozen \
 --extra "base" \
@@ -14,16 +13,14 @@ uv sync --all-packages --frozen \
 --extra "storage_elasticsearch" \
 --extra "dbgpts"
 ````
+### 准备 Elasticsearch
 
-### Prepare Elasticsearch
+准备Elasticsearch数据库服务，参考-[Elasticsearch安装](https://www.elastic.co/guide/en/elasticsearch/reference/current/install-elasticsearch.html) 。
 
-Prepare Elasticsearch database service, reference-[Elasticsearch Installation](https://www.elastic.co/guide/en/elasticsearch/reference/current/install-elasticsearch.html) .
-
-### Elasticsearch Configuration
+### Elasticsearch 配置
 
 
-Set rag storage variables below in `configs/dbgpt-bm25-rag.toml` file, let DB-GPT know how to connect to Elasticsearch.
-
+在`configs/dbgpt-bm25-rag.toml`文件中设置下面的rag存储变量，让DB-GPT知道如何连接到Elasticsearch。
 ```
 
 [rag.storage]
@@ -32,13 +29,11 @@ type = "ElasticSearch"
 uri = "127.0.0.1"
 port = "9200"
 ```
-
-Then run the following command to start the webserver:
+然后运行以下命令来启动网络服务器：
 ```bash
 uv run python packages/dbgpt-app/src/dbgpt_app/dbgpt_server.py --config configs/dbgpt-bm25-rag.toml
 ```
-
-Optionally
+可选
 ```bash
 uv run python packages/dbgpt-app/src/dbgpt_app/dbgpt_server.py --config configs/dbgpt-bm25-rag.toml
 ```

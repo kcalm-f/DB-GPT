@@ -1,82 +1,82 @@
-# Chat DB
+# 聊天数据库
 
-The purpose of `Chat DB` is to create professional database experts, positioned as LLM As DBA, who can complete database performance analysis, optimization and other work by talking to the database. Currently, ChatDB only has some basic capabilities, which will be gradually enhanced with the iteration of the community.
+「Chat DB」的目的是打造专业的数据库专家，定位为LLM As DBA，通过与数据库对话来完成数据库性能分析、优化等工作。目前，ChatDB仅具备一些基础能力，这些能力将随着社区的迭代而逐步增强。
 
 
-## Steps
+## 步骤
 
-The Chat DB usage process mainly includes the following steps:
-- 1.Select Chat DB
-- 2.Add data source (talk to data)
-- 3.Select the basic model and database
-- 4.Start chat
+Chat DB使用流程主要包括以下步骤：
+- 1.选择聊天数据库
+- 2.添加数据源（与数据对话）
+- 3.选择基本模型和数据库
+- 4.开始聊天
 
-### Select Chat DB
+### 选择聊天数据库
 
-<p align="left">
+<p对齐=“左”>
   <img src={'/img/chat_db/choose_chat_db.png'} width="720px" />
 </p>
 
 
 
-### Select DataBase
+### 选择数据库
 
-<p align="left">
+<p对齐=“左”>
   <img src={'/img/chat_db/choose_db.png'} width="720px" />
 </p>
 
 
-### Start Chat
+### 开始聊天
 
-:::tip
+:::提示
 
-Single table query
+单表查询
 :::
 
-<p align="left">
+<p对齐=“左”>
   <img src={'/img/chat_db/single_table.png'} width="720px" />
 </p>
 
-:::tip
+:::提示
 
-Multi-table query
+多表查询
 :::
 
-<p align="left">
+<p对齐=“左”>
   <img src={'/img/chat_db/multi_table.png'} width="720px" />
 </p>
 
-:::tip
+:::提示
 
-Index optimization suggestions
+索引优化建议
 :::
 
-<p align="left">
+<p对齐=“左”>
   <img src={'/img/chat_db/index.png'} width="720px" />
 </p>
 
 
-:::tip
+:::提示
 
-Database problem diagnosis
+数据库问题诊断
 :::
 
-<p align="left">
+<p对齐=“左”>
   <img src={'/img/chat_db/problem_help.png'} width="720px" />
 </p>
 
 
-:::tip
+:::提示
 
-Troubleshoot slow queries
+解决查询速度慢的问题
 :::
 
-<p align="left">
+<p对齐=“左”>
   <img src={'/img/chat_db/slow_query.png'} width="720px" />
 </p>
 
 
-:::danger Note
+:::危险注意事项
 
-⚠️ The examples provided above are for demonstration only. The model output results are from open source models and ChatGPT agents. They have not been fine-tuned or targeted optimized. They are for reference only and are not guaranteed to be absolutely correct.
+⚠️ 以上提供的示例仅供演示。模型输出结果来自开源模型和ChatGPT代理。它们尚未经过微调或有针对性的优化。仅供参考，不保证绝对正确。
 :::

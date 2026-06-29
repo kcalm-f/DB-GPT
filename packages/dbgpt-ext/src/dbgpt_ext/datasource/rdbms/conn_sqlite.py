@@ -106,7 +106,7 @@ class SQLiteConnector(RDBMSConnector):
     def get_indexes(self, table_name):
         """Get table indexes about specified table."""
         with self.session_scope() as session:
-            cursor = session.execute(text(f"PRAGMA index_list({table_name})"))
+            cursor = session.execute(text(f"PRAGMA index_list('{table_name}')"))
             indexes = cursor.fetchall()
             result = []
             for idx in indexes:

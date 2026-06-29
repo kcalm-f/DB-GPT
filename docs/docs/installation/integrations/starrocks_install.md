@@ -1,13 +1,12 @@
-# StarRocks
+# 星石
 
-StarRocks is a high-performance analytical database supported by DB-GPT through
-the native connector in `dbgpt_ext.datasource.rdbms.conn_starrocks`.
+StarRocks是一个通过DB-GPT支持的高性能分析数据库
+`dbgpt_ext.datasource.rdbms.conn_starrocks` 中的本机连接器。
 
-### Install Dependencies
+### 安装依赖项
 
-Install the base dependency set and the StarRocks SQLAlchemy driver required by
-your environment.
-
+安装所需的基本依赖项集和 StarRocks SQLAlchemy 驱动程序
+你的环境。
 ```bash
 uv sync --all-packages \
 --extra "base" \
@@ -15,26 +14,23 @@ uv sync --all-packages \
 --extra "storage_chromadb" \
 --extra "dbgpts"
 ```
+### 准备 StarRocks
 
-### Prepare StarRocks
-
-Prepare a StarRocks instance and start the DB-GPT webserver:
-
+准备 StarRocks 实例并启动 DB-GPT Web 服务器：
 ```bash
 uv run dbgpt start webserver --config configs/dbgpt-proxy-openai.toml
 ```
+### StarRocks 配置
 
-### StarRocks Configuration
+使用数据源 UI 或配置字段：
 
-Use the datasource UI or configuration fields for:
+- 主机
+- 端口
+- 用户
+- 密码
+- 数据库
+- 司机（`starrocks`）
 
-- host
-- port
-- user
-- password
-- database
-- driver (`starrocks`)
-
-The StarRocks connector is implemented in:
+StarRocks 连接器的实现方式为：
 
 - `packages/dbgpt-ext/src/dbgpt_ext/datasource/rdbms/conn_starrocks.py`

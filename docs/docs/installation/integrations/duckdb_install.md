@@ -1,13 +1,12 @@
-# DuckDB
+# 鸭数据库
 
-DuckDB is a high-performance analytical database system. It is designed to execute analytical SQL queries fast and efficiently, and it can also be used as an embedded analytical database.
+DuckDB是一个高性能分析数据库系统。它旨在快速高效地执行分析 SQL 查询，也可以用作嵌入式分析数据库。
 
-In this example, we will show how to use DuckDB as in DB-GPT Datasource. Using DuckDB to implement Datasource can, to some extent, alleviate the uncertainty and interpretability issues brought about by vector database retrieval.
+在此示例中，我们将展示如何在 DB-GPT 数据源中使用 DuckDB。使用DuckDB实现Datasource可以在一定程度上缓解矢量数据库检索带来的不确定性和可解释性问题。
 
-### Install Dependencies
+### 安装依赖项
 
-First, you need to install the `dbgpt duckdb datasource` library.
-
+首先，您需要安装“dbgpt duckdb 数据源”库。
 ```bash
 
 uv sync --all-packages \
@@ -17,26 +16,23 @@ uv sync --all-packages \
 --extra "storage_chromadb" \
 
 ```
+### 准备 DuckDB
 
-### Prepare DuckDB
+准备DuckDB数据库服务，参考-[DuckDB安装](https://duckdb.org/docs/installation)。
 
-Prepare DuckDB database service, reference-[DuckDB Installation](https://duckdb.org/docs/installation).
-
-Then run the following command to start the webserver:
+然后运行以下命令来启动网络服务器：
 ```bash
 
 uv run dbgpt start webserver --config configs/dbgpt-proxy-openai.toml
 
 ```
-
-Optionally, you can also use the following command to start the webserver:
+或者，您还可以使用以下命令来启动网络服务器：
 ```bash
 
 uv run python packages/dbgpt-app/src/dbgpt_app/dbgpt_server.py --config configs/dbgpt-proxy-openai.toml
 
 ```
-
-### DuckDB Configuration
-<p align="left">
+### DuckDB 配置
+<p对齐=“左”>
   <img src={'https://github.com/user-attachments/assets/bc5ffc20-4b5b-4e24-8c29-bf5702b0e840'} width="1000px"/>
 </p>

@@ -1,164 +1,163 @@
-# Released V0.5.0 | Develop native data applications through workflows and agents
+# 发布V0.5.0 |通过工作流和代理开发本机数据应用程序
 
 
-## Release Notes for Version 0.5.0
-After a period of intensive development, version 0.5.0 has taken over two months to come to fruition. This marks the first stable release that will be maintained over an extended period within the DB-GPT project. Concurrently, the long-term vision for DB-GPT has been officially set: it aims to be an AI native data application development framework utilizing Agentic Workflow Expression Language (AWEL) and agents.
-In essence, this framework facilitates the creation of data-centric applications through an intelligent agent-based expression language.
+## 版本 0.5.0 发行说明
+经过一段时间的紧张开发，0.5.0版本历时两个多月才得以实现。这标志着 DB-GPT 项目中第一个将长期维护的稳定版本。与此同时，DB-GPT的长期愿景也已正式确定：其目标是成为一个利用代理工作流表达语言（AWEL）和代理的AI原生数据应用开发框架。
+从本质上讲，该框架有助于通过基于智能代理的表达语言创建以数据为中心的应用程序。
 
 
-<p align="left">
+<p对齐=“左”>
   <img src={'/img/app/app_list.png'} width="720px" />
 </p>
 
 
-## Introduction to Version Update
+## 版本更新介绍
 
-In its early releases, the DB-GPT project offered six default use cases, namely:
-- [ChatData](https://docs.dbgpt.site/docs/application/started_tutorial/chat_data)
+在其早期版本中，DB-GPT 项目提供了六个默认用例，即：
+- [聊天数据](https://docs.dbgpt.site/docs/application/started_tutorial/chat_data)
 - [ChatExcel](https://docs.dbgpt.site/docs/application/started_tutorial/chat_excel)
 - [ChatDB](https://docs.dbgpt.site/docs/application/started_tutorial/chat_db)
-- [ChatKnowledge](https://docs.dbgpt.site/docs/application/started_tutorial/chat_knowledge)
+- [聊天知识](https://docs.dbgpt.site/docs/application/started_tutorial/chat_knowledge)
 - [ChatAgents](https://docs.dbgpt.site/docs/agents)
 - [ChatDashboard](https://docs.dbgpt.site/docs/application/started_tutorial/chat_dashboard)
 
-These scenarios were designed to satisfy basic and simple use requirements. However, for large-scale production deployment, particularly when dealing with complex business scenarios, it becomes necessary to develop custom scenarios tailored to specific business conditions. This presents significant challenges in terms of flexibility and development complexity.
+这些场景旨在满足基本且简单的使用需求。然而，对于大规模生产部署，特别是在处理复杂的业务场景时，需要针对特定​​业务情况开发定制场景。这在灵活性和开发复杂性方面提出了重大挑战。
 
 
-To further enhance the usability and flexibility of the business framework, we have built upon our existing features, including the multi-model management (SMMF), knowledge base, Agents, data sources, plugins, and Prompts. We have abstracted the capabilities of intelligent agent orchestration (AWEL) and application construction. Additionally, to facilitate application management and distribution, we have introduced the [dbgpts](https://github.com/eosphoros-ai/dbgpts) subproject, which specifically manages the construction of native intelligent data applications, AWEL common operators, AWEL generic workflow templates, and Agents on top of DB-GPT.
+为了进一步增强业务框架的可用性和灵活性，我们在现有功能的基础上进行了构建，包括多模型管理（SMMF）、知识库、代理、数据源、插件和提示。我们抽象出了智能代理编排（AWEL）和应用构建的能力。此外，为了方便应用程序管理和分发，我们引入了[dbgpts](https://github.com/eosphoros-ai/dbgpts)子项目，该子项目专门管理本机智能数据应用程序、AWEL通用运算符、AWEL通用工作流模板和DB-GPT之上的代理的构建。
 
-This version update will not affect the usage of the previously established six scenarios. However, with subsequent iterations, these default scenarios will gradually be rewritten as Data Apps. We also plan to incorporate them into the `dbgpts` project as default applications, making them readily available for installation and use.
+本次版本更新不会影响之前建立的六种场景的使用。但随着后续的迭代，这些默认场景将逐渐被改写为Data Apps。我们还计划将它们作为默认应用程序合并到“dbgpts”项目中，使它们易于安装和使用。
 
-Now, let's provide a systematic explanation of the main updates in this local release.
+现在，我们就系统地解释一下本次本地版本的主要更新。
 
-### Glossary of Terms:
+### 术语表：
 
-1. **Data App**: an intelligent Data application built on DB-GPT. 
-2. **AWEL**: Agentic Workflow Expression Language, intelligent Workflow Expression Language 
-3. **AWEL Flow**: workflow orchestration using the intelligent workflow Expression Language 
-4. **SMMF**: a service-oriented multi-model management framework. 
-5. **Datasource**: data sources, such as MySQL, PG, StarRocks, and Clickhouse.
+1. **数据应用程序**：基于DB-GPT构建的智能数据应用程序。 
+2. **AWEL**：Agentic Workflow Expression Language，智能工作流表达语言 
+3. **AWEL Flow**：使用智能工作流表达式语言进行工作流编排 
+4. **SMMF**：面向服务的多模型管理框架。 
+5. **数据源**：数据源，例如MySQL、PG、StarRocks、Clickhouse等。
 
-## AWEL workflow and application
-As shown in the following figure, in the left-side navigation pane, there is an AWEL workflow menu. After you open it, you can orchestrate the workflow.
+## AWEL 工作流程和应用
+如下图所示，在左侧导航栏，有一个AWEL工作流程菜单。打开它后，您可以编排工作流程。
 
-<p align="left">
+<p对齐=“左”>
   <img src={'/img/app/awel_flow_list.png'} width="720px" />
 </p>
 
-After the default installation, there is no content in the AWEL stream. You can build it in two ways. 
-1. Install it from the application repository provided by DB-GPT. 
-2. Create it yourself. The following describes the simple use of the following two methods. For more detailed use, see DB-GPT following tutorial.
+默认安装后，AWEL流中没有任何内容。您可以通过两种方式构建它。 
+1. 从 DB-GPT 提供的应用程序存储库安装它。 
+2. 自己创建。下面介绍以下两种方法的简单使用。更详细的使用请参见DB-GPT下面的教程。
 
-<p align="left">
+<p对齐=“左”>
   <img src={'/img/app/flow_detail.png'} width="720px" />
 </p>
 
-### To install from the official repository:
+### 从官方存储库安装：
 
-Ensure that you first install and deploy DB-GPT.
-Following the installation and deployment, you can utilize the default `dbgpt` command for various operations.
+确保首先安装并部署 DB-GPT。
+安装和部署后，您可以使用默认的“dbgpt”命令进行各种操作。
 
 
-:::info NOTE
+:::信息 注意
 
-This process will allow you to subsequently install the AWEL workflow.
+此过程将允许您随后安装 AWEL 工作流程。
 :::
 
-<p align="left">
+<p对齐=“左”>
   <img src={'/img/app/dbgpts_cli.png'} width="720px" />
 </p>
 
-As shown in the figure, the dbgpt command supports multiple operations, including model-related operations, knowledge base operations, and Trace logs. Here we will focus on the operation of the app.
+如图所示，dbgpt命令支持多种操作，包括模型相关操作、知识库操作、Trace日志等。这里我们重点关注一下app的操作。
 
-<p align="left">
+<p对齐=“左”>
   <img src={'/img/app/dbgpts_apps.png'} width="720px" />
 </p>
 
-Pass `dbgpt app` list-remote command, we can see that there are three AWEL workflows available in the current warehouse. Here we install `awel-flow-web-info-search` this workflow. Run the command `dbgpt app install awel-flow-web-info-search`
+通过 `dbgpt app` list-remote 命令，我们可以看到当前仓库中有 3 个可用的 AWEL 工作流程。这里我们安装 `awel-flow-web-info-search` 这个工作流程。运行命令“dbgpt app install awel-flow-web-info-search”
 
-<p align="left">
+<p对齐=“左”>
   <img src={'/img/app/dbgpts_app_install.png'} width="720px" />
 </p>
 
-After the installation is successful, restart the DB-GPT service (dynamic hot loading is on the way), refresh the page, and then `AWEL workflow page` see the corresponding workflow.
+安装成功后，重启DB-GPT服务（动态热加载正在进行中），刷新页面，即可在‘AWEL工作流程页面’看到对应的工作流程。
 
-<p align="left">
+<p对齐=“左”>
   <img src={'/img/app/dbgpts_flow_black.png'} width="720px" />
 </p>
 
-### Building Your Own
+### 建立你自己的
 
-In addition to installing the default AWEL flows using the official commands, you'll often need to build your own in practical scenarios. As illustrated below, by clicking on `New AWEL Flow`, you will be brought to the editing page as shown.
+除了使用官方命令安装默认的 AWEL 流之外，您通常还需要在实际场景中构建自己的流。如下图所示，点击“New AWEL Flow”，您将进入如图所示的编辑页面。
 
-<p align="left">
+<p对齐=“左”>
   <img src={'/img/app/awel_flow_node.png'} width="720px" />
 </p>
 
-During the editing process, each task's downstream nodes and operators support auto-completion. By clicking the plus sign (➕) located at the bottom right of each operator, you can bring up a list of potential downstream operators that can be connected to the current one. This feature enhances the user experience by providing suggestions and making it easier to construct complex workflows without needing to remember the exact names or types of operators that are available for use.
+在编辑过程中，每个任务的下游节点和算子都支持自动完成。通过单击每个运算符右下角的加号 (➕)，您可以显示可连接到当前运算符的潜在下游运算符的列表。此功能通过提供建议来增强用户体验，并使构建复杂的工作流程变得更加容易，而无需记住可供使用的操作员的确切名称或类型。
 
-<p align="left">
+<p对齐=“左”>
   <img src={'/img/app/awel_flow_node_plus.png'} width="720px" />
 </p>
 
-## Create a data application
+## 创建数据应用程序
 
-We introduced the construction and installation of AWEL workflow. Next, we will introduce how to create a data application based on a large model.
+我们介绍了AWEL的构建和安装工作流程。接下来，我们将介绍如何基于大模型创建数据应用。
 
-### Search Chat App
-The core capability of the search dialog application is to search for relevant knowledge through search engines (such as Baidu and Google) and then summarize and answer. The effect is as follows:
+### 搜索聊天应用程序
+搜索对话应用的核心能力是通过搜索引擎（如百度、谷歌）搜索相关知识，然后进行总结和解答。效果如下：
 
-<p align="left">
+<p对齐=“左”>
   <img src={'/img/app/app_search.png'} width="720px" />
 </p>
 
-Creating the preceding application is very simple. On the application creation panel, click `create` , enter the following parameters to complete the creation. Note several parameters. 1. Working mode 2. Flows the working mode we use here is `awel_layout` the selected AWEL workflow is installed earlier. `awel-flow-web-info-search` this workflow.
+创建上述应用程序非常简单。在应用创建面板中，点击“创建”，输入以下参数即可完成创建。注意几个参数。 1.工作模式 2.流程 我们这里使用的工作模式是`awel_layout`，选择的AWEL工作流程是之前安装的。 `awel-flow-web-info-search` 这个工作流程。
 
-<p align="left">
+<p对齐=“左”>
   <img src={'/img/app/app_awel.png'} width="720px" />
 </p>
 
-### Data analysis assistant 
-Use Multi-Agents to write a data analysis Assistant application. The results are as follows.
+### 数据分析助手 
+使用Multi-Agents编写数据分析助手应用程序。结果如下。
 
-<p align="left">
+<p对齐=“左”>
   <img src={'/img/app/app_analysis.png'} width="720px" />
 </p>
 
 
-<p align="left">
+<p对齐=“左”>
   <img src={'/img/app/app_analysis_black.png'} width="720px" />
 </p>
 
-## Other Update Details
-- Release of dbgpt core sdk (#1092): Now includes AWEL operator orchestration capabilities.
-To install, you can use the command: `pip install dbgpt`
+## 其他更新细节
+- 发布 dbgpt 核心 sdk (#1092)：现在包括 AWEL 操作员编排功能。
+要安装，您可以使用命令：`pip install dbgpt`
 
-- Support for Jina Embeddings (#1105): The update integrates with Jina AI, which provides a way to create and manage embeddings for various data types, enhancing search and similarity tasks within the applications.
+- 支持 Jina Embeddings (#1105)：该更新与 Jina AI 集成，提供了一种创建和管理各种数据类型嵌入的方法，增强了应用程序内的搜索和相似性任务。
 
-- New example of schema-linking using AWEL (#1081): There's a new example available demonstrating how to use AWEL for schema-linking, which can be valuable for tasks that require mapping between different data schemas.
+- 使用 AWEL 进行模式链接的新示例 (#1081)：有一个新示例演示了如何使用 AWEL 进行模式链接，这对于需要在不同数据模式之间进行映射的任务非常有价值。
 
-- Unified card UI style, including knowledge base cards, model management cards, etc.: This update brings a more consistent look and feel across different UI components that display information in a card format.
+- 统一卡片 UI 风格，包括知识库卡片、模型管理卡片等：此更新为以卡片格式显示信息的不同 UI 组件带来了更加一致的外观和感觉。
 
-## Bug Fixes
-- MySQL databases no longer support automatic table creation and field auto-updates (#1133): This change may require developers to manually handle database schema changes, improving control over database migrations.
+## 错误修复
+- MySQL 数据库不再支持自动表创建和字段自动更新 (#1133)：此更改可能需要开发人员手动处理数据库架构更改，从而改善对数据库迁移的控制。
 
-- Fixed the issue with default dialogues carrying history message records (#1117): This addresses potential privacy or performance issues by ensuring that history records are handled properly.
+- 修复了带有历史消息记录的默认对话的问题（#1117）：这通过确保正确处理历史记录来解决潜在的隐私或性能问题。
 
-- Fixed the issue in examples/awel where model_name was fetched from model_config improperly (#1112): This improves the reliability of AWEL examples by ensuring that the model configuration is fetched and used correctly.
+- 修复了示例/awel 中从 model_config 不正确获取 model_name 的问题 (#1112)：这通过确保正确获取和使用模型配置来提高 AWEL 示例的可靠性。
 
-- Fixed DAGs sharing data issue (#1102): This fix might relate to data isolation in Directed Acyclic Graphs (DAGs) to ensure that workflows do not inadvertently share or overwrite data.
+- 修复了 DAG 共享数据问题 (#1102)：此修复可能与有向无环图 (DAG) 中的数据隔离有关，以确保工作流程不会无意中共享或覆盖数据。
 
-- Fixed issue with examples/awel default loading model text2vec-large-chinese (#1095): This fix ensures that the large Chinese text-to-vector model loads as expected in the given examples.
+- 修复了示例/awel 默认加载模型 text2vec-large-chinese 的问题 (#1095)：此修复可确保大型中文文本到矢量模型按给定示例中的预期加载。
 
-These changes reflect ongoing improvements to the dbgpt project, enhancing its capabilities, fixing known issues, and refining user experience. Users should refer to the official documentation or release notes for detailed instructions and information on these updates.
+这些更改反映了 dbgpt 项目的持续改进、增强其功能、修复已知问题并改善用户体验。用户应参阅官方文档或发行说明，以获取有关这些更新的详细说明和信息。
 
 
-## Upgrade to V0.5.0
+## 升级至V0.5.0
 
-If your current version is V0.4.6 or V0.4.7, you need to upgrade to V0.5.0. 
-1. Suspend Service 
-2. upgrade the database table structure
-
+如果您当前的版本是V0.4.6或V0.4.7，则需要升级到V0.5.0。 
+1. 暂停服务 
+2.升级数据库表结构
 ```sql
 -- dbgpt.dbgpt_serve_flow definition
 CREATE TABLE `dbgpt_serve_flow` (
@@ -243,23 +242,20 @@ ADD COLUMN `team_mode` varchar(255) NULL COMMENT 'agent team work mode';
 ALTER TABLE `gpts_conversations`
 ADD COLUMN  `current_goal` text COMMENT 'The target corresponding to the current message';
 ```
-
-3. Reinstall dependencies
-
+3.重新安装依赖
 ```shell
 pip install -e ".[default]"
 ```
+4.启动服务
 
-4. Start the service
+## 致谢
+我们向所有使此版本成为可能的贡献者表示最深切的感谢！
 
-## Acknowledgments
-We would like to express our deepest gratitude to all the contributors who made this release possible!
+@Aralhi、@Aries-ckt、@JoanFM、@csunny、@fangyinc、@Hhh_97、@junewgl、@lcxadml、@likenamehaojie、@xiuzhu9527 和 @yhjun1026
 
-@Aralhi, @Aries-ckt, @JoanFM, @csunny, @fangyinc, @Hzh_97, @junewgl, @lcxadml, @likenamehaojie, @xiuzhu9527 and @yhjun1026
-
-## Appendix 
-- DB-GPT framework: https://github.com/eosphoros-ai 
-- Text2SQL fine tuning: https://github.com/eosphoros-ai/DB-GPT-Hub 
-- DB-GPT-Web : https://github.com/eosphoros-ai/DB-GPT-Web 
-- official English documentation: http://docs.dbgpt.site/docs/overview 
-- official Chinese documentation: https://www.yuque.com/eosphoros/dbgpt-docs/bex30nsv60ru0fmx
+## 附录 
+- DB-GPT框架：https://github.com/eosphoros-ai 
+- Text2SQL 微调：https://github.com/eosphoros-ai/DB-GPT-Hub 
+- DB-GPT-Web：https://github.com/eosphoros-ai/DB-GPT-Web 
+- 官方英文文档：http://docs.dbgpt.site/docs/overview 
+- 官方中文文档：https://www.yuque.com/eosphoros/dbgpt-docs/bex30nsv60ru0fmx

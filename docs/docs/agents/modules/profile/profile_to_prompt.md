@@ -1,14 +1,13 @@
-# Profile To Prompt
+# 配置文件提示
 
-In previous sections, we have introduced how to create a profile for your agent, and 
-see how to generate prompts from the profile.
+在前面的章节中，我们介绍了如何为您的代理创建个人资料，以及 
+查看如何从配置文件生成提示。
 
-In this section, we will introduce more about how to generate prompts from the profile.
+在本节中，我们将详细介绍如何从配置文件生成提示。
 
-## What's The Prompt Template
+## 提示模板是什么
 
-In previous sections, we use the internal template to generate the prompt, let's see the template:
-
+在前面的章节中，我们使用内部模板来生成提示，让我们看看模板：
 ```python
 from dbgpt.agent import ProfileConfig
 profile: ProfileConfig = ProfileConfig(
@@ -35,8 +34,7 @@ print(f"System Prompt Template: \n{real_profile.get_system_prompt_template()}")
 print("#" * 50)
 print(f"User Prompt Template: \n{real_profile.get_user_prompt_template()}")
 ```
-
-Running the above code will generate the following output:
+运行上面的代码将生成以下输出：
 ```
 System Prompt Template: 
 You are a {{ role }}, {% if name %}named {{ name }}, {% endif %}your goal is {{ goal }}.
@@ -62,13 +60,11 @@ User Prompt Template:
 {% if question %}Question: {{ question }}
 {% endif %}
 ```
+该模板是jinja2模板，我们现在只在代理中使用jinja2，因为它的简单性和灵活性。
 
-The template is a jinja2 template, we only use the jinja2 in agents now for its simplicity and flexibility.
+## 使用您的自定义提示模板
 
-## Use Your Custom Prompt Template
-
-Firstly, create a simple system prompt template and user prompt template:
-
+首先创建一个简单的系统提示模板和用户提示模板：
 ```python
 my_system_prompt_template = """\
 You are a {{ role }}, {% if name %}named {{ name }}, {% endif %}your goal is {{ goal }}.
@@ -85,9 +81,7 @@ Please answer in English.
 
 my_user_prompt_template = "User question: {{ question }}"
 ```
-
-Then, create a profile with the custom prompt template:
-
+然后，使用自定义提示模板创建配置文件：
 ```python
 from dbgpt.agent import ProfileConfig
 
@@ -119,8 +113,7 @@ print(f"System Prompt: \n{system_prompt}")
 print("#" * 50)
 print(f"User Prompt: \n{user_prompt}")
 ```
-
-Running the above code will generate the following prompts:
+运行上面的代码会产生如下提示：
 ```
 System Prompt: 
 You are a Summarizer, named Aristotle, your goal is Summarize answer summaries based on user questions from provided resource information or from historical conversation memories..

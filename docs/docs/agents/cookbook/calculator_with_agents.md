@@ -1,20 +1,17 @@
-# Calculator With Agents
+# 带有代理的计算器
 
-In this example, we will show you how to use an agent as your calculator.
+在此示例中，我们将向您展示如何使用代理作为计算器。
 
-## Installations
+## 安装
 
-Install the required packages by running the following command:
-
+通过运行以下命令安装所需的软件包：
 ```bash
 pip install "dbgpt[agent]>=0.5.6rc1" -U
 pip install openai
 ```
+## 代码
 
-## Code
-
-Create a new Python file and add the following code:
-
+创建一个新的Python文件并添加以下代码：
 ```python
 import asyncio
 
@@ -54,9 +51,7 @@ async def main():
 if __name__ == "__main__":
     asyncio.run(main())
 ```
-
-You will see the following output:
-
+您将看到以下输出：
 ````bash
 Prompt manager is not available.
 Prompt manager is not available.
@@ -76,24 +71,23 @@ un_stream ai response: ```python
 result = 321 * 123
 print(result)
 ```
+> > > > > > > > 执行代码块0（推断语言是python）...
+调用execute_code时未指定use_docker的值。由于包不可用python docker代码将在本机运行。注意：此后备行为可能会发生变化
+un_stream ai 响应：正确
 
->>>>>>>> EXECUTING CODE BLOCK 0 (inferred language is python)...
-execute_code was called without specifying a value for use_docker. Since the python docker package is not available, code will be run natively. Note: this fallback behavior is subject to change
-un_stream ai response: True
+----------------------------------------------------------------------------------------------------------------
+图灵（中文二对用户） - [gpt-3.5-turbo] ：
 
---------------------------------------------------------------------------------
-Turing (to User)-[gpt-3.5-turbo]:
-
-"```python\n# filename: calculate_multiplication.py\n\nresult = 321 * 123\nprint(result)\n```"
->>>>>>>>Turing Review info: 
-Pass(None)
->>>>>>>>Turing Action report: 
-execution succeeded,
+"`` python\ n # 文件名：calculate_multiplication.py\ n\ n 结果 = 321 * 123\ nprint (结果)\ n `` `"
+>>>>>>>>图灵评论信息： 
+合格（无）
+>>>>>>>>图灵行动报告： 
+执行成功，
 
 39483
 
 
---------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------
 ```agent-plans
 [{"name": "calculate the result of 321 * 123", "num": 1, "status": "complete", "agent": "Human", "markdown": "```agent-messages\n[{\"sender\": \"CodeEngineer\", \"receiver\": \"Human\", \"model\": \"gpt-3.5-turbo\", \"markdown\": \"```vis-code\\n{\\\"exit_success\\\": true, \\\"language\\\": \\\"python\\\", \\\"code\\\": [[\\\"python\\\", \\\"# filename: calculate_multiplication.py\\\\n\\\\nresult = 321 * 123\\\\nprint(result)\\\"]], \\\"log\\\": \\\"\\\\n39483\\\\n\\\"}\\n```\"}]\n```"}]
 ```

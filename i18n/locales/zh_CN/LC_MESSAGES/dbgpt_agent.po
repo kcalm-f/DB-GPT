@@ -63,3 +63,51 @@ msgstr "分支输出"
 #: ../packages/dbgpt-core/src/dbgpt/agent/core/plan/awel/agent_operator.py:446
 msgid "The output value of the operator."
 msgstr "算子的输出值。"
+
+#: ../packages/dbgpt-core/src/dbgpt/agent/core/plan/awel/agent_operator_resource.py:40
+msgid "AWEL Agent Resource"
+msgstr "AWEL 智能体资源"
+
+#: ../packages/dbgpt-core/src/dbgpt/agent/core/plan/awel/agent_operator_resource.py:42
+msgid "The Agent Resource."
+msgstr "智能体资源。"
+
+#: ../packages/dbgpt-core/src/dbgpt/agent/core/plan/awel/agent_operator_resource.py:46
+msgid "Agent Resource Type"
+msgstr "智能体资源类型"
+
+#: ../packages/dbgpt-core/src/dbgpt/agent/core/plan/awel/agent_operator_resource.py:55
+#: ../packages/dbgpt-core/src/dbgpt/agent/core/plan/awel/agent_operator_resource.py:119
+msgid "Agent Resource Name"
+msgstr "智能体资源名称"
+
+#: ../packages/dbgpt-core/src/dbgpt/agent/core/plan/awel/agent_operator_resource.py:60
+#: ../packages/dbgpt-core/src/dbgpt/agent/core/plan/awel/agent_operator_resource.py:124
+msgid "The agent resource name."
+msgstr "智能体资源名称。"
+
+#: ../packages/dbgpt-core/src/dbgpt/agent/core/plan/awel/agent_operator_resource.py:63
+#: ../packages/dbgpt-core/src/dbgpt/agent/core/plan/awel/agent_operator_resource.py:127
+msgid "Agent Resource Value"
+msgstr "智能体资源值"
+
+#: ../packages/dbgpt-core/src/dbgpt/agent/core/plan/awel/agent_operator_resource.py:68
+#: ../packages/dbgpt-core/src/dbgpt/agent/core/plan/awel/agent_operator_resource.py:132
+msgid "The agent resource value."
+msgstr "智能体资源值。"
+
+#: ../packages/dbgpt-core/src/dbgpt/agent/core/plan/awel/agent_operator_resource.py:111
+msgid "Awel Agent Resource Knowledge"
+msgstr "AWEL 智能体知识资源"
+
+#: ../packages/dbgpt-core/src/dbgpt/agent/core/plan/awel/agent_operator_resource.py:113
+msgid "The Agent Resource Knowledge."
+msgstr "智能体知识资源。"
+
+#: ../packages/dbgpt-core/src/dbgpt/agent/core/plan/awel/agent_operator_resource.py:136
+msgid "Agent Knowledge Resource Recall TopK"
+msgstr "智能体知识资源召回 TopK"
+
+#: ../packages/dbgpt-core/src/dbgpt/agent/core/plan/awel/agent_operator_resource.py:141
+msgid "The agent resource recall topk."
+msgstr "智能体资源召回 TopK。"

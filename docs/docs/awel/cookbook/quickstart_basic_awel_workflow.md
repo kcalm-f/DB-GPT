@@ -1,16 +1,13 @@
-# QuickStart Basic AWEL Workflow
+# 快速入门基本 AWEL 工作流程
 
-## Install 
+## 安装 
 
-At first, install dbgpt, and necessary dependencies:
-
+首先，安装 dbgpt 和必要的依赖项：
 ```shell
 pip install dbgpt --upgrade
 pip install openai
 ```
-
-Create a python file `simple_sdk_llm_example_dag.py` and write the following content:
-
+创建一个python文件`simple_sdk_llm_example_dag.py`并写入以下内容：
 ```python
 import asyncio
 from dbgpt.core.awel import DAG
@@ -37,26 +34,20 @@ output = asyncio.run(
 ))
 print(output)
 ```
-
-Configure the environment variables for OpenAI API:
-
+配置OpenAI API的环境变量：
 ```bash
 export OPENAI_API_KEY=sk-xx
 export OPENAI_API_BASE=https://xx:80/v1
 ```
-
-Run the python file:
-
+运行Python文件：
 ```bash
 python simple_sdk_llm_example_dag.py
 ```
-
-The output will like this:
+输出将是这样的：
 ```plaintext
 ModelOutput(text='SELECT * FROM users;', error_code=0, model_context=None, finish_reason=None, usage={'completion_tokens': 5, 'prompt_tokens': 19, 'total_tokens': 24}, metrics=None)
 ```
+恭喜！您已经掌握了AWEL的基本用法。如需更多示例， 
+请参阅**[cookbook](/docs/awel/cookbook/)**。
 
-Congratulations! You have already mastered the basic usage of AWEL. For more examples, 
-please refer to the **[cookbook](/docs/awel/cookbook/)**.
-
-And we suggest you to read the book **[AWEL Tutorial](/docs/awel/tutorial/)** to learn more about AWEL.
+我们建议您阅读**[AWEL教程](/docs/awel/tutorial/)**一书来了解有关AWEL的更多信息。

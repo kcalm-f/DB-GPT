@@ -1,52 +1,51 @@
-# Chat With Financial Report
-   Financial report analysis using large models is becoming a popular application in vertical fields. Large models can not only understand complex financial rules more accurately than humans, but can also output reasonable analysis results based on professional knowledge. 
+# 与财务报告聊天
+   使用大型模型进行财务报告分析正在成为垂直领域的流行应用。大型模型不仅可以比人类更准确地理解复杂的金融规则，还可以基于专业知识输出合理的分析结果。 
    
-Using AWEL to build a financial report knowledge building workflow and a financial report intelligent Q&A workflow app can help users 
-- answer basic information questions about financial reports
-- financial report indicator calculation and analysis questions
-- financial report content analysis questions.
+使用AWEL构建财务报告知识构建工作流程和财务报告智能问答工作流程应用程序可以帮助用户 
+- 回答有关财务报告的基本信息问题
+- 财务报告指标计算与分析题
+- 财务报告内容分析问题。
 
-#### financial report knowledge building workflow
-<p align="left">
+####财务报告知识构建工作流程
+<p对齐=“左”>
   <img src={'/img/chat_knowledge/fin_report/knowledge_workflow.png'} width="1000px"/>
 </p>
 
-#### a financial report intelligent robot workflow 
-<p align="left">
+####一个财务报告智能机器人工作流程 
+<p对齐=“左”>
   <img src={'/img/chat_knowledge/fin_report/financial_robot_chat.png'} width="1000px"/>
 </p>
 
-# How to Use
-Upload financial report pdf and chat with financial report
+# 如何使用
+上传财务报告 PDF 并与财务报告聊天
 
-scene1:ask base info for financial report
+场景一：查询财务报告基础信息
 
-<p align="left">
+<p对齐=“左”>
   <img src={'/img/chat_knowledge/fin_report/base_info_chat.jpg'} width="1000px"/>
 </p>
 
-scene2:calculate financial indicator for financial report
-<p align="left">
+场景2：计算财务报表的财务指标
+<p对齐=“左”>
   <img src={'/img/chat_knowledge/fin_report/chat_indicator.png'} width="1000px"/>
 </p>
 
-scene3:analyze financial report
-<p align="left">
+场景3：分析财务报告
+<p对齐=“左”>
   <img src={'/img/chat_knowledge/fin_report/report_analyze.png'} width="1000px"/>
 </p>
 
 
-# How to Install
+# 如何安装
 
-Step 1: make sure your dbgpt version is >=0.5.10
+第 1 步：确保您的 dbgpt 版本 >=0.5.10
 
-Step 2: upgrade python dependencies
+第二步：升级python依赖
 ```
 pip install pdfplumber
 pip install fuzzywuzzy
 ```
-
-Step 3: install financial report app from dbgpts
+第 3 步：从 dbgpts 安装财务报告应用程序
 ```
 # install poetry
 pip install poetry
@@ -55,8 +54,7 @@ pip install poetry
 dbgpt app install financial-robot-app financial-report-knowledge-factory
 
 ```
-
-Step 4: download pre_trained embedding model from https://www.modelscope.cn/models/AI-ModelScope/bge-large-zh-v1.5
+步骤4：从https://www.modelscope.cn/models/AI-ModelScope/bge-large-zh-v1.5下载预训练的嵌入模型
 ```
 git clone https://www.modelscope.cn/models/AI-ModelScope/bge-large-zh-v1.5
 ```
@@ -67,23 +65,19 @@ git clone https://www.modelscope.cn/models/AI-ModelScope/bge-large-zh-v1.5
 #*******************************************************************#
 FIN_REPORT_MODEL=/app/DB-GPT/models/bge-large-zh-v1.5
 ```
-
-Step 5: create  knowledge space, choose `FinancialReport` doamin type
-<p align="left">
+第五步：创建知识空间，选择`FinancialReport`域名类型
+<p对齐=“左”>
   <img src={'/img/chat_knowledge/fin_report/financial_space.png'} width="1000px"/>
 </p>
 
 
-Step 6: upload financial report from `docker/examples/fin_report`, if your want to use the financial report dataset, you can download from modelscope.
+第6步：从`docker/examples/fin_report`上传财务报告，如果您想使用财务报告数据集，可以从modelscope下载。
 ```bash
 git clone http://www.modelscope.cn/datasets/modelscope/chatglm_llm_fintech_raw_dataset.git
 ```
-Step 7:  automatic segment and wait for a while
+第七步：自动分段并等待一段时间
 
-Step 8:  chat with financial report
-<p align="left">
+第8步：与财务报告聊天
+<p对齐=“左”>
   <img src={'/img/chat_knowledge/fin_report/chat.jpg'} width="1000px"/>
 </p>
-
-
-

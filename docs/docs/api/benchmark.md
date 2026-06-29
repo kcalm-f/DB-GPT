@@ -1,9 +1,9 @@
-# Datasets Benchmark
+# 数据集基准测试
 
-Get started with the Benchmark API
+开始使用基准测试 API
 
 
-### Create Dataset Benchmark Task
+### 创建数据集基准测试任务
 
 ```python
 POST /api/v2/serve/evaluate/execute_benchmark_task
@@ -24,47 +24,47 @@ curl -X POST "http://localhost:5670/api/v2/serve/evaluate/execute_benchmark_task
 
 ```
 
-#### The Benchmark Request Object
+#### 基准测试请求对象
 
 ________
-<b>scene_key</b> <font color="gray"> string </font> <font color="red"> Required </font>
+<b>scene_key</b> <font color="gray"> string </font> <font color="red"> 必填 </font>
 
-The scene type of the evaluation, e.g. support app, recall
-
---------
-<b>scene_value</b> <font color="gray"> string </font> <font color="red"> Required </font>
-
-The scene value of the benchmark, e.g. The marking evaluation task name
+评估的场景类型，例如支持 app、recall
 
 --------
-<b>model_list</b> <font color="gray"> object </font> <font color="red"> Required </font>
+<b>scene_value</b> <font color="gray"> string </font> <font color="red"> 必填 </font>
 
-The model name list of the benchmark will execute, e.g. ["DeepSeek-V3.1","Qwen3-235B-A22B"]
-Notice: The model name configured on the db-gpt platform needs to be entered.
+基准测试的场景值，例如标记的评估任务名称
+
+--------
+<b>model_list</b> <font color="gray"> object </font> <font color="red"> 必填 </font>
+
+基准测试将执行的模型名称列表，例如 ["DeepSeek-V3.1","Qwen3-235B-A22B"]
+注意：需要输入在 db-gpt 平台上配置的模型名称。
 
 --------
 <b>temperature</b> <font color="gray"> float </font>
 
-The temperature of the llm model, Default is 0.7
+大模型的 temperature 参数，默认为 0.7
 
 --------
 <b>max_tokens</b> <font color="gray"> int </font>
 
-The max tokens of the llm model, Default is None
+大模型的 max_tokens 参数，默认为 None
 
 --------
 
 
-#### The Benchmark Result
+#### 基准测试结果
 
 ________
 <b>status</b> <font color="gray">string</font>
 
-The benchmark status，e.g. success, failed, running
+基准测试状态，例如 success、failed、running
 ________
 
 
-### Query Benchmark Task List
+### 查询基准测试任务列表
 
 ```python
 GET /api/v2/serve/evaluate/benchmark_task_list
@@ -81,22 +81,22 @@ curl -X GET "http://localhost:5670/api/v2/serve/evaluate/benchmark_task_list?pag
 
 ```
 
-#### The Benchmark Task List Request Object
+#### 基准测试任务列表请求对象
 
 ________
-<b>page</b> <font color="gray"> string </font> <font color="red"> Required </font>
+<b>page</b> <font color="gray"> string </font> <font color="red"> 必填 </font>
 
-Query task list page number, Default is 1
-
---------
-<b>page_size</b> <font color="gray"> string </font> <font color="red"> Required </font>
-
-Query task list page size, Default is 20
+查询任务列表页码，默认为 1
 
 --------
+<b>page_size</b> <font color="gray"> string </font> <font color="red"> 必填 </font>
+
+查询任务列表每页大小，默认为 20
+
+--------
 
 
-#### The Benchmark Task List Result
+#### 基准测试任务列表结果
 
 ```json
 {
@@ -143,87 +143,87 @@ Query task list page size, Default is 20
 ________
 <b>evaluate_code</b> <font color="gray">string</font>
 
-The benchmark task unique code
+基准测试任务唯一代码
 ________
 <b>scene_key</b> <font color="gray">string</font>
 
-The benchmark task scene, e.g. dataset
+基准测试任务场景，例如 dataset
 ________
 <b>scene_value</b> <font color="gray">string</font>
 
-The benchmark task name
+基准测试任务名称
 ________
 <b>datasets_name</b> <font color="gray">string</font>
 
-The benchmark execute dataset name
+基准测试执行的数据集名称
 ________
 <b>input_file_path</b> <font color="gray">string</font>
 
-The benchmark dataset file path
+基准测试数据集文件路径
 ________
 <b>output_file_path</b> <font color="gray">string</font>
 
-The benchmark execute result file path
+基准测试执行结果文件路径
 ________
 <b>model_list</b> <font color="gray">object</font>
 
-The benchmark execute model list
+基准测试执行的模型列表
 ________
 <b>context</b> <font color="gray">object</font>
 
-The benchmark task context
+基准测试任务上下文
 ________
 <b>user_name</b> <font color="gray">string</font>
 
-The benchmark task user name
+基准测试任务用户名
 ________
 <b>user_id</b> <font color="gray">string</font>
 
-The benchmark task user id
+基准测试任务用户 ID
 ________
 <b>sys_code</b> <font color="gray">string</font>
 
-The benchmark task system code, e.g. benchmark_system
+基准测试任务系统代码，例如 benchmark_system
 ________
 <b>parallel_num</b> <font color="gray">int</font>
 
-The benchmark task execute parallel num 
+基准测试任务执行并行数
 ________
 <b>state</b> <font color="gray">string</font>
 
-The benchmark task state, e.g. running, success, failed
+基准测试任务状态，例如 running、success、failed
 ________
 <b>temperature</b> <font color="gray">float</font>
 
-The benchmark task LLM temperature
+基准测试任务大模型 temperature 参数
 ________
 <b>max_tokens</b> <font color="gray">int</font>
 
-The benchmark task LLM max tokens
+基准测试任务大模型 max_tokens 参数
 ________
 <b>log_info</b>  <font color="gray">int</font>
 
-If benchmark task execute error, It will show error message, 
+如果基准测试任务执行出错，将显示错误信息
 ________
 <b>gmt_create</b> <font color="gray">string</font>
 
-Task create time
+任务创建时间
 ________
 <b>gmt_modified</b> <font color="gray">string</font>
 
-Task Finish time
+任务完成时间
 ________
 <b>cost_time</b> <font color="gray">int</font>
 
-Benchmark Task cost time
+基准测试任务耗时
 ________
 <b>round_time</b> <font color="gray">int</font>
 
-Benchmark Task execute round time
+基准测试任务执行轮次
 ________
 
 
-### Benchmark Compare Result
+### 基准测试对比结果
 
 ```python
 GET /api/v2/serve/evaluate/benchmark/result/{evaluate_code}
@@ -240,16 +240,16 @@ curl -X GET "http://localhost:5670/api/v2/serve/evaluate/benchmark/result/{evalu
 
 ```
 
-#### The Benchmark Request Object
+#### 基准测试请求对象
 
 ________
-<b>evaluate_code</b> <font color="gray"> string </font> <font color="red"> Required </font>
+<b>evaluate_code</b> <font color="gray"> string </font> <font color="red"> 必填 </font>
 
-The benchMark task unique code
+基准测试任务唯一代码
 
 --------
 
-#### The Benchmark Result
+#### 基准测试结果
 
 ```json
 {
@@ -279,31 +279,30 @@ The benchMark task unique code
 ________
 <b>roundId</b> <font color="gray">string</font>
 
-The benchmark task execute round time
+基准测试任务执行轮次
 ________
 <b>llmCode</b> <font color="gray">string</font>
 
-The benchmark task execute model name
+基准测试任务执行的模型名称
 ________
 <b>right</b> <font color="gray">int</font>
-The benchmark task execute right question number
+基准测试任务执行正确的题目数量
 ________
 <b>wrong</b> <font color="gray">int</font>
-The benchmark task execute wrong question number
+基准测试任务执行错误的题目数量
 ________
 <b>failed</b> <font color="gray">int</font>
-The benchmark task execute failed question number
+基准测试任务执行失败的题目数量
 ________
 <b>exception</b> <font color="gray">int</font>
-The benchmark task execute exception question number
+基准测试任务执行异常的题目数量
 ________
 <b>accuracy</b> <font color="gray">float</font>
-The benchmark task question list execute accuracy rate
+基准测试任务题目列表执行准确率
 ________
 <b>execRate</b> <font color="gray">float</font>
-The benchmark task question list executable rate
+基准测试任务题目列表可执行率
 ________
 <b>outputPath</b> <font color="gray">string</font>
-The benchmark task execute result output file path
+基准测试任务执行结果输出文件路径
 ________
-

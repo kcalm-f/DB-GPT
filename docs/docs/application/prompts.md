@@ -1,61 +1,61 @@
-# Prompts
+# 提示
 
-In the actual application development process, Prompt needs to be customized in different scenarios, Agent, RAG and other modules. In order to make the editing and adjustment of Prompt more flexible, an independent Prompt module is created.
+在实际应用开发过程中，不同场景下需要定制Prompt、Agent、RAG等模块。为了使Prompt的编辑和调整更加灵活，创建了独立的Prompt模块。
 
-## Browse
+## 浏览
 
-As shown in the figure below, click **Application Management** ->**Prompt** You can enter the corresponding management interface. The interface displays a custom prompt list by default, and you can manage all prompts.
+如下图，点击**应用管理** ->**提示** 即可进入相应的管理界面。界面默认显示自定义提示列表，您可以管理所有提示。
 
-<p align="center">
+<p对齐=“中心”>
   <img src={'/img/app/prompt_v0.6.jpg'} width="800px" />
 </p>
 
-## Added
-Next, let's see how to create a new prompt. Click the **Add Prompt**  button and the prompt edit box will pop up.
+## 添加
+接下来，让我们看看如何创建新提示。单击“**添加提示**”按钮，将弹出提示编辑框。
 
-<p align="center">
+<p对齐=“中心”>
   <img src={'/img/app/prompt_add_v0.6.jpg'} width="800px" />
 </p>
 
-We define four types of prompts: 
-- AGENT: Agent Prompt 
-- SCENE: Scene Prompt 
-- NORMAL: Normal prompt word 
-- EVALUATE: Evaluation Mode Prompt
+我们定义了四种类型的提示： 
+- 代理：代理提示 
+- SCENE：场景提示 
+- NORMAL：正常提示词 
+- EVALUATE：评估模式提示
 
-When the AGENT type is selected, all registered agents can be seen in the drop-down list menu, and you can select an agent to set the prompt.
+当选择代理类型时，下拉列表菜单中可以看到所有已注册的代理，您可以选择代理来设置提示。
 
-<p align="center">
+<p对齐=“中心”>
   <img src={'/img/app/agent_prompt_v0.6.jpg'} width="400px" />
 </p>
 
-After setting the prompt, a unique UID will be generated. You can bind the corresponding prompt according to the ID when using it.
+设置提示后，将会生成一个唯一的UID。使用时可以根据ID绑定对应的提示。
 
-<p align="center">
+<p对齐=“中心”>
   <img src={'/img/app/agent_prompt_code_v0.6.jpg'} width="800px" />
 </p>
 
 
-## Usage
+## 用法
 
-Enter the AWEL editing interface, as shown below, click **Application Management** -> **Create Workflow**
+进入AWEL编辑界面，如下图，点击**应用管理** -> **创建工作流**
 
 
-<p align="center">
+<p对齐=“中心”>
   <img src={'/img/app/awel_create.6.jpg'} width="800px" />
 </p>
 
-Find the Agent resource and select the AWEL Layout Agent operator. We can see that each Agent contains the following information: 
+找到 Agent 资源并选择 AWEL Layout Agent 运算符。我们可以看到每个Agent包含以下信息： 
 
-- Profile
-- Role
-- Goal
-- Resource (AWELResource): The resource that Agent depends on 
-- AgentConfig(AWELAgentConfig) Agent Config
-- AgentPrompt: Prompt
+- 简介
+- 角色
+- 目标
+- 资源（AWELResource）：Agent所依赖的资源 
+- AgentConfig(AWELAgentConfig) 代理配置
+- 代理提示：提示
 
-<p align="center">
+<p对齐=“中心”>
   <img src={'/img/app/agent_prompt_awel_v0.6.jpg'} width="800px" />
 </p>
 
-Click the [+] next to **AgentPrompt**, select the Prompt operator that pops up, and select the corresponding Prompt name or UID in the parameter panel to bind our newly created Prompt to the Agent, and debug the Agent's behavior in turn.
+点击**AgentPrompt**旁边的[+]，选择弹出的Prompt算子，在参数面板中选择对应的Prompt名称或者UID，将我们新创建的Prompt绑定到Agent上，依次调试Agent的行为。

@@ -1,3 +1,3 @@
-# ChangeLog 
+#变更日志
 
-Our version release information is maintained on GitHub. For more details, please visit [ReleaseNotes](https://github.com/eosphoros-ai/DB-GPT/releases)
+我们的版本发布信息维护在 GitHub 上。想要了解更多详情，请访问[ReleaseNotes](https://github.com/eosphoros-ai/DB-GPT/releases)

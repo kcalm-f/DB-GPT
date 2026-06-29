@@ -1,25 +1,25 @@
-# Resource Introduction
+# 资源介绍
 
-Resources are a bridge for DB-GPT agents to interact with the outside world. They include
-tools, databases, knowledge bases, etc.
+资源是DB-GPT代理与外界交互的桥梁。他们包括
+工具、数据库、知识库等
 
-## What Includes In Resources?
+## 资源包含什么？
 
-- **Tools**: The tools for this are similar to those used in some function calls.
-- **Databases**: You can query and analyze data from databases.
-- **Knowledge Bases**: External knowledge bases can be used to enrich the knowledge of the agent.
-- **APIs**: You can call third-party APIs to get data or perform operations.
-- **Files**: You can read and write some files.
-- **Third-party Plugins**: You can use third-party plugins to enrich the functionality of the agent.
+- **工具**：此工具与某些函数调用中使用的工具类似。
+- **数据库**：您可以查询和分析数据库中的数据。
+- **知识库**：外部知识库可用于丰富代理的知识。
+- **API**：您可以调用第三方API来获取数据或执行操作。
+- **文件**：您可以读取和写入一些文件。
+- **第三方插件**：您可以使用第三方插件来丰富代理的功能。
 - ...
 
-## Resource Pack
+## 资源包
 
-The resource pack is a collection of resources that can be used by agents. It usually contains some
-tools, databases, knowledge bases, etc. 
+资源包是代理可以使用的资源的集合。它通常包含一些
+工具、数据库、知识库等 
 
-You can wrap optional tools into `ToolPack`, or wrap all resources into `ResourcePack`.
+您可以将可选工具包装到“ToolPack”中，或将所有资源包装到“ResourcePack”中。
 
-## What's Next?
+## 下一步是什么？
 
-In following sections, we will introduce most of the resources that can be used in DB-GPT.
+在下面的章节中，我们将介绍 DB-GPT 中可以使用的大部分资源。

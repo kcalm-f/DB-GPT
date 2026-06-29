@@ -143,7 +143,7 @@ provider = "hf"
    CREATE DATABASE superstore;
    USE superstore;
    ```
-3. 创建 `superstore_dataset` 表：
+3.创建`superstore_dataset`表：
    ```sql
    CREATE TABLE `superstore_dataset`  (
      `row_id` int NOT NULL COMMENT 'Unique ID for each row',
@@ -205,10 +205,9 @@ uv run dbgpt start webserver --config configs/dbgpt-proxy-openai.toml
 # 或使用本地模型配置启动
 uv run dbgpt start webserver --config configs/dbgpt-local-glm.toml
 ```
+浏览器并访问：`http://localhost:5670`
 
-打开浏览器并访问：`http://localhost:5670`
-
-<p align="left">
+<p对齐=“左”>
   <img src={'/img/data_analysis/app.png'} width="720px" />
 </p>
 
@@ -222,9 +221,9 @@ uv run dbgpt start webserver --config configs/dbgpt-local-glm.toml
   <img src={'/img/data_analysis/5_1_1.png'} width="720px" />
 </p>
 
-2. 创建知识库
+2.创建知识库
 
-<p align="left">
+<p对齐=“左”>
   <img src={'/img/data_analysis/5_1_2.png'} width="720px" />
 </p>
 
@@ -236,11 +235,11 @@ uv run dbgpt start webserver --config configs/dbgpt-local-glm.toml
   <img src={'/img/data_analysis/5_1_3.png'} width="720px" />
 </p>
 
-4. 知识库类型
+4.知识库类型
 
 此处选择文档。
 
-<p align="left">
+<p对齐=“左”>
   <img src={'/img/data_analysis/5_1_4.png'} width="720px" />
 </p>
 
@@ -254,29 +253,29 @@ uv run dbgpt start webserver --config configs/dbgpt-local-glm.toml
 
 6. 分片
 
-分片策略选择"separator"，分隔符设置为"###"。
+分片策略选择“separator”，分隔符设置为“###”。
 
-<p align="left">
+<p对齐=“左”>
   <img src={'/img/data_analysis/5_1_6.png'} width="720px" />
 </p>
 
-7. 成功创建知识库
+7.成功创建知识库
 
-<p align="left">
+<p对齐=“左”>
   <img src={'/img/data_analysis/5_1_7.png'} width="720px" />
 </p>
 
 ### 4.2 创建数据库
 
-1. 选择数据库
+1.选择数据库
 
-<p align="left">
+<p对齐=“左”>
   <img src={'/img/data_analysis/5_2_1.png'} width="720px" />
 </p>
 
-2. 添加数据源
+2.添加数据源
 
-<p align="left">
+<p对齐=“左”>
   <img src={'/img/data_analysis/5_2_2.png'} width="720px" />
 </p>
 
@@ -288,9 +287,9 @@ uv run dbgpt start webserver --config configs/dbgpt-local-glm.toml
   <img src={'/img/data_analysis/5_2_3.png'} width="720px" />
 </p>
 
-4. 添加成功
+4.添加成功
 
-<p align="left">
+<p对齐=“左”>
   <img src={'/img/data_analysis/5_2_4.png'} width="720px" />
 </p>
 
@@ -298,11 +297,11 @@ uv run dbgpt start webserver --config configs/dbgpt-local-glm.toml
 
 ### 4.3 创建数据分析应用
 
-1. 创建应用
+1.创建应用程序
 
-点击“创建应用”
+点击“创建应用程序”
 
-<p align="left">
+<p对齐=“左”>
   <img src={'/img/data_analysis/5_3_1.png'} width="720px" />
 </p>
 
@@ -314,61 +313,61 @@ uv run dbgpt start webserver --config configs/dbgpt-local-glm.toml
   <img src={'/img/data_analysis/5_3_2.png'} width="720px" />
 </p>
 
-3. 加入`MetricInfoRetriever`
+3.加入`MetricInfoRetriever`
 
-选取`MetricInfoRetriever`，并配置知识库资源。
+一批`MetricInfoRetriever`，并配置知识库资源。
 
-<p align="left">
+<p对齐=“左”>
   <img src={'/img/data_analysis/5_3_3.png'} width="720px" />
 </p>
 
-4. 加入`DataScientist`
+4.加入`数据科学家`
 
-选取`DataScientist`，并配置数据库资源。
+一批`DataScientist`，并配置数据库资源。
 
-<p align="left">
+<p对齐=“左”>
   <img src={'/img/data_analysis/5_3_4.png'} width="720px" />
 </p>
 
-5. 加入`AnomalyDetector`
+5.加入`异常检测器`
 
-选取`AnomalyDetector`。
+里面有`AnomalyDetector`。
 
-<p align="left">
+<p对齐=“左”>
   <img src={'/img/data_analysis/5_3_5.png'} width="720px" />
 </p>
 
-6. 加入`VolatilityAnalyzer`
+6.加入`波动率分析器`
 
-选取`VolatilityAnalyzer`，并配置数据库资源。
+众多`VolatilityAnalyzer`，并配置数据库资源。
 
-<p align="left">
+<p对齐=“左”>
   <img src={'/img/data_analysis/5_3_6.png'} width="720px" />
 </p>
 
-7. 加入`ReportGenerator`
+7. 添加`报告生成器`
 
-选取`ReportGenerator`。
+里面有`ReportGenerator`。
 
-<p align="left">
+<p对齐=“左”>
   <img src={'/img/data_analysis/5_3_7.png'} width="720px" />
 </p>
 
-8. 保存
+8.保存
 
 点击“保存”。
 
-<p align="left">
+<p对齐=“左”>
   <img src={'/img/data_analysis/5_3_8.png'} width="720px" />
 </p>
 
 ### 4.4 使用
 
-1. 开始对话
+1.开始对话
 
 点击“开始对话”。
 
-<p align="left">
+<p对齐=“左”>
   <img src={'/img/data_analysis/5_4_1.png'} width="720px" />
 </p>
 
@@ -380,16 +379,16 @@ uv run dbgpt start webserver --config configs/dbgpt-local-glm.toml
   <img src={'/img/data_analysis/5_4_2.png'} width="720px" />
 </p>
 
-3. 回答
+3.回答
 
-<p align="left">
+<p对齐=“左”>
   <img src={'/img/data_analysis/5_4_3.png'} width="720px" />
 </p>
 
-4. 报告生成
+4.生成报告
 
-最终生成分析报告。
+最终分析生成报告。
 
-<p align="left">
+<p对齐=“左”>
   <img src={'/img/data_analysis/5_4_4.png'} width="720px" />
 </p>

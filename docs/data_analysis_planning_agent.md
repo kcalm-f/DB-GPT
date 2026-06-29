@@ -41,17 +41,16 @@ class DataAnalysisPlanningAgent(ConversableAgent):
     current_step: int = Field(default=0)           # 当前步骤
     planning_complete: bool = Field(default=False) # 规划完成状态
 ```
-
-#### 2. 专用工具集
-- `create_analysis_plan`: 创建分析计划
-- `examine_data_sources`: 检查数据源
+#### 2.专用工具集
+- `create_analysis_plan`：创建分析计划
+- `examine_data_sources`：检查数据源
 - `load_data`: 加载数据
-- `explore_data`: 探索性分析
-- `statistical_analysis`: 统计分析
+- `explore_data`：探索性分析
+- `统计分析`：统计分析
 - `create_visualization`: 创建可视化
 - `generate_insights`: 生成洞察
 
-#### 3. 智能提示模板
+#### 3.智能提示模板
 ```python
 _DATA_AGENT_SYSTEM_TEMPLATE = """
 You are an expert data analyst with strong planning and execution capabilities.

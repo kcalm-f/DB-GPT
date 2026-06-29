@@ -1,20 +1,20 @@
-# Built-in tools
+# 内置工具
 
-DB-GPT provides a small set of built-in tools in the **Agentic Data API**.
+DB-GPT 在 **代理数据 API** 中提供了一小组内置工具。
 
-These tools are the core execution layer for:
+这些工具是以下功能的核心执行层：
 
-- loading reusable skills
-- running Python analysis
-- executing shell commands
-- querying structured data
-- rendering HTML reports
+- 加载可重复使用的技能
+- 运行Python分析
+- 执行shell命令
+- 查询结构化数据
+- 呈现 HTML 报告
 
 Source of truth:
 
 - `packages/dbgpt-app/src/dbgpt_app/openapi/api_v1/agentic_data_api.py`
 
-## Built-in tools
+## 内置工具
 
 - [load_skill](./tools/load-skill.md)
 - [code_interpreter](./tools/code-interpreter.md)
@@ -22,32 +22,32 @@ Source of truth:
 - [sql_query](./tools/sql-query.md)
 - [html_interpreter](./tools/html-interpreter.md)
 
-## Recommended execution order
+## 推荐的执行顺序
 
-### Skill-driven workflow
+### 技能驱动的工作流程
 
-1. `load_skill`
-2. `sql_query` or `code_interpreter`
-3. `html_interpreter` for final delivery
+1.`加载技能`
+2. `sql_query` 或 `code_interpreter`
+3. 最终交付的`html_interpreter`
 
-### Structured data workflow
+### 结构化数据工作流程
 
 1. `sql_query`
 2. `code_interpreter`
-3. `html_interpreter`
+3.`html_解释器`
 
-### Shell-assisted workflow
+### Shell 辅助工作流程
 
-1. `shell_interpreter`
-2. `code_interpreter`
-3. `html_interpreter` if the result must be rendered
+1.`shell_解释器`
+2.`代码解释器`
+3. `html_interpreter` 如果必须渲染结果
 
-## Tool selection guide
+## 工具选择指南
 
-| Tool | Use it for | Avoid using it for |
-|------|------------|--------------------|
-| `load_skill` | Loading skill instructions and workflow definitions | Running code or shell commands |
-| `code_interpreter` | Python analysis, calculations, charts, dataframe work | Shell commands or final HTML rendering |
-| `shell_interpreter` | CLI commands and environment inspection | Python analysis or final report rendering |
-| `sql_query` | Read-only SQL exploration | Writes, schema changes, destructive SQL |
-| `html_interpreter` | Final HTML page / report rendering | Computation or shell execution |
+|工具|用它来 | Avoid using it for |
+|------|------------------------|--------------------|
+| `加载技能` |加载技能说明和工作流程定义 |运行代码或 shell 命令 |
+| `code_interpreter` | Python 分析、计算、图表、数据框架工作 | Shell 命令或最终 HTML 渲染 |
+| `shell_interpreter` | CLI命令和环境检查| Python分析或最终报告渲染|
+| `sql_query` |只读 SQL 探索 |写入、架构更改、破坏性 SQL |
+| `html_interpreter` |最终 HTML 页面/报告渲染 |计算或 shell 执行 |

@@ -1,12 +1,11 @@
-# MySQL
+#MySQL
 
-MySQL is a widely used open-source relational database system. DB-GPT includes a
-native MySQL datasource connector in `dbgpt_ext.datasource.rdbms.conn_mysql`.
+MySQL 是一种广泛使用的开源关系数据库系统。 DB-GPT 包括
+`dbgpt_ext.datasource.rdbms.conn_mysql` 中的本机 MySQL 数据源连接器。
 
-### Install Dependencies
+### 安装依赖项
 
-First, install the MySQL datasource dependency set.
-
+首先，安装MySQL数据源依赖集。
 ```bash
 uv sync --all-packages \
 --extra "base" \
@@ -15,32 +14,27 @@ uv sync --all-packages \
 --extra "storage_chromadb" \
 --extra "dbgpts"
 ```
+### 准备MySQL
 
-### Prepare MySQL
-
-Prepare a MySQL service and database, then start the DB-GPT webserver:
-
+准备 MySQL 服务和数据库，然后启动 DB-GPT Web 服务器：
 ```bash
 uv run dbgpt start webserver --config configs/dbgpt-proxy-openai.toml
 ```
-
-Optionally:
-
+可选：
 ```bash
 uv run python packages/dbgpt-app/src/dbgpt_app/dbgpt_server.py --config configs/dbgpt-proxy-openai.toml
 ```
+### MySQL 配置
 
-### MySQL Configuration
+使用数据源 UI 或配置字段：
 
-Use the datasource UI or configuration fields for:
+- 主机
+- 端口
+- 用户
+- 密码
+- 数据库
+- 驱动程序（`mysql+pymysql`）
 
-- host
-- port
-- user
-- password
-- database
-- driver (`mysql+pymysql`)
-
-The MySQL connector is implemented in:
+MySQL连接器的实现是：
 
 - `packages/dbgpt-ext/src/dbgpt_ext/datasource/rdbms/conn_mysql.py`

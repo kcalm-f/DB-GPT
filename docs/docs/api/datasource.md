@@ -1,18 +1,18 @@
-# Datasource
+# 数据源
 
-Get started with the Datasource API
+开始使用数据源 API
 
-# Chat Datasource
+# 聊天数据源
 
 ```python
 POST /api/v2/chat/completions
 ```
-### Examples
+### 示例
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-### Chat Datasource
+### 聊天数据源
 
 
 <Tabs
@@ -93,7 +93,7 @@ for chunk in response:
  </TabItem>
 </Tabs>
 
-#### Chat Completion Response
+#### 聊天补全响应
 ```json
 {
     "id": "2bb80fdd-e47e-4083-8bc9-7ca66ee0931b",
@@ -117,30 +117,30 @@ for chunk in response:
     }
 }
 ```
-### Create Datasource
+### 创建数据源
 
 ```python
 POST /api/v2/serve/datasources
 ```
-#### Request body
-Request <a href="#the-flow-object">Datasource Object</a>
+#### 请求体
+请求 <a href="#the-flow-object">数据源对象</a>
 
-#### Response body
-Return <a href="#the-flow-object">Datasource Object</a>
+#### 响应体
+返回 <a href="#the-flow-object">数据源对象</a>
 
 
-### Update Datasource
+### 更新数据源
 ```python
 PUT /api/v2/serve/datasources
 ```
 
-#### Request body
-Request <a href="#the-flow-object">Datasource Object</a>
+#### 请求体
+请求 <a href="#the-flow-object">数据源对象</a>
 
-#### Response body
-Return <a href="#the-flow-object">Datasource Object</a>
+#### 响应体
+返回 <a href="#the-flow-object">数据源对象</a>
 
-### Delete Datasource
+### 删除数据源
 
 ```python
 DELETE /api/v2/serve/datasources
@@ -185,17 +185,17 @@ res = await delete_datasource(client=client, datasource_id=datasource_id)
  </TabItem>
 </Tabs>
 
-#### Delete Parameters
+#### 删除参数
 ________
-<b>datasource_id</b> <font color="gray"> string </font> <font color="red"> Required </font>
+<b>datasource_id</b> <font color="gray"> string </font> <font color="red"> 必填 </font>
 
-datasource id
+数据源 ID
 ________
 
-#### Response body
-Return <a href="#the-flow-object">Datasource Object</a>
+#### 响应体
+返回 <a href="#the-flow-object">数据源对象</a>
 
-### Get Datasource
+### 获取数据源
 
 ```python
 GET /api/v2/serve/datasources/{datasource_id}
@@ -238,17 +238,17 @@ res = await get_datasource(client=client, datasource_id=datasource_id)
  </TabItem>
 </Tabs>
 
-#### Query Parameters
+#### 查询参数
 ________
-<b>datasource_id</b> <font color="gray"> string </font> <font color="red"> Required </font>
+<b>datasource_id</b> <font color="gray"> string </font> <font color="red"> 必填 </font>
 
-datasource id
+数据源 ID
 ________
 
-#### Response body
-Return <a href="#the-flow-object">Datasource Object</a>
+#### 响应体
+返回 <a href="#the-flow-object">数据源对象</a>
 
-### List Datasource
+### 数据源列表
 
 ```python
 GET /api/v2/serve/datasources
@@ -291,45 +291,45 @@ res = await list_datasource(client=client)
  </TabItem>
 </Tabs>
 
-#### Response body
-Return <a href="#the-flow-object">Datasource Object</a>
+#### 响应体
+返回 <a href="#the-flow-object">数据源对象</a>
 
-### The Datasource Object
+### 数据源对象
 
 ________
 <b>id</b> <font color="gray">string</font>
 
-The unique id for the datasource.
+数据源的唯一 ID。
 ________
 <b>db_name</b> <font color="gray">string</font>
 
-The Database name
+数据库名称
 ________
 <b>db_type</b> <font color="gray">string</font>
 
-Database type, e.g. sqlite, mysql, etc.
+数据库类型，例如 sqlite、mysql 等。
 ________
 <b>db_path</b> <font color="gray">string</font>
 
-File path for file-based database.
+基于文件的数据库的文件路径。
 ________
 <b>db_host</b> <font color="gray">string</font>
 
-Database host.
+数据库主机。
 ________
 <b>db_port</b> <font color="gray">object</font>
 
-Database port.
+数据库端口。
 ________
 <b>db_user</b> <font color="gray">string</font>
 
-Database user.
+数据库用户。
 ________
 <b>db_pwd</b> <font color="gray">string</font>
 
-Database password.
+数据库密码。
 ________
 <b>comment</b> <font color="gray">string</font>
 
-Comment for the database.
+数据库备注。
 ________

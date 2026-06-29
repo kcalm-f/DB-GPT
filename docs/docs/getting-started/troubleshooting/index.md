@@ -6,47 +6,43 @@ read_when:
   - Something broke and you want the fastest fix path
   - DB-GPT starts inconsistently, the UI is blank, or models fail to load
 ---
+# 故障排除
 
-# Troubleshooting
+使用 DB-GPT 时的常见问题和解决方案。
 
-Common issues and solutions when working with DB-GPT.
+## 前 60 秒
 
-## First 60 seconds
-
-Run these first:
-
+首先运行这些：
 ```bash
 curl http://localhost:5670/api/health
 dbgpt model list
 docker logs dbgpt -f
 ```
+如果您不使用 Docker，请检查启动 Web 服务器的同一终端。
 
-If you are not using Docker, check the same terminal where you started the webserver.
+## 常见的快速修复
 
-## Common quick fixes
+- **服务器将无法启动**
+  - 使用正确的附加功能重新运行“uv同步”
+  - 请参阅[安装问题](/docs/getting-started/troubleshooting/installation)
+- **网络用户界面为空白**
+  - 等待启动完成
+  - 确认服务器可以通过 `http://localhost:5670` 访问
+- **找不到模型/验证错误**
+  - 重新检查 TOML 配置和提供程序名称
+  - 请参阅[模型问题](/docs/getting-started/troubleshooting/llm)
+- **端口 5670 已在使用中**
+  - 使用“lsof -i :5670”查找冲突进程
+- **内存不足**
+  - 使用较小的本地模型或切换到 API 代理模型
 
-- **Server will not start**
-  - Re-run `uv sync` with the right extras
-  - See [Installation Issues](/docs/getting-started/troubleshooting/installation)
-- **Web UI is blank**
-  - Wait for startup to finish
-  - Confirm the server is reachable on `http://localhost:5670`
-- **Model not found / auth error**
-  - Re-check the TOML config and provider name
-  - See [Model Issues](/docs/getting-started/troubleshooting/llm)
-- **Port 5670 is already in use**
-  - Find the conflicting process with `lsof -i :5670`
-- **Out of memory**
-  - Use a smaller local model or switch to an API proxy model
+## 更具体的指南
 
-## More specific guides
+- [安装问题](/docs/getting-started/troubleshooting/installation)
+- [模型问题](/docs/getting-started/troubleshooting/llm)
+- [环境变量](/docs/getting-started/troubleshooting/environment)
 
-- [Installation Issues](/docs/getting-started/troubleshooting/installation)
-- [Model Issues](/docs/getting-started/troubleshooting/llm)
-- [Environment Variables](/docs/getting-started/troubleshooting/environment)
-
-## Logs
-
+## 日志
 ```bash
 # Source code deployment
 # Logs are printed to stdout by default
@@ -57,12 +53,11 @@ docker logs dbgpt -f
 # Docker Compose deployment
 docker logs db-gpt-webserver-1 -f
 ```
+## 获取帮助
 
-## Getting help
+如果故障排除指南无法解决您的问题：
 
-If the troubleshooting guides don't resolve your issue:
-
-1. **Search existing issues**: [GitHub Issues](https://github.com/eosphoros-ai/DB-GPT/issues)
-2. **Ask the community**: [GitHub Discussions](https://github.com/orgs/eosphoros-ai/discussions)
-3. **Join Slack**: [DB-GPT Slack](https://join.slack.com/t/slack-inu2564/shared_invite/zt-29rcnyw2b-N~ubOD9kFc7b7MDOAM1otA)
-4. **Check FAQ**: [Installation FAQ](/docs/faq/install) · [LLM FAQ](/docs/faq/llm) · [KBQA FAQ](/docs/faq/kbqa)
+1. **搜索现有问题**：[GitHub问题](https://github.com/eosphoros-ai/DB-GPT/issues)
+2. **询问社区**：[GitHub 讨论](https://github.com/orgs/eosphoros-ai/discussions)
+3. **加入 Slack**：[DB-GPT Slack](https://join.slack.com/t/slack-inu2564/shared_invite/zt-29rcnyw2b-N~ubOD9kFc7b7MDOAM1otA)
+4. **查看常见问题解答**： [安装常见问题解答](/docs/faq/install) · [LLM 常见问题解答](/docs/faq/llm) · [KBQA 常见问题解答](/docs/faq/kbqa)

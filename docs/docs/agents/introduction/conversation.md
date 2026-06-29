@@ -1,11 +1,10 @@
-# Multi-Agents Conversation
+# 多代理对话
 
-Here we will show you how to write a multi-agents conversation program.
+这里我们将向您展示如何编写多代理对话程序。
 
-## Two Agents Conversation
+## 两个特工的对话
 
-First, create common `LLMConfig` and `AgentMemory` for both agents.
-
+首先，为两个代理创建通用的“LLMConfig”和“AgentMemory”。
 ```python
 import os
 from dbgpt.agent import AgentContext, AgentMemory
@@ -48,16 +47,14 @@ user: {{ question }}
 {% endif %}
 """
 ```
+在上面的代码中，我们在`AgentContext`中设置`max_chat_round=4`，这意味着对话 
+4轮后结束。
 
-In above code, we set `max_chat_round=4` in `AgentContext`, which means the conversation 
-will end after 4 rounds.
-
-And here we set `system_prompt_template` and `user_prompt_template` for both agents for a simple conversation, we
-will introduce it in profile module later.
+在这里，我们为两个代理设置 `system_prompt_template` 和 `user_prompt_template` 来进行简单的对话，我们
+稍后会在 profile 模块中介绍。
 
 
-Then, create two agents, `Bob` and `Alice`, and initiate a chat between them.
-
+然后，创建两个代理“Bob”和“Alice”，并在他们之间发起聊天。
 ```python 
 
 import asyncio
@@ -100,9 +97,7 @@ async def main():
 if __name__ == "__main__":
     asyncio.run(main())
 ```
-
-Run the code, you will see the conversation between `Bob` and `Alice`:
-
+运行代码，您将看到“Bob”和“Alice”之间的对话：
 ```bash
 --------------------------------------------------------------------------------
 Bob (to Alice)-[]:

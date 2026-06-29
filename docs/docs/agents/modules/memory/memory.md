@@ -1,54 +1,60 @@
-# Memory Introduction
+# 内存介绍
 
-> The memory module plays a very important role in the agent architecture design. It 
-> stores information perceived from the environment and leverages the recorded memories 
-> to facilitate future actions. The memory module can help the agent to accumulate 
-> experiences, self-evolve, and behave in a more consistent, reasonable, and effective manner.
+> 内存模块在Agent架构设计中起着非常重要的作用。它 
+> 存储从环境中感知到的信息并利用记录的记忆 
+> 促进未来的行动。记忆模块可以帮助代理积累 
+> 体验、自我进化，并以更加一致、合理和有效的方式行事。
 
-## Memory Module Overview
+## 内存模块概述
 
-### Memory Operations
+### 内存操作
 
-In DB-GPT agents, there are three main memory operations:
 
-1. **Memory reading**: The objective of memory reading is to extract meaningful 
-information from memory to enhance the agent’s actions.
-2. **Memory writing**: The purpose of memory writing is to store information about the 
-perceived environment in memory. Storing valuable information in memory provides a 
-foundation for retrieving informative memories in the future, enabling the agent to act 
-more efficiently and rationally.
-3. **Memory reflection**: Memory reflection emulates humans’ ability to witness and 
-evaluate their own cognitive, emotional, and behavioral processes. When adapted to agents, 
-the objective is to provide agents with the capability to independently summarize and 
-infer more abstract, complex and high-level information.
+在 DB-GPT 代理中，主要有以下三种内存操作：
 
-### Memory Structure
+1. **记忆阅读**：记忆阅读的目的是提取有意义的内容 
+记忆中的信息可以增强智能体的行动。
+2. **内存写入**：内存写入的目的是存储有关的信息 
+记忆中感知的环境。在内存中存储有价值的信息提供了 
 
-In DB-GPT agents, there are four main memory structures:
-1. **Sensory memory**: Like human sensory memory, the sensory memory is registers 
-perceptual inputs, and it will receive the observations from the environment, some of sensory
-memory will be transferred to short-term memory.
-2. **Short-term memory**: Short-term memory temporarily buffers recent perceptions, it will receive
-some of the sensory memory, and it can be enhanced by other observations or retrieved memories to enter the long-term memory.
-3. **Long-term memory**: Long-term memory stores the agent’s experiences and knowledge, it can receive
-information from short-term memory, and it will consolidates important information over time.
-4. **Hybrid memory**: Hybrid memory is a combination of sensory memory, short-term memory, and long-term memory.
+为未来检索信息记忆奠定基础，使智能体能够采取行动 
+更加高效、合理。
+3. **记忆反射**：记忆反射模拟人类见证和记录的能力 
+评估他们自己的认知、情感和行为过程。当适应代理时， 
+目标是为智能体提供独立总结和总结的能力 
+推断出更抽象、复杂和高级的信息。
 
-## Memory In DB-GPT Agents
 
-### Some Concepts Of Memory
+### 内存结构
 
-- `Memory`: The memory is a class that stores all the memories, it can be `SensorMemory`, 
-`ShortTermMemory`, `EnhancedShortTermMemory`, `LongTermMemory` and `HybridMemory` now.
-- `MemoryFragment`: The `MemoryFragment` is an abstract class that stores the memory information,  
-The `AgentMemoryFragment` is a class that inherits from `MemoryFragment`,  it contains 
-the memory content, memory id, memory importance, last access time, etc. 
-- `GptsMemory`: The `GptsMemory` is used to store the conversation and plan information, not a part of the memory structure.
-- `AgentMemory`: The `AgentMemory` is a class that contains the `Memory` and `GptsMemory`.
+在 DB-GPT 代理中，有四种主要的内存结构：
+1. **感觉记忆**：和人类的感觉记忆一样，感觉记忆就是寄存器 
+感知输入，它会接收来自环境的观察结果，一些感觉
+记忆将转移到短期记忆。
+2. **短期记忆**：短期记忆暂时缓冲最近的感知，它将接收
 
-### Create Memory
+一些感觉记忆，可以通过其他观察或检索记忆来增强，从而进入长期记忆。
+3. **长期记忆**：长期记忆存储了智能体的经验和知识，它可以接收
+短期记忆中的信息，随着时间的推移，它会巩固重要的信息。
+4. **混合记忆**：混合记忆是感觉记忆、短期记忆和长期记忆的组合。
 
-As mentioned in previous sections, the memory are include in `AgentMemory` class, here is an example:
+
+## DB-GPT 代理中的内存
+
+### 记忆的一些概念
+
+- `Memory`：内存是一个存储所有内存的类，它可以是`SensorMemory`， 
+现在有“短期内存”、“增强型短期内存”、“长期内存”和“混合内存”。
+- `MemoryFragment`：`MemoryFragment`是一个存储内存信息的抽象类，  
+`AgentMemoryFragment` 是一个继承自 `MemoryFragment` 的类，它包含 
+
+内存内容、内存 ID、内存重要性、上次访问时间等。 
+- `GptsMemory`：`GptsMemory` 用于存储会话和计划信息，而不是内存结构的一部分。
+- `AgentMemory`：`AgentMemory`是一个包含`Memory`和`GptsMemory`的类。
+
+### 创建内存
+
+正如前面提到的，内存包含在`AgentMemory`类中，下面是一个例子：
 ```python
 from dbgpt.agent import AgentMemory, ShortTermMemory
 
@@ -56,11 +62,10 @@ from dbgpt.agent import AgentMemory, ShortTermMemory
 memory = ShortTermMemory(buffer_size=5)
 agent_memory = AgentMemory(memory=memory)
 ```
+顺便说一句，在`AgentMemory`类中，你可以传递一个`GptsMemory`，在传统意义上， 
+`GptsMemory`不包含在内存结构中，它用于存储会话和计划信息。
 
-By the way, in `AgentMemory` class, you can pass a `GptsMemory`, in the conventional sense, 
-`GptsMemory` is not included in the memory structure, it is used to store the conversation and plan information.
-
-A example of `GptsMemory`:
+`GptsMemory` 的一个例子：
 ```python
 from dbgpt.agent import AgentMemory, ShortTermMemory, GptsMemory
 
@@ -70,22 +75,22 @@ memory = ShortTermMemory(buffer_size=5)
 gpts_memory = GptsMemory()
 agent_memory = AgentMemory(memory=memory, gpts_memory=gpts_memory)
 ```
+### 在代理中读写内存
 
-### Read And Write Memory In Agent
+Agent会调用read_memories方法从内存中读取内存片段， 
+并调用 write_memories 方法将内存片段写入内存。
 
-The agent will call the `read_memories` method to read the memory fragments from the memory, 
-and call the `write_memories` method to write the memory fragments to the memory.
+当agent调用LLM时，内存会写入LLM提示符，LLM返回响应后，
+代理会将查询和响应写入内存。
 
-When agent call the LLM, the memories will write to the LLM prompt, after the LLM return the response,
-the agent will write the query and response to the memory.
 
-As we mentioned in [Profile To Prompt](../profile/profile_to_prompt), there are a 
-template variables named `most_recent_memories` in prompt template, it will be replaced by the
-most recent memories.
+正如我们在[Profile To Prompt](../profile/profile_to_prompt)中提到的，有一个 
+提示模板中名为“most_recent_memories”的模板变量，它将被替换为
+最近的记忆。
 
-#### Read Memories To Build Prompt
+#### 读取记忆以构建提示
 
-Here is an example to read memories from memory and build the prompt:
+下面是一个从内存中读取内存并构建提示的示例：
 ```python
 import os
 import asyncio
@@ -170,10 +175,9 @@ async def main():
 if __name__ == "__main__":
     asyncio.run(main())
 ```
-In the above example, we set `verbose=True` in `AgentContext`, to print out the conversation history.
+在上面的例子中，我们在`AgentContext`中设置`verbose=True`，来打印对话历史记录。
 
-The output will be like this:
-
+输出将是这样的：
 ``````shell
 --------------------------------------------------------------------------------
 User (to Joy)-[]:
@@ -292,8 +296,7 @@ They don't have the guts!
 
 --------------------------------------------------------------------------------
 ``````
-
-In the second conversation, you can see the `Most recent observations` in the user prompt,
+在第二个对话中，您可以在用户提示中看到“最近的观察结果”，
 ``````
 --------------------------------------------------------------------------------
 String Prompt[verbose]: 
@@ -327,27 +330,25 @@ Why don't skeletons fight each other?
 They don't have the guts!
 --------------------------------------------------------------------------------
 ``````
+#### 写下回忆
 
-#### Write Memories
+当代理收到来自LLM的响应时，它将把查询和响应写入内存。
+在内存片段中，“内容”是字符串，因此您应该决定如何存储内容中的信息。
 
-When the agent receives the response from the LLM, it will write the query and response to the memory.
-In memory fragment, the `content` is string, so you should decide how to store the information in the content.
-
-In above example, the `write_memory_template` is:
+在上面的示例中，“write_memory_template”是：
 ```python
 write_memory_template = """\
 {% if question %}user: {{ question }} {% endif %}
 {% if thought %}assistant: {{ thought }} {% endif %}\
 """
 ```
-The `question` is the user query, and the `thought` is the LLM response, we will introduce more in next section.
+“问题”是用户查询，“想法”是LLM响应，我们将在下一节介绍更多。
 
 
-## Custom Memory Reading And Writing
+## 自定义内存读写
 
-We can customize the memory reading and writing by inheriting the `ConversableAgent` class 
-and override the `read_memories` and `write_memories` methods.
-
+我们可以通过继承`ConversableAgent`类来自定义内存读写 
+并重写`read_memories`和`write_memories`方法。
 ```python
 from typing import Optional
 from dbgpt.agent import (
@@ -420,14 +421,14 @@ class JoyAgent(ConversableAgent):
         fragment = AgentMemoryFragment(memory_content)
         await self.memory.write(fragment)
 ```
+在上面的例子中，我们重写了`read_memories`来从内存中读取内存，在DB-GPT中，
+最近的记忆将形成提示模板中的“most_recent_memories”， 
+并重写`write_memories`将内存写入内存。
 
-In the above example, we override the `read_memories` to read the memories from the memory, in DB-GPT,
-the most recent memories will form the `most_recent_memories` in the prompt template, 
-And override the `write_memories` to write the memories to the memory.
+**所以，你可以根据自己的需要自定义内存读写。**
 
-**So, you can customize the memory reading and writing according to your needs.**
+## 总结
 
-## Summary
 
-In this document, we introduced the memory module in DB-GPT agents, and how to use the memory in agents.
-In following sections, we will introduce how to use each memory structure in DB-GPT agents.
+在本文档中，我们介绍了 DB-GPT 代理中的内存模块，以及如何在代理中使用内存。
+在下面的章节中，我们将介绍如何使用 DB-GPT 代理中的各个内存结构。

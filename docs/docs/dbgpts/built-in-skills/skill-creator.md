@@ -1,13 +1,12 @@
-# skill-creator
+# 技能创造者
 
-## Overview
+## 概述
 
-`skill-creator` is the built-in meta-skill for designing, scaffolding, validating, and packaging new skills.
+“技能创建者”是用于设计、搭建、验证和打包新技能的内置元技能。
 
-It is the canonical reference in this repository for how skills should be structured.
+它是该存储库中关于如何构建技能的规范参考。
 
-## Repo path
-
+## 仓库路径
 ```text
 skills/skill-creator/
 ├── SKILL.md
@@ -20,33 +19,32 @@ skills/skill-creator/
 │   └── output-patterns.md
 └── LICENSE.txt
 ```
+## 何时使用
 
-## When to use it
+- 创造新技能
+- 提高现有技能
+- 决定什么属于`SKILL.md`、`scripts/`、`references/` 和`assets/`
+- 验证并打包可分发的“.skill”文件
 
-- create a new skill
-- improve an existing skill
-- decide what belongs in `SKILL.md`, `scripts/`, `references/`, and `assets/`
-- validate and package a distributable `.skill` file
+## 它所教授的核心工作流程
 
-## Core workflow it teaches
+1. 了解目标用例。
+2. 规划可重用脚本、参考和资产。
+3. 初始化技能脚手架。
+4、落实并细化捆绑资源。
+5. 写入或收紧`SKILL.md`。
+6. 验证并打包最终技能。
 
-1. Understand the target use case.
-2. Plan reusable scripts, references, and assets.
-3. Initialize a skill scaffold.
-4. Implement and refine the bundled resources.
-5. Write or tighten `SKILL.md`.
-6. Validate and package the final skill.
+## 重要资源
 
-## Important resources
-
-| Resource | Purpose |
+|资源 |目的|
 |---|---|
-| `scripts/init_skill.py` | Creates a new skill scaffold |
-| `scripts/package_skill.py` | Packages a skill into a distributable artifact |
-| `scripts/quick_validate.py` | Validates skill structure and quality quickly |
-| `references/workflows.md` | Guidance for multi-step skill workflow design |
-| `references/output-patterns.md` | Guidance for output formats and quality patterns |
+| `scripts/init_skill.py` |创建新的技能支架 |
+| `scripts/package_skill.py` |将技能打包成可分发的工件 |
+| `scripts/quick_validate.py` |快速验证技能结构和质量 |
+| `references/workflows.md` |多步骤技能工作流程设计指南|
+| `references/output-patterns.md` |输出格式和质量模式指南 |
 
-## Why it matters
+## 为什么这很重要
 
-This built-in skill defines the best-practice model for authoring both custom skills and future built-in skills in DB-GPT.
+此内置技能定义了在 DB-GPT 中创作自定义技能和未来内置技能的最佳实践模型。

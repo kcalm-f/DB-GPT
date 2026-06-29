@@ -1,32 +1,31 @@
-# Hybrid Knowledge Process Workflow
-# Introduction
-At present, the DB-GPT knowledge base provides knowledge processing capabilities such as `document uploading` ->` parsing` ->` chunking` ->` Embedding` -> `Knowledge Graph triple extraction `-> `vector database storage` ->  `graph database storage`, but it does not have the ability to extract complex information from documents, including vector extraction and Knowledge Graph extraction from document blocks at the same time. The hybrid knowledge processing template defines complex knowledge processing workflow, it also supports document vector extraction, Keyword extraction and Knowledge Graph extraction.
+# 混合知识处理工作流程
+# 简介
+目前DB-GPT知识库提供了“文档上传”->“解析”->“分块”->“嵌入”->“知识图谱三元组提取”->“向量数据库存储”->“图数据库存储”等知识处理能力，但不具备从文档中提取复杂信息的能力，包括同时从文档块中提取向量和知识图谱。混合知识处理模板定义了复杂的知识处理工作流程，还支持文档向量提取、关键词提取和知识图谱提取。
 
-# Applicable Scenarios 
-+ It is not limited to the traditional, single knowledge processing process (only Embedding processing or knowledge graph extraction processing), knowledge processing workflow implements Embedding and Knowledge Graph extraction at the same time, as a mixed knowledge recall retrieval data storage. 
-+ Users can tailor and add existing knowledge processing processes based on their own business scenarios.
+# 适用场景 
++ 不限于传统的、单一的知识处理流程（仅Embedding处理或知识图谱提取处理），知识处理工作流程同时实现Embedding和知识图谱提取，作为混合知识回忆检索数据存储。 
++ 用户可以根据自己的业务场景剪裁和添加现有的知识处理流程。
 
-# How to use 
-+ Enter the AWEL interface and add a workflow
+# 如何使用 
++ 进入AWEL界面并添加工作流程
 
 ![](https://intranetproxy.alipay.com/skylark/lark/0/2024/png/26456775/1734354927468-feed0ac7-e0fe-45e8-b85c-aba170084f82.png)
 
-+ Import Knowledge Processing Template
++ 导入知识处理模板
 
 ![](https://intranetproxy.alipay.com/skylark/lark/0/2024/png/26456775/1734357236704-5a15be65-3d11-4406-98d7-efb82e5142dc.png)
 
-+ Adjust parameters and save
++ 调整参数并保存
 
 ![](https://intranetproxy.alipay.com/skylark/lark/0/2024/png/26456775/1734355123947-3e252e59-2b2a-4bca-adef-13a93ee6cdf3.png)
 
-    - `Document knowledge loading operator `: Knowledge loading factory, by loading the specified document type, find the corresponding document processor for document content parsing. 
-    - `Document Chunk slicing operator `: Slice the loaded document content according to the specified slicing parameters. 
-    - `Knowledge Processing branch operator `: You can connect different knowledge processing processes, including knowledge map processing processes, vector processing processes, and keyword processing processes. 
-    - `Vector storage machining operator `: You can connect different vector databases for vector storage, and you can also connect different Embedding models and services for vector extraction. 
-    - `Knowledge Graph processing operator `: You can connect different knowledge graph processing operators, including native knowledge graph processing operators and community summary Knowledge Graph processing operators. You can also specify different graph databases for storage. Currently, TuGraph databases are supported. 
-    - `Result aggregation operator `: Summarize the results of vector extraction and Knowledge Graph extraction.
-+ Register Post as http request
-
+    - `文档知识加载算子`：知识加载工厂，通过加载指定的文档类型，找到对应的文档处理器进行文档内容解析。 
+    - `Document Chunk 切片运算符`：根据指定的切片参数对加载的文档内容进行切片。 
+    - `知识处理分支算子`：可以连接不同的知识处理流程，包括知识图谱处理流程、向量处理流程、关键词处理流程。 
+    - `向量存储加工算子`：可以连接不同的向量数据库进行向量存储，也可以连接不同的Embedding模型和服务进行向量提取。 
+    - `知识图谱处理算子`：可以连接不同的知识图谱处理算子，包括原生知识图谱处理算子和社区汇总知识图谱处理算子。您还可以指定不同的图数据库进行存储。目前支持 TuGraph 数据库。 
+    - `结果聚合算子`：汇总向量提取和知识图谱提取的结果。
++ 将 Post 注册为 http 请求
 ```bash
 curl --location --request POST 'http://localhost:5670/api/v1/awel/trigger/rag/knowledge/hybrid/process' \
 --header 'Content-Type: application/json' \

@@ -12,6 +12,7 @@ from dbgpt.core.awel.flow import (
     ResourceCategory,
     register_resource,
 )
+from dbgpt.util.i18n_utils import _
 
 from ....resource.base import AgentResource, ResourceType
 from ....resource.manage import get_resource_manager
@@ -37,13 +38,13 @@ def _load_resource_types():
 
 
 @register_resource(
-    label="AWEL Agent Resource",
+    label=_("AWEL Agent Resource"),
     name="agent_operator_resource",
-    description="The Agent Resource.",
+    description=_("The Agent Resource."),
     category=ResourceCategory.AGENT,
     parameters=[
         Parameter.build_from(
-            label="Agent Resource Type",
+            label=_("Agent Resource Type"),
             name="agent_resource_type",
             type=str,
             optional=True,
@@ -51,20 +52,20 @@ def _load_resource_types():
             options=FunctionDynamicOptions(func=_load_resource_types),
         ),
         Parameter.build_from(
-            label="Agent Resource Name",
+            label=_("Agent Resource Name"),
             name="agent_resource_name",
             type=str,
             optional=True,
             default=None,
-            description="The agent resource name.",
+            description=_("The agent resource name."),
         ),
         Parameter.build_from(
-            label="Agent Resource Value",
+            label=_("Agent Resource Value"),
             name="agent_resource_value",
             type=str,
             optional=True,
             default=None,
-            description="The agent resource value.",
+            description=_("The agent resource value."),
         ),
     ],
     alias=[
@@ -108,35 +109,35 @@ def _agent_resource_knowledge_values(
 
 
 @register_resource(
-    label="Awel Agent Resource Knowledge",
+    label=_("Awel Agent Resource Knowledge"),
     name="agent_resource_knowledge",
-    description="The Agent Resource Knowledge.",
+    description=_("The Agent Resource Knowledge."),
     category=ResourceCategory.AGENT,
     parameters=[
         Parameter.build_from(
-            label="Agent Resource Name",
+            label=_("Agent Resource Name"),
             name="agent_resource_name",
             type=str,
             optional=True,
             default=None,
-            description="The agent resource name.",
+            description=_("The agent resource name."),
         ),
         Parameter.build_from(
-            label="Agent Resource Value",
+            label=_("Agent Resource Value"),
             name="agent_resource_value",
             type=str,
             optional=True,
             default=None,
-            description="The agent resource value.",
+            description=_("The agent resource value."),
             options=FunctionDynamicOptions(func=_agent_resource_knowledge_values),
         ),
         Parameter.build_from(
-            label="Agent Knowledge Resource Recall TopK",
+            label=_("Agent Knowledge Resource Recall TopK"),
             name="agent_resource_recall_topk",
             type=str,
             default=3,
             optional=True,
-            description="The agent resource recall topk.",
+            description=_("The agent resource recall topk."),
         ),
     ],
     alias=[

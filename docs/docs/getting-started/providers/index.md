@@ -6,34 +6,32 @@ read_when:
   - You need to pick a provider for your first setup
   - You want to know whether to use API models, Ollama, or vLLM
 ---
+# 模型提供者
 
-# Model Providers
+DB-GPT 支持 API 提供程序和本地运行时。首次运行时，请使用 API 提供程序，除非您特别需要本地推理。
 
-DB-GPT supports API providers and local runtimes. For a first run, use an API provider unless you specifically want local inference.
-
-:::info Quick pick
-Not sure which provider to choose? Start with **OpenAI** or **DeepSeek** for the fastest setup (API proxy, no GPU needed). Use **Ollama** if you want to run models locally without complex setup.
+:::信息 快速选择
+不确定选择哪个提供商？从 **OpenAI** 或 **DeepSeek** 开始，以实现最快的设置（API 代理，无需 GPU）。如果您想在本地运行模型而无需复杂的设置，请使用 **Ollama**。
 :::
 
-## Provider comparison
+## 提供商比较
 
-| Provider | Type | GPU Required | Best for |
+|供应商|类型 |需要 GPU |最适合 |
 |---|---|---|---|
-| [**OpenAI**](./openai) | API proxy | No | Production quality, fastest setup |
-| [**DeepSeek**](./deepseek) | API proxy | No | Cost-effective, strong reasoning |
-| [**Qwen (Tongyi)**](./qwen) | API proxy | No | Chinese language, Alibaba Cloud users |
-| [**SiliconFlow**](./siliconflow) | API proxy | No | China-hosted, multiple model choices |
-| [**Ollama**](./ollama) | Local proxy | Optional | Easy local models, privacy-first |
-| [**vLLM**](./vllm) | Local | Yes (NVIDIA) | High-throughput production inference |
+| [**OpenAI**](./openai) | API代理|没有 |生产质量，最快的设置 |
+| [**DeepSeek**](./deepseek) | API代理|没有 |高性价比，推理力强|
+| [**Qwen（统一）**](./qwen) | API代理|没有 |中文，阿里云用户|
+| [**SiliconFlow**](./siliconflow) | API代理|没有 |中国主办，多种模式选择|
+| [**Ollama**](./ollama) |本地代理 |可选|简单的本地模型，隐私第一 |
+| [**vLLM**](./vllm) |本地|是（NVIDIA）|高通量生产推理 |
 
-## How model configuration works
+## 模型配置如何工作
 
-All models are configured in TOML files under `configs/`. Each config file defines:
+所有模型均在“configs/”下的 TOML 文件中进行配置。每个配置文件定义：
 
-- **LLM(s)** — The language model(s) for chat and reasoning
-- **Embedding(s)** — The embedding model(s) for RAG and knowledge search
-- **Reranker(s)** — Optional re-ranking models for better retrieval
-
+- **LLM(s)** — 用于聊天和推理的语言模型
+- **Embedding(s)** — RAG 和知识搜索的嵌入模型
+- **Reranker(s)** — 可选的重新排序模型以实现更好的检索
 ```toml
 [models]
 
@@ -49,27 +47,26 @@ name = "embedding-model-name"
 provider = "provider-type"
 api_key = "your-api-key"
 ```
-
-:::tip Environment variables
-You can use environment variable syntax in TOML configs: `"${env:VARIABLE_NAME:-default_value}"`. This keeps secrets out of config files.
+:::提示 环境变量
+您可以在 TOML 配置中使用环境变量语法：`"${env:VARIABLE_NAME:-default_value}"`。这可以保护配置文件的秘密。
 :::
 
-## Provider guides
+## 提供商指南
 
-- [OpenAI](/docs/getting-started/providers/openai) — fastest default for a first setup
-- [DeepSeek](/docs/getting-started/providers/deepseek) — strong reasoning, OpenAI-compatible proxy pattern
-- [Qwen (Tongyi)](/docs/getting-started/providers/qwen) — Alibaba Cloud / DashScope
-- [SiliconFlow](/docs/getting-started/providers/siliconflow) — China-hosted API options
-- [Ollama](/docs/getting-started/providers/ollama) — simple local model runtime
-- [vLLM](/docs/getting-started/providers/vllm) — GPU-backed local inference for heavier workloads
+- [OpenAI](/docs/getting-started/providers/openai) — 首次设置的最快默认值
+- [DeepSeek](/docs/getting-started/providers/deepseek) — 强推理，兼容 OpenAI 的代理模式
+- [Qwen（统一）](/docs/getting-started/providers/qwen) — 阿里云 / DashScope
+- [SiliconFlow](/docs/getting-started/providers/siliconflow) — 中国托管的 API 选项
+- [Ollama](/docs/getting-started/providers/ollama) — 简单的本地模型运行时
+- [vLLM](/docs/getting-started/providers/vllm) — 针对较重工作负载的 GPU 支持的本地推理
 
-## More providers
+## 更多提供商
 
-DB-GPT also supports additional providers through its proxy system. See [Advanced LLM Configuration](/docs/installation/advanced_usage/More_proxyllms) for:
+DB-GPT 还通过其代理系统支持其他提供商。请参阅[高级 LLM 配置](/docs/installation/advanced_usage/More_proxyllms) 了解：
 
 - Azure OpenAI
-- Google Gemini
-- Anthropic Claude
-- Baichuan
-- Spark (iFlyTek)
-- And more
+- 谷歌双子座
+- 人类克劳德
+- 百川
+- Spark（科大讯飞）
+- 还有更多

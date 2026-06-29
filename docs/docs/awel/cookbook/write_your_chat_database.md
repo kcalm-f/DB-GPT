@@ -1,57 +1,52 @@
-# Write Your Own `Chat Data` With `AWEL`
+# 使用“AWEL”编写您自己的“聊天数据”
 
-In this guide, we will show you how to write your own `Chat Data` with `AWEL`, just 
-link the scene of `Chat Data` in DB-GPT.
+在本指南中，我们将向您展示如何使用“AWEL”编写自己的“聊天数据”，只需 
+链接DB-GPT中“聊天数据”的场景。
 
-This guide is a little bit advanced, may take you some time to understand it. If you have any questions,
-please feel free to ask in the [DB-GPT issues](https://github.com/eosphoros-ai/DB-GPT/issues). 
+本指南有点高级，可能需要一些时间才能理解。如果您有任何疑问，
+请随时在 [DB-GPT issues](https://github.com/eosphoros-ai/DB-GPT/issues) 中提问。 
 
-## Introduction
+## 简介
 
-`Chat Data` is **chat with your database**. Its goal is to interact with the database 
-through natural language, it includes the following steps:
+“聊天数据”是**与您的数据库聊天**。它的目标是与数据库交互 
+通过自然语言，它包括以下步骤：
 
-1. **Build knowledge base**: parse the database schema and other information to build a knowledge base.
-2. **Chat with database**: chat with the database through natural language.
+1. **构建知识库**：解析数据库schema等信息，构建知识库。
+2. **与数据库聊天**：通过自然语言与数据库聊天。
 
-There are some steps of **Chat with database**:
-1. **Retrieve relevant information**: retrieve the relevant information from the 
-database according to the user's query.
-2. **Generate response**: pass relevant information and user query to the LLM, and then 
-generate a response which includes some SQL and other information.
-3. **Execute SQL**: execute the SQL to get the final result.
-4. **Visualize result**: visualize the result and return it to the user.
+**与数据库聊天**有一些步骤：
+1. **检索相关信息**：从 
+根据用户的查询数据库。
+2. **生成响应**：将相关信息和用户查询传递给LLM，然后 
+生成包含一些 SQL 和其他信息的响应。
+3. **执行SQL**：执行SQL得到最终结果。
+4. **可视化结果**：将结果可视化并返回给用户。
 
-In this guide, we mainly focus on step 1, 2, and 3.
+在本指南中，我们主要关注步骤 1、2 和 3。
 
-## Install Dependencies
+## 安装依赖项
 
-First, you need to install the `dbgpt` library.
-
+首先，您需要安装“dbgpt”库。
 ```bash
 pip install "dbgpt[rag, agent, client, simple_framework]>=0.7.0" "dbgpt_ext>=0.7.0" -U
 pip install openai
 ````
+## 建立知识库
 
-## Build Knowledge Base
+### 准备嵌入模型
 
-### Prepare Embedding Model
+首先需要准备embedding模型，可以提供embedding模型 
+根据[准备嵌入模型](./first_rag_with_awel.md#prepare-embedding-model)。
 
-First, you need to prepare the embedding model, you can provide an embedding model 
-according [Prepare Embedding Model](./first_rag_with_awel.md#prepare-embedding-model).
-
-Here we use OpenAI's embedding model.
-
+这里我们使用OpenAI的嵌入模型。
 ```python
 from dbgpt.rag.embedding import DefaultEmbeddingFactory
 
 embeddings = DefaultEmbeddingFactory.openai()
 ```
+### 准备数据库
 
-### Prepare Database
-
-Here we create a simple SQLite database.
-
+这里我们创建一个简单的 SQLite 数据库。
 ```python
 from dbgpt_ext.datasource.rdbms.conn_sqlite import SQLiteTempConnector
 
@@ -75,9 +70,7 @@ db_conn.create_temp_tables(
     }
 )
 ```
-
-### Store Database Schema To Vector Store
-
+### 将数据库模式存储到向量存储
 ```python
 
 import asyncio
@@ -111,9 +104,7 @@ with DAG("load_schema_dag") as load_schema_dag:
 chunks = asyncio.run(assembler_task.call())
 print(chunks)
 ```
-
-### Retrieve Database Schema From Vector Store
-
+### 从向量存储中检索数据库架构
 ```python
 from dbgpt.core.awel import InputSource
 from dbgpt_ext.rag.operators.db_schema import DBSchemaRetrieverOperator
@@ -131,24 +122,19 @@ with DAG("retrieve_schema_dag") as retrieve_schema_dag:
 chunks = asyncio.run(retriever_task.call("Query the name and age of users younger than 18 years old"))
 print("Retrieved schema:\n", chunks)
 ```
+## 与数据库聊天
 
-
-## Chat With Database
-
-### Prepare LLM
-We use LLM to generate SQL queries. Here we use OpenAI's LLM model, you can replace it 
-with other models according to [Prepare LLM](./first_rag_with_awel.md#prepare-llm).
-
+### 准备LLM
+我们使用 LLM 生成 SQL 查询。这里我们使用OpenAI的LLM模型，你可以替换它 
+根据[准备LLM](./first_rag_with_awel.md#prepare-llm)与其他模型。
 ```python
 from dbgpt.model.proxy import OpenAILLMClient
 
 llm_client = OpenAILLMClient()
 ```
+### 准备一些决定
 
-### Prepare Some Decisions
-
-Sometimes, we hope LLM can make some decisions, here we provide some decisions which are chart types.
-
+有时，我们希望LLM能够做出一些决定，这里我们提供一些图表类型的决定。
 ```python
 antv_charts = [
     {"response_line_chart": "used to display comparative trend analysis data"},
@@ -179,11 +165,9 @@ display_type = "\n".join(
     f"{key}:{value}" for dict_item in antv_charts for key, value in dict_item.items()
 )
 ```
+### 生成 SQL
 
-### Generate SQL
-
-Now, let's pass the user query and database schema to LLM to generate SQL.
-
+现在，让我们将用户查询和数据库架构传递给 LLM 以生成 SQL。
 ```python
 import asyncio
 import json
@@ -270,9 +254,7 @@ result = asyncio.run(sql_parse_task.call({
 
 print("Result:\n", result)
 ```
-
-The output will be like this:
-
+输出将是这样的：
 ```bash
 un_stream ai response: {
     "thoughts": "The user wants to retrieve the name and age of users who are younger than 18 years old from the 'user_management' database.",
@@ -282,11 +264,9 @@ un_stream ai response: {
 Result:
  {'thoughts': "The user wants to retrieve the name and age of users who are younger than 18 years old from the 'user_management' database.", 'sql': 'SELECT name, age FROM user WHERE age < 18', 'display_type': 'response_table'}
 ```
+### 执行SQL
 
-### Execute SQL
-
-Let's add an operator to execute the SQL on previous generated SQL.
-
+让我们添加一个运算符来对之前生成的 SQL 执行 SQL。
 ```python
 from dbgpt.datasource.operators import DatasourceOperator
 
@@ -305,9 +285,7 @@ from dbgpt.datasource.operators import DatasourceOperator
     print("The result of the query is:")
     print(db_result)
 ```
-
-The output will be like this:
-
+输出将是这样的：
 ```bash
 un_stream ai response: {
     "thoughts": "The user wants to retrieve the names and ages of users who are younger than 18 years old from the 'user' table.",
@@ -319,11 +297,9 @@ The result of the query is:
 0    Tom   10
 1  Jerry   16
 ```
+### 在 SQL 执行后编写自定义处理逻辑
 
-### Write Your Custom Process Logic After SQL Execution
-
-Sometimes, you may want to add some custom logic after SQL execution, here we provide an example with some custom operator.
-
+有时，您可能想在 SQL 执行后添加一些自定义逻辑，这里我们提供了一些自定义运算符的示例。
 ```python
 import pandas as pd
 
@@ -379,9 +355,7 @@ class MergeOperator(JoinOperator[str]):
     async def merge_func(self, odd: str, even: str) -> str:
         return odd if not is_empty_data(odd) else even
 ```
-
-Let's add these operators to the DAG.
-
+让我们将这些运算符添加到 DAG 中。
 ```python
     # previous code ...
     two_sum_task = TwoSumOperator()
@@ -406,9 +380,7 @@ final_result = asyncio.run(merge_task.call({
 print("The final result is:")
 print(final_result)
 ```
-
-The output will be like this:
-
+输出将是这样的：
 ```bash
 un_stream ai response: {
     "thoughts": "The user wants to retrieve the names and ages of users who are younger than 18 years old from the 'user' table.",
@@ -419,13 +391,11 @@ un_stream ai response: {
 The final result is:
 26 is even
 ```
+恭喜！您已经使用“AWEL”成功编写了自己的“聊天数据”。
 
-Congratulations! You have successfully written your own `Chat Data` with `AWEL`.
+### 完整代码
 
-### Full Code
-
-In the end, let's see the full code:
-
+最后我们看一下完整的代码：
 ```python
 import asyncio
 import json
@@ -690,29 +660,25 @@ print("The final result is:")
 print(final_result)
 
 ```
+## 可视化 DAG
 
-## Visualize DAGs
-
-And we can visualize the DAGs with the following code:
+我们可以使用以下代码可视化 DAG：
 ```python
 load_schema_dag.visualize_dag()
 chat_data_dag.visualize_dag()
 ```
-
-If you execute the code in Jupyter Notebook, you can see the DAGs in the notebook.
+如果您在 Jupyter Notebook 中执行代码，您可以在笔记本中看到 DAG。
 ```python
 display(load_schema_dag)
 display(chat_data_dag)
 ```
+`load_schema_dag` 的图是这样的：
 
-The graph of the `load_schema_dag` is like this:
-
-<p align="left">
+<p对齐=“左”>
   <img src={'/img/awel/cookbook/chat_data_load_schema_dag.png'} width="1000px"/>
 </p>
 
-And the graph of the `chat_data_dag` is:
-<p align="left">
+`chat_data_dag` 的图表是：
+<p对齐=“左”>
   <img src={'/img/awel/cookbook/chat_data_chat_data_dag.png'} width="1000px"/>
 </p>
-

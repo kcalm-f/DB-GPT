@@ -5,6 +5,7 @@ import type { TabsProps } from 'antd';
 import { Dropdown, Form, Input, Modal, Select, Space, Spin, Tabs } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { localizeAgentForDisplay } from '../../pages/construct/app/extra/config';
 import AddIcon from '../icons/add-icon';
 import AgentPanel from './agent-panel';
 import DagLayout from './dag-layout';
@@ -72,8 +73,9 @@ export default function AppModal(props: IProps) {
     if (appDetails?.length > 0) {
       setAgents(
         appDetails?.map((item: AgentParams) => {
+          const displayAgent = localizeAgentForDisplay({ name: item?.agent_name });
           return {
-            label: item?.agent_name,
+            label: displayAgent.label,
             children: (
               <AgentPanel
                 editResources={type === 'edit' && item.resources}
@@ -114,8 +116,9 @@ export default function AppModal(props: IProps) {
     setDropItems(
       data
         .map(agent => {
+          const displayAgent = localizeAgentForDisplay(agent);
           return {
-            label: agent.name,
+            label: displayAgent.label,
             key: agent.name,
             onClick: () => {
               add(agent);
@@ -176,10 +179,11 @@ export default function AppModal(props: IProps) {
     });
 
     setAgents((items: any) => {
+      const displayAgent = localizeAgentForDisplay(tabBar);
       return [
         ...items,
         {
-          label: newActiveKey,
+          label: displayAgent.label,
           children: (
             <AgentPanel
               detail={{
@@ -234,10 +238,11 @@ export default function AppModal(props: IProps) {
     setAgents(newPanes);
     setActiveKey(newActiveKey);
     setDropItems((items: any) => {
+      const displayAgent = localizeAgentForDisplay({ name: targetKey });
       return [
         ...items,
         {
-          label: targetKey,
+          label: displayAgent.label,
           key: targetKey,
           onClick: () => {
             add({ name: targetKey, describe: '', system_message: '' });

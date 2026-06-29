@@ -2,17 +2,15 @@
 sidebar_position: 1
 title: MCP Protocol
 ---
+#MCP协议
 
-# MCP Protocol
+**模型上下文协议 (MCP)** 使 DB-GPT 代理能够通过标准化接口与外部工具和服务连接。
 
-The **Model Context Protocol (MCP)** enables DB-GPT agents to connect with external tools and services through a standardized interface.
+:::info 什么是 MCP？
+MCP 是一种开放协议，为 AI 应用程序与外部数据源和工具连接提供标准方式。 DB-GPT 支持 MCP 作为**客户端**（使用 MCP 工具）和**服务器**（将 DB-GPT 功能作为 MCP 工具公开）。
+：：：
 
-:::info What is MCP?
-MCP is an open protocol that provides a standard way for AI applications to connect with external data sources and tools. DB-GPT supports MCP as both a **client** (consuming MCP tools) and a **server** (exposing DB-GPT capabilities as MCP tools).
-:::
-
-## Architecture
-
+＃＃ 建筑学
 ```mermaid
 graph TB
   Agent[DB-GPT Agent] --> MCPClient[MCP Client]
@@ -23,15 +21,13 @@ graph TB
   ExtClient[External MCP Client] --> MCPServer[DB-GPT MCP Server]
   MCPServer --> DBGPT[DB-GPT Capabilities]
 ```
+## 在代理中使用 MCP 工具
 
-## Using MCP tools in agents
+### 步骤 1 — 配置 MCP 服务器
 
-### Step 1 — Configure MCP servers
+MCP 服务器在 TOML 配置文件中或通过 Web UI 的代理配置进行配置。
 
-MCP servers are configured in your TOML config file or through the Web UI's agent configuration.
-
-**Example TOML configuration:**
-
+**TOML 配置示例：**
 ```toml
 [[agent.mcp_servers]]
 name = "filesystem"
@@ -44,52 +40,51 @@ command = "npx"
 args = ["-y", "@modelcontextprotocol/server-brave-search"]
 env = { BRAVE_API_KEY = "${env:BRAVE_API_KEY}" }
 ```
+### 第 2 步 — 为代理分配工具
 
-### Step 2 — Assign tools to agents
+在网络用户界面中：
 
-In the Web UI:
+1. 转到 **应用程序** → 创建或编辑应用程序
+2. 在代理配置中，选择可用的 MCP 工具
+3. 代理现在可以在对话期间使用这些工具
 
-1. Go to **Apps** → create or edit an app
-2. In the agent configuration, select available MCP tools
-3. The agent can now use these tools during conversations
+### 第 3 步 — 在聊天中使用
 
-### Step 3 — Use in chat
+与启用 MCP 的代理聊天时，代理会根据您的请求自动选择并调用适当的工具。
 
-When chatting with an MCP-enabled agent, the agent automatically selects and invokes the appropriate tools based on your request.
+## 支持的 MCP 服务器类型
 
-## Supported MCP server types
-
-| Type | Description | Example |
+|类型 |描述 |示例|
 |---|---|---|
-| **stdio** | Local process communication | File system access, code execution |
-| **SSE** | Server-Sent Events over HTTP | Remote APIs, cloud services |
+| **标准输入输出** |本地进程通信|文件系统访问、代码执行 |
+| **上交所** |服务器通过 HTTP 发送的事件 |远程 API、云服务 |
 
-## Common MCP servers
+## 常见的MCP服务器
 
-| Server | Purpose | Package |
+|服务器|目的|套餐 |
 |---|---|---|
-| Filesystem | Read/write local files | `@modelcontextprotocol/server-filesystem` |
-| Brave Search | Web search | `@modelcontextprotocol/server-brave-search` |
-| GitHub | Repository operations | `@modelcontextprotocol/server-github` |
-| PostgreSQL | Database queries | `@modelcontextprotocol/server-postgres` |
-| Slack | Send/read Slack messages | `@modelcontextprotocol/server-slack` |
+|文件系统 |读/写本地文件 | `@modelcontextprotocol/服务器文件系统` |
+|勇敢寻找|网络搜索| `@modelcontextprotocol/server-brave-search` |
+| GitHub |存储库操作 | `@modelcontextprotocol/server-github` |
+| PostgreSQL |数据库查询| `@modelcontextprotocol/server-postgres` |
+|松弛|发送/阅读 Slack 消息 | `@modelcontextprotocol/server-slack` |
 
-:::tip Finding MCP servers
-Browse the growing ecosystem of MCP servers at the [MCP Servers Directory](https://github.com/modelcontextprotocol/servers).
+:::tip 查找 MCP 服务器
+在 [MCP 服务器目录](https://github.com/modelcontextprotocol/servers) 中浏览不断发展的 MCP 服务器生态系统。
 :::
 
-## DB-GPT as an MCP server
+## DB-GPT 作为 MCP 服务器
 
-DB-GPT can also expose its capabilities as an MCP server, allowing other MCP-compatible applications to use DB-GPT features like:
+DB-GPT 还可以将其功能公开为 MCP 服务器，允许其他 MCP 兼容应用程序使用 DB-GPT 功能，例如：
 
-- Knowledge base queries
-- Database access (Text2SQL)
-- Agent execution
+- 知识库查询
+- 数据库访问（Text2SQL）
+- 代理执行
 
-## Next steps
+## 后续步骤
 
-| Topic | Link |
+|主题 |链接 |
 |---|---|
-| Agent concepts | [Agents](/docs/getting-started/concepts/agents) |
-| Agent development with tools | [Tools Development](/docs/agents/introduction/tools) |
-| dbgpts community tools | [dbgpts](/docs/getting-started/tools/dbgpts) |
+|代理概念| [代理](/docs/getting-started/concepts/agents) |
+|使用工具开发代理| [工具开发](/docs/agents/introduction/tools) |
+| dbgpts 社区工具 | [dbgpts](/docs/getting-started/tools/dbgpts) |

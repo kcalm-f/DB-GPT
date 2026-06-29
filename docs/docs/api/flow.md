@@ -1,18 +1,18 @@
-# Flow
+# 工作流
 
-Get started with the Flow API
+开始使用工作流 API
 
-# Chat Flow
+# 聊天工作流
 
 ```python
 POST /api/v2/chat/completions
 ```
-### Examples
+### 示例
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-### Stream Chat Flow
+### 流式聊天工作流
 
 
 <Tabs
@@ -95,34 +95,34 @@ for chunk in response:
  </TabItem>
 </Tabs>
 
-#### Chat Completion Stream Response
+#### 聊天补全流式响应
 ```commandline
 data: {"id": "579f8862-fc4b-481e-af02-a127e6d036c8", "created": 1710918094, "model": "gpt-4o", "choices": [{"index": 0, "delta": {"role": "assistant", "content": "\n\n"}}]}
 ```
-### Create Flow
+### 创建工作流
 
 ```python
 POST /api/v2/serve/awel/flows
 ```
-#### Request body
-Request <a href="#the-flow-object">Flow Object</a>
+#### 请求体
+请求 <a href="#the-flow-object">工作流对象</a>
 
-#### Response body
-Return <a href="#the-flow-object">Flow Object</a>
+#### 响应体
+返回 <a href="#the-flow-object">工作流对象</a>
 
 
-### Update Flow
+### 更新工作流
 ```python
 PUT /api/v2/serve/awel/flows
 ```
 
-#### Request body
-Request <a href="#the-flow-object">Flow Object</a>
+#### 请求体
+请求 <a href="#the-flow-object">工作流对象</a>
 
-#### Response body
-Return <a href="#the-flow-object">Flow Object</a>
+#### 响应体
+返回 <a href="#the-flow-object">工作流对象</a>
 
-### Delete Flow
+### 删除工作流
 
 ```python
 DELETE /api/v2/serve/awel/flows
@@ -167,17 +167,17 @@ res = await delete_flow(client=client, flow_id=flow_id)
  </TabItem>
 </Tabs>
 
-#### Delete Parameters
+#### 删除参数
 ________
-<b>uid</b> <font color="gray"> string </font> <font color="red"> Required </font>
+<b>uid</b> <font color="gray"> string </font> <font color="red"> 必填 </font>
 
-flow id
+工作流 ID
 ________
 
-#### Response body
-Return <a href="#the-flow-object">Flow Object</a>
+#### 响应体
+返回 <a href="#the-flow-object">工作流对象</a>
 
-### Get Flow
+### 获取工作流
 
 ```python
 GET /api/v2/serve/awel/flows/{flow_id}
@@ -220,17 +220,17 @@ res = await get_flow(client=client, flow_id=flow_id)
  </TabItem>
 </Tabs>
 
-#### Query Parameters
+#### 查询参数
 ________
-<b>uid</b> <font color="gray"> string </font> <font color="red"> Required </font>
+<b>uid</b> <font color="gray"> string </font> <font color="red"> 必填 </font>
 
-flow id
+工作流 ID
 ________
 
-#### Response body
-Return <a href="#the-flow-object">Flow Object</a>
+#### 响应体
+返回 <a href="#the-flow-object">工作流对象</a>
 
-### List Flow
+### 工作流列表
 
 ```python
 GET /api/v2/serve/awel/flows
@@ -273,77 +273,77 @@ res = await list_flow(client=client)
  </TabItem>
 </Tabs>
 
-#### Response body
-Return <a href="#the-flow-object">Flow Object</a>
+#### 响应体
+返回 <a href="#the-flow-object">工作流对象</a>
 
-### The Flow Object
+### 工作流对象
 
 ________
 <b>uid</b> <font color="gray">string</font>
 
-The unique id for the flow.
+工作流的唯一 ID。
 ________
 <b>name</b> <font color="gray">string</font>
 
-The name of the flow.
+工作流名称。
 ________
 <b>description</b> <font color="gray">string</font>
 
-The description of the flow.
+工作流描述。
 ________
 <b>label</b> <font color="gray">string</font>
 
-The label of the flow.
+工作流标签。
 ________
 <b>flow_category</b> <font color="gray">string</font>
 
-The category of the flow. Default is FlowCategory.COMMON.
+工作流类别。默认为 FlowCategory.COMMON。
 ________
 <b>flow_data</b> <font color="gray">object</font>
 
-The flow data.
+工作流数据。
 ________
 <b>state</b> <font color="gray">string</font>
 
-The state of the flow.Default is INITIALIZING.
+工作流状态。默认为 INITIALIZING。
 ________
 <b>error_message</b> <font color="gray">string</font>
 
-The error message of the flow.
+工作流错误信息。
 ________
 <b>source</b> <font color="gray">string</font>
 
-The source of the flow. Default is DBGPT-WEB.
+工作流来源。默认为 DBGPT-WEB。
 ________
 <b>source_url</b> <font color="gray">string</font>
 
-The source url of the flow.
+工作流来源 URL。
 ________
 <b>version</b> <font color="gray">string</font>
 
-The version of the flow. Default is 0.1.0.
+工作流版本。默认为 0.1.0。
 ________
 <b>editable</b> <font color="gray">boolean</font>
 
-Whether the flow is editable. Default is True.
+工作流是否可编辑。默认为 True。
 ________
 <b>user_name</b> <font color="gray">string</font>
 
-The user name of the flow.
+工作流用户名。
 ________
 <b>sys_code</b> <font color="gray">string</font>
 
-The system code of the flow.
+工作流系统代码。
 ________
 <b>dag_id</b> <font color="gray">string</font>
 
-The dag id of the flow.
+工作流 DAG ID。
 ________
 <b>gmt_created</b> <font color="gray">string</font>
 
-The created time of the flow.
+工作流创建时间。
 ________
 <b>gmt_modified</b> <font color="gray">string</font>
 
-The modified time of the flow.
+工作流修改时间。
 ________

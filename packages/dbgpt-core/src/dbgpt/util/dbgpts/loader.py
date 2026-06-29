@@ -104,9 +104,9 @@ class BasePackage(BaseModel):
                         if issubclass(c, expected_cls):
                             module_cls.append(c)
                 return module_cls, all_predicate_results, mods
-        except Exception as e:
-            logger.warning(f"load_module_class error!{str(e)}", e)
-            raise e
+        except Exception:
+            logger.exception("load_module_class error!")
+            raise
 
 
 class FlowPackage(BasePackage):

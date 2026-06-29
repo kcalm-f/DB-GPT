@@ -328,14 +328,26 @@ class PostgreSQLConnector(RDBMSConnector):
                 (field[0], field[1], field[2], field[3], field[4]) for field in fields
             ]
 
+    def get_columns(self, table_name: str) -> List[dict]:
+        """Get columns about specified table with schema support."""
+        schema = self._schema or "public"
+        return self._inspector.get_columns(table_name, schema=schema)
+
     def get_indexes(self, table_name):
         """Get table indexes about specified table."""
+        schema = self._schema or "public"
         with self.session_scope() as session:
             cursor = session.execute(
                 text(
-                    f"SELECT indexname, indexdef FROM pg_indexes WHERE "
-                    f"tablename = '{table_name}'"
-                )
+                    "SELECT indexname, indexdef FROM pg_indexes "
+                    "WHERE schemaname = :schema AND tablename = :table"
+                ),
+                {"schema": schema, "table": table_name},
             )
             indexes = cursor.fetchall()
             return [(index[0], index[1]) for index in indexes]
+
+    def get_table_comment(self, table_name: str) -> dict:
+        """Get table comments with schema support."""
+        schema = self._schema or "public"
+        return self._inspector.get_table_comment(table_name, schema=schema)

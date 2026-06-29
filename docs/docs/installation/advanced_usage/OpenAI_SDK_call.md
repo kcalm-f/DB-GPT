@@ -1,38 +1,35 @@
-# OpenAI SDK Calls Local Multi-model
-The call of multi-model services is compatible with the OpenAI interface, and the models deployed in DB-GPT can be directly called through the OpenAI SDK. 
+# OpenAI SDK调用本地多模型
+多模型服务的调用兼容OpenAI接口，可以通过OpenAI SDK直接调用DB-GPT中部署的模型。 
 
-:::info note
+:::信息说明
 
-⚠️ Before using this project, you must first deploy the model service, which can be deployed through the [cluster deployment tutorial](../model_service/cluster.md).
+⚠️使用本项目之前，首先要部署模型服务，可以通过【集群部署教程】(../model_service/cluster.md)进行部署。
 :::
 
 
-## Start apiserver
+## 启动 API 服务器
 
-After deploying the model service, you need to start the API Server. By default, the model API Server uses port `8100` to start.
+部署模型服务后，需要启动API Server。默认情况下，模型 API Server 使用端口“8100”启动。
 ```bash
 dbgpt start apiserver --controller_addr http://127.0.0.1:8000 --api_keys EMPTY
 
 ```
+## 验证
+
+### cURL 验证
+apiserver启动后，即可验证服务调用。首先我们看一下通过curl进行验证。
 
 
-## Verify
-
-### cURL validation
-After the apiserver is started, the service call can be verified. First, let's look at verification through curl.
-
-
-:::tip
-List models
+:::提示
+列出型号
 :::
 ```bash
 curl http://127.0.0.1:8100/api/v1/models \
 -H "Authorization: Bearer EMPTY" \
 -H "Content-Type: application/json"
 ```
-
-:::tip
-Chat
+:::提示
+聊天
 :::
 ```bash
 curl http://127.0.0.1:8100/api/v1/chat/completions \
@@ -43,9 +40,8 @@ curl http://127.0.0.1:8100/api/v1/chat/completions \
   "messages": [{"role": "user", "content": "hello"}]
 }'
 ```
-
-:::tip
-Stream Chat
+:::提示
+串流聊天
 :::
 ```bash
 curl http://127.0.0.1:8100/api/v1/chat/completions \
@@ -57,10 +53,8 @@ curl http://127.0.0.1:8100/api/v1/chat/completions \
   "messages": [{"role": "user", "content": "hello"}]
 }'
 ```
-
-
-:::tip
-Embedding 
+:::提示
+嵌入 
 :::
 ```bash
 curl http://127.0.0.1:8100/api/v1/embeddings \
@@ -71,10 +65,7 @@ curl http://127.0.0.1:8100/api/v1/embeddings \
     "input": "Hello world!"
 }'
 ```
-
-
-## Verify via OpenAI SDK
-
+## 通过OpenAI SDK验证
 ```bash
 import openai
 model = "Qwen/Qwen2.5-Coder-32B-Instruct"
@@ -90,12 +81,11 @@ completion = client.chat.completions.create(
 # print the completion
 print(completion.choices[0].message.content)
 ```
+##（实验性）重新排名开放 API
 
-## (Experimental) Rerank Open API
+重新排名 API 是一项实验性功能，可用于对候选列表重新排名。 
 
-The rerank API is an experimental feature that can be used to rerank the candidate list. 
-
-1. Use cURL to verify the rerank API.
+1. 使用cURL验证rerank API。
 ```bash
 curl http://127.0.0.1:8100/api/v1/beta/relevance \
 -H "Authorization: Bearer EMPTY" \
@@ -111,8 +101,7 @@ curl http://127.0.0.1:8100/api/v1/beta/relevance \
     ]
 }'
 ```
-
-2. Use python to verify the rerank API.
+2. 使用python验证rerank API。
 ```python
 from dbgpt.rag.embedding import OpenAPIRerankEmbeddings
 
@@ -127,8 +116,7 @@ rerank.predict(
     ]
 )
 ```
-
-The output is as follows:
+输出如下：
 ```bash
 [
  0.9685816764831543,

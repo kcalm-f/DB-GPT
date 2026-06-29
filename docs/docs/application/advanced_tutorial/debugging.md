@@ -1,28 +1,24 @@
-# Debugging
-DB-GPT provides a series of tools to help developers troubleshoot and solve some problems they may encounter.
+# 调试
+DB-GPT提供了一系列工具来帮助开发人员排查并解决他们可能遇到的一些问题。
 
-## View Trace Logs With Command
+## 使用命令查看跟踪日志
 
-DB-GPT writes some key system runtime information to trace logs. By default, they are located in `logs/dbgpt*.jsonl`.
-
-
-DB-GPT also provides a command line tool `dbgpt trace` to help analyze these trace logs. You can check the specific usage through the following command:
+DB-GPT 将一些关键的系统运行时信息写入跟踪日志。默认情况下，它们位于“logs/dbgpt*.jsonl”中。
 
 
+DB-GPT 还提供了命令行工具“dbgpt trace”来帮助分析这些跟踪日志。可以通过以下命令查看具体用法：
 ```python
 dbgpt trace --help
 ```
+## 查看聊天详情
+您可以通过“dbgpt trace chat”命令查看聊天详细信息。默认显示最新的对话信息。
 
-## View chat details
-You can view chat details through the `dbgpt trace chat` command. By default, the latest conversation information is displayed.
 
-
-## View service runtime information
+## 查看服务运行时信息
 ```python
 dbgpt trace chat --hide_conv
 ```
-
-The output is as follows:
+输出如下：
 ```python
 +------------------------+--------------------------+-----------------------------+------------------------------------+
 | Config Key (Webserver) | Config Value (Webserver) | Config Key (EmbeddingModel) |   Config Value (EmbeddingModel)    |
@@ -56,12 +52,11 @@ The output is as follows:
 |         verbose          |            False            |         log_level          |             None             |
 +--------------------------+-----------------------------+----------------------------+------------------------------+
 ```
-
-## View latest conversation information
+## 查看最新对话信息
 ```python
 dbgpt trace chat --hide_run_params
 ```
-The output is as follows:
+输出如下：
 ```python
 +-------------------------------------------------------------------------------------------------------------------------------------------+
 |                                                             Chat Trace Details                                                            |
@@ -84,12 +79,11 @@ The output is as follows:
 |  Model output  |  You can call me Vicuna, and I was trained by Large Model Systems Organization (LMSYS) researchers as a language model.  |
 +----------------+--------------------------------------------------------------------------------------------------------------------------+
 ```
-
-## View chat details and call chain
+## 查看聊天详情和调用链
 ```python
 dbgpt trace chat --hide_run_params --tree
 ```
-The output is as follows:
+输出如下：
 ```python
 
 Invoke Trace Tree:
@@ -129,13 +123,11 @@ Operation: DB-GPT-Web-Entry (Start: 2023-10-12 03:06:43.180, End: 2023-10-12 03:
 |  Model output  |  You can call me Vicuna, and I was trained by Large Model Systems Organization (LMSYS) researchers as a language model.  |
 +----------------+--------------------------------------------------------------------------------------------------------------------------+
 ```
-
-## View chat details based on trace_id
-
+## 根据trace_id查看聊天详情
 ```python
 dbgpt trace chat --hide_run_params --trace_id ec30d733-7b35-4d61-b02e-2832fd2e29ff
 ```
-The output is as follows:
+输出如下：
 ```python
 +-------------------------------------------------------------------------------------------------------------------------------------------+
 |                                                             Chat Trace Details                                                            |
@@ -159,9 +151,7 @@ The output is as follows:
 |                |                                     tions you might have, to the best of my ability.                                     |
 +----------------+--------------------------------------------------------------------------------------------------------------------------+
 ```
-
-## More chat command usage
-
+## 更多聊天命令用法
 ```python
 # command
 dbgpt trace chat --help
@@ -181,12 +171,11 @@ Options:
                                   The output format
   --help                          Show this message and exit.
 ```
-
-## View the call tree based on trace_id
+## 根据trace_id查看调用树
 ```python
 dbgpt trace chat --help
 ```
-The output is as follows:
+输出如下：
 ```python
 Operation: DB-GPT-Web-Entry (Start: 2023-10-12 03:22:10.592, End: None)
   Operation: get_chat_instance (Start: 2023-10-12 03:22:10.594, End: None)
@@ -203,15 +192,12 @@ Operation: DB-GPT-Web-Entry (Start: 2023-10-12 03:22:10.592, End: None)
   Operation: stream_generator (Start: 2023-10-12 03:22:10.659, End: 2023-10-12 03:22:16.130)
 Operation: DB-GPT-Web-Entry (Start: 2023-10-12 03:22:10.592, End: 2023-10-12 03:22:10.673)
 ```
-
-
-## List trace information
-List all Trace information
+## 列出跟踪信息
+列出所有Trace信息
 ```python
 dbgpt trace list
 ```
-The output is as follows:
-
+输出如下：
 ```python
 +--------------------------------------+---------------------------------------------------------------------------+-----------------------------------+------------------+
 |               Trace ID               |                                  Span ID                                  |           Operation Name          | Conversation UID |
@@ -224,8 +210,7 @@ The output is as follows:
 | eaf4830f-976f-45a4-9a50-244f3ab6f9e1 | eaf4830f-976f-45a4-9a50-244f3ab6f9e1:4c280ec9-0fd6-4ee8-b79f-1afcab0f9901 |      DefaultModelWorker.start     |       None       |
 +--------------------------------------+---------------------------------------------------------------------------+-----------------------------------+------------------+
 ```
-
-## View trace information based on trace type
+## 根据trace类型查看trace信息
 ```python
 dbgpt trace list --span_type chat
 
@@ -238,9 +223,7 @@ dbgpt trace list --span_type chat
 | ec30d733-7b35-4d61-b02e-2832fd2e29ff | ec30d733-7b35-4d61-b02e-2832fd2e29ff:0482a0c5-38b3-4b38-8101-e42489f90ccd | get_chat_instance | 87a722de-68ae-11ee-9fba-0242ac150003 |
 +--------------------------------------+---------------------------------------------------------------------------+-------------------+--------------------------------------+
 ```
-
-## Search trace information
-
+## 搜索跟踪信息
 ```python
 dbgpt trace list --search Hello
 
@@ -255,10 +238,7 @@ dbgpt trace list --search Hello
 | ec30d733-7b35-4d61-b02e-2832fd2e29ff | ec30d733-7b35-4d61-b02e-2832fd2e29ff:19593596-b4c7-4d15-a3c1-0924d86098dd | DefaultModelWorker_call.generate_stream_func |                 None                 |
 +--------------------------------------+---------------------------------------------------------------------------+----------------------------------------------+--------------------------------------+
 ```
-
-
-## More list related command usage
-
+## 更多列表相关命令用法
 ```python
 dbgpt trace list --help
 

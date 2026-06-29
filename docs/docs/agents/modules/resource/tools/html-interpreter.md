@@ -1,24 +1,21 @@
-# html_interpreter
+# html_解释器
 
-## Overview
+## 概述
 
-`html_interpreter` renders HTML as an interactive web report.
+`html_interpreter` 将 HTML 呈现为交互式 Web 报告。
 
-It is the final presentation tool for web pages, HTML reports, dashboards, and skill-based report delivery.
+它是网页、HTML 报告、仪表板和基于技能的报告交付的最终演示工具。
 
-## Parameters
+## 参数
 
-### Direct HTML mode
-
+### 直接 HTML 模式
 ```json
 {
   "html": "<html>...</html>",
   "title": "Report"
 }
 ```
-
-### Template mode
-
+### 模板模式
 ```json
 {
   "template_path": "skill/templates/report_template.html",
@@ -27,31 +24,27 @@ It is the final presentation tool for web pages, HTML reports, dashboards, and s
   }
 }
 ```
-
-### File mode
-
+### 文件模式
 ```json
 {
   "file_path": "/absolute/path/to/file.html",
   "title": "Report"
 }
 ```
+## 它的作用
 
-## What it does
+- 直接渲染完整的HTML
+- 支持模板占位符替换
+- 可以将生成的数据和图像合并到报告中
+- 可以从现有的 HTML 文件渲染
 
-- renders complete HTML directly
-- supports template placeholder replacement
-- can merge generated data and images into reports
-- can render from an existing HTML file
+## 何时使用
 
-## When to use it
+- 最终 HTML 报告生成
+- 交互式网页交付
+- 基于模板的技能报告输出
 
-- final HTML report generation
-- interactive webpage delivery
-- template-based report output from skills
-
-## Example
-
+## 示例
 ```json
 {
   "template_path": "financial-report-analyzer/templates/report_template.html",
@@ -61,9 +54,8 @@ It is the final presentation tool for web pages, HTML reports, dashboards, and s
   }
 }
 ```
+## 注释
 
-## Notes
-
-- this should be the final rendering step for HTML-style outputs
-- do not rely on `code_interpreter` alone for final HTML delivery
-- template mode is especially useful for skill-based reporting workflows
+- 这应该是 HTML 样式输出的最终渲染步骤
+- 不要单独依赖“code_interpreter”来完成最终的 HTML 交付
+- 模板模式对于基于技能的报告工作流程特别有用

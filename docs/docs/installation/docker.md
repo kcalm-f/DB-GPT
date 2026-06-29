@@ -1,77 +1,64 @@
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+# Docker 部署
 
-# Docker Deployment
+## Docker 镜像准备
 
-## Docker image preparation
+有两种方法可以准备 Docker 镜像。 
+1.从官方镜像拉取 
+2.本地构建，参见【构建Docker镜像】(./build_image.md) 
 
-There are two ways to prepare a Docker image. 
-1. Pull from the official image 
-2. Build locally, see [Build Docker Image](./build_image.md) 
-
-You can **choose any one** during actual use.
+实际使用过程中您可以**任意选择**。
 
 
-## Deploy With Proxy Model
+## 使用代理模型部署
 
-In this deployment, you don't need an GPU environment.
+在此部署中，您不需要 GPU 环境。
 
-1. Pull from the official image repository, [Eosphoros AI Docker Hub](https://hub.docker.com/u/eosphorosai)
-
+1. 从官方镜像仓库[Eosphoros AI Docker Hub](https://hub.docker.com/u/eosphorosai)拉取
 ```bash
 docker pull eosphorosai/dbgpt-openai:latest
 ```
+2.运行Docker容器
 
-2. Run the Docker container
-
-This example requires you provide a valid API key for the SiliconFlow API. You can obtain one by signing up at [SiliconFlow](https://siliconflow.cn/) and creating an API key at [API Key](https://cloud.siliconflow.cn/account/ak). Alternatively, set `AIMLAPI_API_KEY` to use the AI/ML API service.
-
-
+此示例要求您为 SiliconFlow API 提供有效的 API 密钥。您可以通过在 [SiliconFlow](https://siliconflow.cn/) 注册并在 [API Key](https://cloud.siliconflow.cn/account/ak) 创建 API 密钥来获取。或者，设置“AIMLAPI_API_KEY”以使用 AI/ML API 服务。
 ```bash
 docker run -it --rm -e SILICONFLOW_API_KEY=${SILICONFLOW_API_KEY} \
  -p 5670:5670 --name dbgpt eosphorosai/dbgpt-openai
 ```
-Or with AI/ML API:
+或者使用 AI/ML API：
 ```bash
 docker run -it --rm -e AIMLAPI_API_KEY=${AIMLAPI_API_KEY} \
  -p 5670:5670 --name dbgpt eosphorosai/dbgpt-openai
 ```
-
-Please replace `${SILICONFLOW_API_KEY}` or `${AIMLAPI_API_KEY}` with your own API key.
-
-
-Then you can visit [http://localhost:5670](http://localhost:5670) in the browser.
+请将“${SILICONFLOW_API_KEY}”或“${AIMLAPI_API_KEY}”替换为您自己的 API 密钥。
 
 
-## Deploy With GPU (Local Model)
+然后就可以在浏览器中访问[http://localhost:5670](http://localhost:5670)。
 
-In this deployment, you need an GPU environment.
 
-Before running the Docker container, you need to install the NVIDIA Container Toolkit. For more information, please refer to the official documentation [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html).
+## 使用 GPU 部署（本地模型）
 
-In this deployment, you will use a local model instead of downloading it from the Hugging Face or ModelScope model hub. This is useful if you have already downloaded the model to your local machine or if you want to use a model from a different source.
+在此部署中，您需要 GPU 环境。
 
-### Step 1: Download the Model
+在运行Docker容器之前，您需要安装NVIDIA Container Toolkit。更多信息请参考官方文档[NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html)。
 
-Before running the Docker container, you need to download the model to your local machine. You can use either Hugging Face or ModelScope (recommended for users in China) to download the model.
+在此部署中，您将使用本地模型，而不是从 Hugging Face 或 ModelScope 模型中心下载。如果您已将模型下载到本地计算机或者想要使用其他来源的模型，这会很有用。
 
+### 第 1 步：下载模型
+
+在运行 Docker 容器之前，您需要将模型下载到本地计算机。您可以使用Hugging Face或ModelScope（推荐中国用户）下载模型。
 <Tabs>
 <TabItem value="modelscope" label="Download from ModelScope">
-
-1. Install `git` and `git-lfs` if you haven't already:
-
+1. 如果尚未安装 `git` 和 `git-lfs`，请安装：
    ```bash
    sudo apt-get install git git-lfs
    ```
-
-2. Create a `models` directory in your current working directory:
-
+2. 在当前工作目录中创建一个“models”目录：
    ```bash
    mkdir -p ./models
    ```
-
-3. Use `git` to clone the model repositories into the `models` directory:
-
+3. 使用 `git` 将模型存储库克隆到 `models` 目录中：
    ```bash
    cd ./models
    git lfs install
@@ -79,26 +66,18 @@ Before running the Docker container, you need to download the model to your loca
    git clone https://www.modelscope.cn/BAAI/bge-large-zh-v1.5.git
    cd ..
    ```
-
-   This will download the models into the `./models/Qwen2.5-Coder-0.5B-Instruct` and `./models/bge-large-zh-v1.5` directories.
-
+这会将模型下载到“./models/Qwen2.5-Coder-0.5B-Instruct”和“./models/bge-large-zh-v1.5”目录中。
 </TabItem>
 <TabItem value="huggingface" label="Download from Hugging Face">
-
-1. Install `git` and `git-lfs` if you haven't already:
-
+1. 如果尚未安装 `git` 和 `git-lfs`，请安装：
    ```bash
    sudo apt-get install git git-lfs
    ```
-
-2. Create a `models` directory in your current working directory:
-
+2. 在当前工作目录中创建一个“models”目录：
    ```bash
    mkdir -p ./models
    ```
-
-3. Use `git` to clone the model repositories into the `models` directory:
-
+3. 使用 `git` 将模型存储库克隆到 `models` 目录中：
    ```bash
    cd ./models
    git lfs install
@@ -106,18 +85,14 @@ Before running the Docker container, you need to download the model to your loca
    git clone https://huggingface.co/BAAI/bge-large-zh-v1.5
    cd ..
    ```
-
-   This will download the models into the `./models/Qwen2.5-Coder-0.5B-Instruct` and `./models/bge-large-zh-v1.5` directories.
-
+这会将模型下载到“./models/Qwen2.5-Coder-0.5B-Instruct”和“./models/bge-large-zh-v1.5”目录中。
 </TabItem>
 </Tabs>
-
 ---
 
-### Step 2: Prepare the Configuration File
+### 步骤2：准备配置文件
 
-Create a `toml` file named `dbgpt-local-gpu.toml` and add the following content:
-
+创建名为“dbgpt-local-gpu.toml”的“toml”文件并添加以下内容：
 ```toml
 [models]
 [[models.llms]]
@@ -132,15 +107,13 @@ provider = "hf"
 # Specify the model path in the local file system
 path = "/app/models/bge-large-zh-v1.5"
 ```
-
-This configuration file specifies the local paths to the models inside the Docker container.
+此配置文件指定 Docker 容器内模型的本地路径。
 
 ---
 
-### Step 3: Run the Docker Container
+### 步骤 3：运行 Docker 容器
 
-Run the Docker container with the local `models` directory mounted:
-
+运行安装了本地“models”目录的 Docker 容器：
 ```bash
 docker run --ipc host --gpus all \
   -it --rm \
@@ -151,45 +124,39 @@ docker run --ipc host --gpus all \
   eosphorosai/dbgpt \
   dbgpt start webserver --config /app/configs/dbgpt-local-gpu.toml
 ```
-
-#### Explanation of the Command:
-- `--ipc host`: Enables host IPC mode for better performance.
-- `--gpus all`: Allows the container to use all available GPUs.
-- `-v ./dbgpt-local-gpu.toml:/app/configs/dbgpt-local-gpu.toml`: Mounts the local configuration file into the container.
-- `-v ./models:/app/models`: Mounts the local `models` directory into the container.
-- `eosphorosai/dbgpt`: The Docker image to use.
-- `dbgpt start webserver --config /app/configs/dbgpt-local-gpu.toml`: Starts the webserver with the specified configuration file.
-
----
-
-### Step 4: Access the Application
-
-Once the container is running, you can visit [http://localhost:5670](http://localhost:5670) in your browser to access the application.
+#### 命令解释：
+- `--ipc host`：启用主机 IPC 模式以获得更好的性能。
+- `--gpus all`：允许容器使用所有可用的 GPU。
+- `-v ./dbgpt-local-gpu.toml:/app/configs/dbgpt-local-gpu.toml`：将本地配置文件挂载到容器中。
+- `-v ./models:/app/models`：将本地 `models` 目录挂载到容器中。
+- `eosphorosai/dbgpt`：要使用的 Docker 镜像。
+- `dbgpt start webserver --config /app/configs/dbgpt-local-gpu.toml`：使用指定的配置文件启动 Web 服务器。
 
 ---
 
-### Step 5: Persist Data (Optional)
+### 第 4 步：访问应用程序
 
-To ensure that your data is not lost when the container is stopped or removed, you can map the `pilot/data` and `pilot/message` directories to your local machine. These directories store application data and messages.
+容器运行后，您可以在浏览器中访问 [http://localhost:5670](http://localhost:5670) 来访问应用程序。
 
-1. Create local directories for data persistence:
+---
 
+### 步骤 5：保存数据（可选）
+
+为了确保容器停止或删除时数据不会丢失，您可以将“pilot/data”和“pilot/message”目录映射到本地计算机。这些目录存储应用程序数据和消息。
+
+1、创建本地目录用于数据持久化：
    ```bash
    mkdir -p ./pilot/data
    mkdir -p ./pilot/message
    mkdir -p ./pilot/alembic_versions
    ```
-
-2. Modify the `dbgpt-local-gpu.toml` configuration file to point to the correct paths:
-
+2. 修改`dbgpt-local-gpu.toml`配置文件以指向正确的路径：
    ```toml
    [service.web.database]
    type = "sqlite"
    path = "/app/pilot/message/dbgpt.db"
    ```
-
-3. Run the Docker container with the additional volume mounts:
-
+3. 运行带有附加卷挂载的 Docker 容器：
    ```bash
    docker run --ipc host --gpus all \
      -it --rm \
@@ -203,15 +170,13 @@ To ensure that your data is not lost when the container is stopped or removed, y
      eosphorosai/dbgpt \
      dbgpt start webserver --config /app/configs/dbgpt-local-gpu.toml
    ```
-
-   This ensures that the `pilot/data` and `pilot/message` directories are persisted on your local machine.
+这可确保“pilot/data”和“pilot/message”目录保留在本地计算机上。
 
 ---
 
-### Summary of Directory Structure
+### 目录结构总结
 
-After completing the steps, your directory structure should look like this:
-
+完成这些步骤后，您的目录结构应如下所示：
 ```
 .
 ├── dbgpt-local-gpu.toml
@@ -222,7 +187,6 @@ After completing the steps, your directory structure should look like this:
 │   ├── data
 │   └── message
 ```
-
-This setup ensures that the models and application data are stored locally and mounted into the Docker container, allowing you to use them without losing data.
+此设置可确保模型和应用程序数据存储在本地并安装到 Docker 容器中，使您可以在不丢失数据的情况下使用它们。
 ```
 

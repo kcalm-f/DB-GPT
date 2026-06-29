@@ -1,40 +1,39 @@
-# High Availability
+# 高可用性
 
 
-## Architecture
+## 架构
 
-Here is the architecture of the high availability cluster, more details can be found in 
-the [cluster deployment](./cluster.md) mode and [SMMF](../../modules/smmf.md) module.
+这里是高可用集群的架构，更多细节可以参见 
+[集群部署](./cluster.md)模式和[SMMF](../../modules/smmf.md)模块。
 
-<p align="center">
+<p对齐=“中心”>
   <img src={'/img/module/smmf.png'} width="600px" />
 </p>
 
-The model worker and API server can be deployed on different machines, and the model 
-worker and API server can be deployed with multiple instances.
-But the model controller has only one instance by default, because it is a stateful 
-service and stores all metadata of the model service, specifically, all metadata are 
-stored in the component named **Model Registry**.
+Model Worker和API Server可以部署在不同的机器上，模型 
+Worker 和 API Server 可以部署多个实例。
+但是模型控制器默认只有一个实例，因为它是有状态的 
+service，存储模型服务的所有元数据，具体来说，所有元数据都是 
+存储在名为**模型注册表**的组件中。
 
-The default model registry is `EmbeddedModelRegistry`, which is a simple in-memory component.
-To support high availability, we can use `StorageModelRegistry` as the model registry, 
-it can use a database as the storage backend, such as MySQL, SQLite, etc.
+默认模型注册表是“EmbeddedModelRegistry”，它是一个简单的内存组件。
+为了支持高可用性，我们可以使用“StorageModelRegistry”作为模型注册表， 
+可以使用数据库作为存储后端，例如MySQL、SQLite等。
 
-So we can deploy the model controller with multiple instances, and they can share the metadata by connecting to the same database.
+因此，我们可以将模型控制器部署到多个实例，并且它们可以通过连接到同一数据库来共享元数据。
 
-Now let's see how to deploy the high availability cluster.
+现在我们来看看如何部署高可用集群。
 
-## Deploy High Availability Cluster
-For simplicity, we will deploy two model controllers on two machines(`server1` and `server2`), 
-and deploy a model worker, an embedding model worker, and a web server on another machine(`server3`).
+## 部署高可用集群
+为简单起见，我们将在两台机器上部署两个模型控制器（“server1”和“server2”）， 
+并在另一台机器（`server3`）上部署一个模型工作人员、一个嵌入模型工作人员和一个 Web 服务器。
 
-(Of course, you can deploy all of them on the same machine with different ports.)
+（当然，您可以将它们全部部署在具有不同端口的同一台计算机上。）
 
-### Prepare A MySQL Database
+### 准备MySQL数据库
 
-1. Install MySQL, create a database and a user for the model controller.
-2. Create a table for the model controller, you can use the following SQL script to create the table.
-
+1.安装MySQL，为模型控制器创建数据库和用户。
+2. 为模型控制器创建表，可以使用以下SQL脚本来创建表。
 ```sql
 
 -- For deploy model cluster of DB-GPT(StorageModelRegistry)
@@ -58,14 +57,12 @@ CREATE TABLE IF NOT EXISTS `dbgpt_cluster_registry_instance` (
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='Cluster model instance table, for registering and managing model instances';
 
 ```
+### 使用存储模型注册表启动模型控制器
 
-### Start Model Controller With Storage Model Registry
+我们需要在两台机器（“server1”和“server2”）上启动模型控制器，并且 
+他们将通过连接到同一数据库来共享元数据。
 
-We need to start the model controllers on two machines(`server1` and `server2`), and 
-they will share the metadata by connecting to the same database.
-
-1. Start the model controller on `server1`:
-
+1. 在 `server1` 上启动模型控制器：
 ```bash
 dbgpt start controller \
 --port 8000 \
@@ -77,8 +74,7 @@ dbgpt start controller \
 --registry_db_user root \
 --registry_db_password aa123456
 ```
-2. Start the model controller on `server2`:
-
+2. 在 `server2` 上启动模型控制器：
 ```bash
 dbgpt start controller \
 --port 8000 \
@@ -90,26 +86,23 @@ dbgpt start controller \
 --registry_db_user root \
 --registry_db_password aa123456
 ```
+注：请根据您的实际情况修改参数。
 
-Note: please modify the parameters according to your actual situation.
+### 启动劳动模范
 
-### Start Model Worker
-
-:::tip
-Start `glm-4-9b-chat` model Worker
+:::提示
+启动 `glm-4-9b-chat` 模型 Worker
 :::
-
 ```shell
 dbgpt start worker --model_name glm-4-9b-chat \
 --model_path /app/models/glm-4-9b-chat \
 --port 8001 \
 --controller_addr "http://server1:8000,http://server2:8000"
 ```
-Here we use `server1` and `server2` as the controller address, so the model worker can 
-register to any healthy controller.
+这里我们使用`server1`和`server2`作为控制器地址，因此模型工作者可以 
+注册到任何健康的控制器。
 
-### Start Embedding Model Worker
-
+### 开始嵌入 Model Worker
 ```shell
 dbgpt start worker --model_name text2vec \
 --model_path /app/models/text2vec-large-chinese \
@@ -117,13 +110,12 @@ dbgpt start worker --model_name text2vec \
 --port 8003 \
 --controller_addr "http://server1:8000,http://server2:8000"
 ```
-:::info note
-⚠️  Make sure to use your own model name and model path.
+:::信息说明
+⚠️ 确保使用您自己的模型名称和模型路径。
 
 :::
 
-### Deploy Web Server
-
+### 部署Web服务器
 ```shell
 LLM_MODEL=glm-4-9b-chat EMBEDDING_MODEL=text2vec \
 dbgpt start webserver \
@@ -131,41 +123,34 @@ dbgpt start webserver \
 --remote_embedding \
 --controller_addr "http://server1:8000,http://server2:8000"
 ```
-
-### Show Your Model Instances
-
+### 显示您的模型实例
 ```bash
 CONTROLLER_ADDRESS="http://server1:8000,http://server2:8000" dbgpt model list
 ```
+恭喜！您已成功部署 DB-GPT 高可用性集群。
 
-Congratulations! You have successfully deployed a high availability cluster of DB-GPT.
 
+## 使用 Docker Compose 部署高可用性集群
 
-## Deploy High Availability Cluster With Docker Compose
+如果您想了解有关部署高可用性 DB-GPT 集群的更多信息，您可以查看 
+docker compose 的示例位于 `docker/compose_examples/ha-cluster-docker-compose.yml` 中。
+它使用OpenAI LLM和OpenAI嵌入模型，因此您可以直接运行它。
 
-If your want know more about deploying a high availability DB-GPT cluster, you can see 
-the example of docker compose in `docker/compose_examples/ha-cluster-docker-compose.yml`.
-It uses OpenAI LLM and OpenAI embedding model, so you can run it directly.
+这里我们将向您展示如何使用docker compose部署DB-GPT的高可用集群。
 
-Here we will show you how to deploy a high availability cluster of DB-GPT with docker compose.
-
-First, build the docker image just include openai dependencies:
-
+首先，构建仅包含 openai 依赖项的 docker 镜像：
 ```bash
 bash ./docker/base/build_proxy_image.sh --pip-index-url https://pypi.tuna.tsinghua.edu.cn/simple
 ```
-
-Then, run the following command to start the high availability cluster:
-
+然后，运行以下命令启动高可用性集群：
 ```bash
 OPENAI_API_KEY="{your api key}" OPENAI_API_BASE="https://api.openai.com/v1" \
 docker compose -f ha-cluster-docker-compose.yml up -d
 ```
+## 质量保证
 
-## QA
+### 未来会支持更多的模型注册表类型吗？
+是的。未来我们将支持更多模型注册表类型，例如`etcd`、`consul`等。
 
-### It will support more model registry types in the future?
-Yes. We will support more model registry types in the future, such as `etcd`, `consul`, etc.
-
-### How to deploy the high availability cluster with Kubernetes?
-We will provide a Helm chart to deploy the high availability cluster with Kubernetes in the future.
+### 如何使用 Kubernetes 部署高可用集群？
+未来我们会提供Helm图表来使用Kubernetes部署高可用集群。
